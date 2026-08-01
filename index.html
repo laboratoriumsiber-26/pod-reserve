@@ -5,6 +5,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>PodReserve - PIPD UIN Siber Syekh Nurjati Cirebon</title>
+
+  <!-- Open Graph / WhatsApp Meta Tags -->
+  <meta property="og:title" content="PodReserve - PIPD SiberStudio Booking">
+  <meta property="og:description"
+    content="Platform pemesanan studio podcast dan fasilitas digital UIN Siber Syekh Nurjati Cirebon.">
+  <meta property="og:image" content="https://placehold.co/1200x630/0f766e/ffffff.png?text=PodReserve">
+  <meta property="og:url" content="https://script.google.com/">
+  <meta property="og:type" content="website">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -2115,7 +2124,7 @@
 
   <script>
     // Config
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbyQ8TlM76PnuswdSfH3PFFxINt588ttIwhZWE_YWgwQACWgp7s7jT0TCARfJAPJo_2G/exec";
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbxXxyZRIctgP9c6-YvD4QB83aT1Z7To-6zXchd1ysafIwkrsCLZzO_vSASd8eEtiNLV/exec";
 
     let studios = [];
     const sessions = [
@@ -2829,7 +2838,7 @@
               <td data-label="Pemesan" style="padding: 1rem;"><strong>${b.student_name}</strong><br><span style="font-size:0.75rem; color:var(--text-muted);">${b.user_category} - ${b.organization}</span></td>
               <td data-label="Kontak WA" style="padding: 1rem; font-size:0.875rem;">
                 ${b.email}<br>
-                ${b.phone_number ? `<a href="https://wa.me/${b.phone_number.replace(/^0/, '62').replace(/\D/g, '')}" target="_blank" class="btn-modal-fill" style="background:#25D366; color:#fff; text-decoration:none; display:inline-flex; align-items:center; gap:0.5rem; padding: 0.5rem 1rem; border-radius:999px; font-weight:800; font-size:0.875rem; margin-top:0.5rem; transition: transform 0.2s; box-shadow: 0 4px 6px rgba(37, 211, 102, 0.3);"><i data-lucide="message-circle" style="width:16px;height:16px;"></i> Chat WA</a>` : '<span style="font-size:0.75rem; color:var(--text-muted); font-style:italic;">Tidak ada data WA</span>'}
+                ${b.phone_number ? `<a href="https://wa.me/${b.phone_number.replace(/^0/, '62').replace(/\D/g, '')}" target="_blank" class="btn-modal-fill" style="background:#25D366; color:#fff; text-decoration:none; display:inline-flex; align-items:center; gap:0.5rem; padding: 0.5rem 1rem; border-radius:999px; font-weight:800; font-size:0.875rem; margin-top:0.5rem; transition: transform 0.2s; box-shadow: 0 4px 6px rgba(37, 211, 102, 0.3);"><i data-lucide="message-circle" style="width:16px;height:16px;"></i> Chat WA</a>` : `<div style="display:flex; flex-direction:column; gap:0.5rem; margin-top:0.5rem;"><span style="font-size:0.75rem; color:var(--text-muted); font-style:italic;">Tidak ada data WA</span><button class="btn-modal-outline" style="padding:0.25rem 0.5rem; font-size:0.75rem; width:fit-content;" onclick="adminPromptAddWA('${b.id}')">Tambah WA</button></div>`}
               </td>
               <td data-label="Fasilitas" style="padding: 1rem; font-weight:700;">${b.studio_id}</td>
               <td data-label="Surat" style="padding: 1rem;">
@@ -2848,6 +2857,26 @@
           `;
         }).join('');
       }
+
+      window.adminPromptAddWA = async function (bookingId) {
+        const wa = prompt("Masukkan Nomor WhatsApp pemohon (contoh: 08123456789):");
+        if (!wa) return;
+        try {
+          showToast("Menyimpan nomor WA...");
+          const payload = { action: 'updateBookingWA', id: bookingId, phone_number: wa };
+          const res = await fetch(GAS_URL, { method: "POST", body: JSON.stringify(payload) });
+          const data = await res.json();
+          if (data.result === 'success') {
+            const bIndex = bookings.findIndex(b => b.id === bookingId);
+            if (bIndex > -1) {
+              bookings[bIndex].phone_number = wa;
+              localStorage.setItem('podreserve_v2_bookings', JSON.stringify(bookings));
+            }
+            renderAdminData();
+            showToast("Nomor WA berhasil ditambahkan!");
+          } else throw new Error(data.message || "Gagal update");
+        } catch (e) { showToast(e.message || "Gagal menyimpan WA", "error"); }
+      };
 
       // Render Studios
       const sTable = document.getElementById('admin-studios-table');
