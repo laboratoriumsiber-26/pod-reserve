@@ -242,49 +242,20 @@
       position: relative;
       width: 100%;
       aspect-ratio: 16 / 9;
-      /* Mobile Default */
       background-image: url('https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=2070&auto=format&fit=crop');
-      background-size: contain;
-      /* Absolutely NO CROPPING on mobile */
+      background-size: cover;
       background-repeat: no-repeat;
-      background-position: center top;
+      background-position: center;
       background-color: var(--text-main);
-      color: white;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      text-align: center;
-      padding: 0 1.25rem;
-    }
-
-    @media (min-width: 768px) {
-      .hero-section {
-        aspect-ratio: 21 / 9;
-        /* Standard widescreen slider ratio for PC */
-        background-size: cover;
-        /* Cover is fine on PC for wider images */
-        background-position: center;
-      }
-    }
-
-    .hero-section::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.8));
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      max-width: 700px;
-      margin-bottom: 2.5rem;
     }
 
     .hero-slider-dots {
       position: absolute;
-      bottom: 3.5rem;
+      bottom: 1.5rem;
       display: flex;
       gap: 0.5rem;
       z-index: 10;
@@ -303,20 +274,6 @@
       width: 24px;
       border-radius: 4px;
       background: #fff;
-    }
-
-    .hero-title {
-      font-size: 2.25rem;
-      margin-bottom: 1rem;
-      line-height: 1.2;
-      letter-spacing: -0.03em;
-    }
-
-    .hero-subtitle {
-      font-size: 1rem;
-      color: #cbd5e1;
-      font-weight: 500;
-      line-height: 1.6;
     }
 
     /* Professional Search Bar */
@@ -1675,11 +1632,6 @@
     <div id="tab-studios" class="tab-content active">
 
       <div class="hero-section">
-        <div class="hero-content">
-          <h1 class="hero-title">Cari & Pesan Studio Secara Profesional.</h1>
-          <p class="hero-subtitle">Jelajahi berbagai fasilitas podcast dan rekaman terbaik di lingkungan UIN Siber Syekh
-            Nurjati Cirebon.</p>
-        </div>
         <div class="hero-slider-dots" id="hero-dots"></div>
       </div>
 
@@ -1898,6 +1850,93 @@
         <button class="btn-modal-outline" onclick="closePromptModal()">Batal</button>
         <button class="btn-modal-fill" onclick="submitPromptModal()">Masuk</button>
       </div>
+    </div>
+  </div>
+
+  <!-- WA PROMPT MODAL -->
+  <div class="custom-modal-overlay" id="wa-prompt-modal">
+    <div class="custom-modal-card">
+      <div class="modal-title-row">
+        <div
+          style="width:2.5rem;height:2.5rem;border-radius:0.5rem;background:#25D36622;color:#25D366;display:flex;align-items:center;justify-content:center;">
+          <i data-lucide="message-circle"></i>
+        </div>
+        <h3>Tambah Nomor WA</h3>
+      </div>
+      <p class="modal-desc">Masukkan Nomor WhatsApp pemohon (contoh: 08123456789).</p>
+      <div class="admin-form-group">
+        <input type="number" id="wa-prompt-input" class="admin-form-input" placeholder="0812..."
+          onkeypress="if(event.key==='Enter') submitWAPromptModal()">
+      </div>
+      <div class="modal-actions">
+        <button class="btn-modal-outline" onclick="closeWAPromptModal()">Batal</button>
+        <button class="btn-modal-fill" style="background:#25D366; color:#fff;" onclick="submitWAPromptModal()">Simpan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- WELCOME MODAL -->
+  <div class="custom-modal-overlay" id="welcome-modal">
+    <div class="custom-modal-card" style="text-align:center; max-width:400px;">
+      <div style="width:4rem; height:4rem; border-radius:1rem; background:var(--accent-dim); color:var(--accent); display:flex; align-items:center; justify-content:center; margin:0 auto 1.5rem auto;">
+        <i data-lucide="mic" style="width:2rem; height:2rem;"></i>
+      </div>
+      <h3 style="font-weight:800; font-size:1.5rem; margin-bottom:0.5rem; color:var(--text-main);">Selamat Datang</h3>
+      <p style="color:var(--text-muted); font-size:0.95rem; margin-bottom:2rem; line-height:1.6;">
+        Platform Reservasi SiberStudio. Apakah Anda ingin membuat reservasi baru atau mengecek status reservasi?
+      </p>
+      <div style="display:flex; flex-direction:column; gap:0.75rem;">
+        <button class="btn-modal-fill" style="width:100%; padding:1rem; border-radius:1rem; font-size:1rem;" onclick="closeWelcomeModal()">Saya Mau Reservasi Baru</button>
+        <button class="btn-modal-outline" style="width:100%; padding:1rem; border-radius:1rem; font-size:1rem; border-color:var(--accent); color:var(--accent);" onclick="openCheckTicketModal()">Cek Status Tiket Saya</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHECK TICKET MODAL -->
+  <div class="custom-modal-overlay" id="check-ticket-modal">
+    <div class="custom-modal-card" style="max-width:400px;">
+      <div class="modal-title-row">
+        <div style="width:2.5rem;height:2.5rem;border-radius:0.5rem;background:var(--accent-dim);color:var(--accent);display:flex;align-items:center;justify-content:center;">
+          <i data-lucide="ticket"></i>
+        </div>
+        <h3>Cek Tiket Reservasi</h3>
+      </div>
+      <p class="modal-desc">Masukkan ID Reservasi / Kode Tiket Anda (contoh: B-1234).</p>
+      <div class="admin-form-group">
+        <input type="text" id="check-ticket-input" class="admin-form-input" placeholder="B-..." onkeypress="if(event.key==='Enter') submitCheckTicket()">
+      </div>
+      <div id="check-ticket-result" style="margin-top:1rem; display:none; padding:1rem; border-radius:0.75rem; background:var(--bg-main); font-size:0.875rem;"></div>
+      <div class="modal-actions" style="margin-top:1.5rem;">
+        <button class="btn-modal-outline" onclick="closeCheckTicketModal()">Tutup</button>
+        <button class="btn-modal-fill" onclick="submitCheckTicket()">Cari Tiket</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TICKET INTERCEPT MODAL -->
+  <div class="custom-modal-overlay" id="ticket-intercept-modal">
+    <div class="custom-modal-card" style="text-align:center; max-width:400px;">
+      <div style="width:4rem; height:4rem; border-radius:50%; background:#10b98122; color:#10b981; display:flex; align-items:center; justify-content:center; margin:0 auto 1.5rem auto;">
+        <i data-lucide="check-circle-2" style="width:2rem; height:2rem;"></i>
+      </div>
+      <h3 style="font-weight:800; font-size:1.25rem; margin-bottom:0.5rem; color:var(--text-main);">Reservasi Tercatat!</h3>
+      <p style="color:var(--text-muted); font-size:0.875rem; margin-bottom:1.5rem; line-height:1.5;">
+        Sistem telah menyimpan permohonan Anda. Berikut adalah Kode Tiket Anda. <strong>Harap simpan kode ini</strong> untuk mengecek status reservasi nanti.
+      </p>
+      
+      <div style="background:var(--bg-main); border:1px dashed var(--border-color); border-radius:1rem; padding:1.5rem; margin-bottom:1.5rem; display:flex; flex-direction:column; align-items:center; gap:0.5rem;">
+        <span style="font-size:0.75rem; color:var(--text-muted); font-weight:700; text-transform:uppercase; letter-spacing:0.1em;">KODE TIKET ANDA</span>
+        <div style="font-size:2rem; font-weight:800; color:var(--accent); letter-spacing:0.05em;" id="intercept-ticket-code">B-XXXX</div>
+        <button class="btn-modal-outline" style="padding:0.25rem 0.75rem; font-size:0.75rem; margin-top:0.5rem;" onclick="copyInterceptTicket()"><i data-lucide="copy" style="width:14px;height:14px;margin-right:4px;"></i> Salin Kode</button>
+      </div>
+
+      <p style="color:var(--text-muted); font-size:0.875rem; margin-bottom:1.5rem; line-height:1.5;">
+        Langkah terakhir: Kirim format pesan konfirmasi beserta dokumen pendukung ke WhatsApp Kepala Lab Siber.
+      </p>
+
+      <button class="btn-modal-fill" style="width:100%; padding:1rem; border-radius:1rem; font-size:1rem; background:#25D366; display:flex; align-items:center; justify-content:center; gap:0.5rem; transition:transform 0.2s; box-shadow:0 4px 6px rgba(37,211,102,0.3);" onclick="continueToWhatsApp()">
+        <i data-lucide="send" style="width:18px;height:18px;"></i> Lanjut ke WhatsApp
+      </button>
     </div>
   </div>
 
@@ -2227,6 +2266,127 @@
       }
       showToast("Berhasil keluar dari mode Admin");
     }
+
+    window.continueToWhatsApp = async function() {
+      document.getElementById('ticket-intercept-modal').classList.remove('active');
+      
+      const payload = pendingWaPayload;
+      const studio = pendingWaStudio;
+      if (!payload) return;
+
+      const waWindow = window.open('', '_blank');
+      if (waWindow) {
+        waWindow.document.write(`
+          <html><head><title>Memproses Reservasi...</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+          <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;800&display=swap" rel="stylesheet">
+          <style>
+            body { font-family: 'Raleway', sans-serif; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; margin:0; background:#f0f2f5; color:#111b21; }
+            .card { background: #fff; padding: 2.5rem 2rem; border-radius: 1.5rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); text-align: center; max-width: 90%; width: 320px; }
+            .icon-container { width: 80px; height: 80px; background: #25D36615; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem auto; position: relative; }
+            .icon-container svg { width: 40px; height: 40px; color: #25D366; }
+            .spinner-ring { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 3px solid transparent; border-top-color: #25D366; border-right-color: #25D366; border-radius: 50%; animation: spin 1s linear infinite; }
+            @keyframes spin { to { transform: rotate(360deg); } }
+            h2 { font-size: 1.25rem; font-weight: 800; margin: 0 0 10px 0; color: #111b21; }
+            p { color: #667781; font-size: 0.875rem; line-height: 1.5; margin: 0 0 1.5rem 0; }
+            .skeleton-bar { height: 8px; background: #e9edef; border-radius: 4px; margin-bottom: 8px; overflow: hidden; position: relative; }
+            .skeleton-bar::after { content: ""; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent); animation: shimmer 1.5s infinite ease-in-out; }
+            @keyframes shimmer { 100% { left: 200%; } }
+          </` + `style>
+          </` + `head><body>
+            <div class="card">
+              <div class="icon-container">
+                <div class="spinner-ring"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+              </div>
+              <h2>Membuka WhatsApp...</h2>
+              <p>Mengamankan dokumen permohonan Anda dan menyiapkan pesan.</p>
+              <div style="text-align: left;">
+                <div class="skeleton-bar" style="width: 100%;"></div>
+                <div class="skeleton-bar" style="width: 80%;"></div>
+                <div class="skeleton-bar" style="width: 90%;"></div>
+              </div>
+            </div>
+          </` + `body></` + `html>
+        `);
+      }
+
+      try {
+        const data = await pendingWaPromise;
+        let finalFileUrl = 'Dilampirkan di sistem';
+        if (data && data.result === 'success' && data.fileUrl) {
+          finalFileUrl = data.fileUrl;
+          const idx = bookings.findIndex(b => b.id === payload.id);
+          if (idx !== -1) {
+            bookings[idx].file_url = data.fileUrl;
+            localStorage.setItem('podreserve_v2_bookings', JSON.stringify(bookings));
+            if (isAdmin) renderAdminData();
+          }
+        }
+
+        const waText = `Yth. Kepala Pusat Laboratorium Siber,%0A%0ASehubungan dengan keperluan penggunaan fasilitas studio, saya bermaksud untuk mengajukan permohonan reservasi dengan rincian sebagai berikut:%0A%0A*ID Reservasi:* ${payload.id}%0A*Nama:* ${payload.student_name}%0A*Identitas (NIM/NIP):* ${payload.student_id}%0A*Kategori:* ${payload.user_category}%0A*Instansi/Unit:* ${payload.organization}%0A*Kontak WA:* ${payload.phone_number}%0A%0A*Fasilitas Studio:* ${studio.name}%0A*Tanggal:* ${payload.date}%0A*Waktu (Sesi):* ${payload.start_time} - ${payload.end_time}%0A*Tujuan Penggunaan:* ${payload.purpose}%0A%0A*Tautan Dokumen Surat:* ${finalFileUrl}%0A%0ABesar harapan saya agar permohonan ini dapat ditindaklanjuti. Atas perhatian dan kebijaksanaan Bapak/Ibu, saya ucapkan terima kasih.`;
+        const waUrl = `https://wa.me/6282170735157?text=${waText}`;
+
+        if (waWindow) waWindow.location.href = waUrl;
+        else window.location.href = waUrl;
+        
+      } catch (e) {
+        // Fallback
+        const waText = `Yth. Kepala Pusat Laboratorium Siber,%0A%0ASehubungan dengan keperluan penggunaan fasilitas studio, saya bermaksud untuk mengajukan permohonan reservasi dengan rincian sebagai berikut:%0A%0A*ID Reservasi:* ${payload.id}%0A*Nama:* ${payload.student_name}%0A*Identitas (NIM/NIP):* ${payload.student_id}%0A*Kategori:* ${payload.user_category}%0A*Instansi/Unit:* ${payload.organization}%0A*Kontak WA:* ${payload.phone_number}%0A%0A*Fasilitas Studio:* ${studio.name}%0A*Tanggal:* ${payload.date}%0A*Waktu (Sesi):* ${payload.start_time} - ${payload.end_time}%0A*Tujuan Penggunaan:* ${payload.purpose}%0A%0A*Tautan Dokumen Surat:* [Gagal Terlampir Otomatis]%0A%0ABesar harapan saya agar permohonan ini dapat ditindaklanjuti. Atas perhatian dan kebijaksanaan Bapak/Ibu, saya ucapkan terima kasih.`;
+        const waUrl = `https://wa.me/6282170735157?text=${waText}`;
+        if (waWindow) waWindow.location.href = waUrl;
+        else window.location.href = waUrl;
+      }
+      
+      showToast("Permohonan Berhasil Dikirim!");
+    };
+
+    window.copyInterceptTicket = function() {
+      const code = document.getElementById('intercept-ticket-code').innerText;
+      navigator.clipboard.writeText(code);
+      showToast("Kode Tiket disalin!");
+    };
+
+    window.closeWelcomeModal = function() {
+      document.getElementById('welcome-modal').classList.remove('active');
+    };
+
+    window.openCheckTicketModal = function() {
+      closeWelcomeModal();
+      document.getElementById('check-ticket-input').value = '';
+      document.getElementById('check-ticket-result').style.display = 'none';
+      document.getElementById('check-ticket-modal').classList.add('active');
+      setTimeout(() => document.getElementById('check-ticket-input').focus(), 100);
+    };
+
+    window.closeCheckTicketModal = function() {
+      document.getElementById('check-ticket-modal').classList.remove('active');
+    };
+
+    window.submitCheckTicket = function() {
+      const val = document.getElementById('check-ticket-input').value.trim();
+      if (!val) return;
+      const resBox = document.getElementById('check-ticket-result');
+      
+      const b = bookings.find(x => x.id.toLowerCase() === val.toLowerCase());
+      if (b) {
+        const statusColor = b.status === 'approved' ? '#10b981' : b.status === 'rejected' ? '#ef4444' : '#f59e0b';
+        const statusText = b.status === 'approved' ? 'DISETUJUI' : b.status === 'rejected' ? 'DITOLAK' : 'MENUNGGU';
+        resBox.innerHTML = `
+          <div style="margin-bottom:0.5rem;"><strong>Pemesan:</strong> ${b.student_name}</div>
+          <div style="margin-bottom:0.5rem;"><strong>Jadwal:</strong> ${b.date} (${b.start_time} - ${b.end_time})</div>
+          <div style="margin-bottom:0.5rem;"><strong>Fasilitas:</strong> ${b.studio_id}</div>
+          <div style="margin-top:1rem; border-top:1px solid var(--border-color); padding-top:1rem; display:flex; justify-content:space-between; align-items:center;">
+            <strong>Status:</strong>
+            <span style="padding: 0.25rem 0.75rem; border-radius: 1rem; font-size: 0.75rem; font-weight: 800; background: ${statusColor}22; color: ${statusColor};">${statusText}</span>
+          </div>
+        `;
+        resBox.style.display = 'block';
+      } else {
+        resBox.innerHTML = `<div style="text-align:center; color:var(--error);">Tiket dengan kode <strong>${val}</strong> tidak ditemukan. Pastikan Anda mengetik dengan benar (cth: B-1234).</div>`;
+        resBox.style.display = 'block';
+      }
+    };
 
     async function init() {
       lucide.createIcons();
@@ -2724,6 +2884,10 @@
         fileName: fileName
       };
 
+      let pendingWaPayload = null;
+      let pendingWaPromise = null;
+      let pendingWaStudio = null;
+
       try {
         // Optimistic UI Update
         payload.status = 'pending';
@@ -2731,59 +2895,23 @@
         localStorage.setItem('podreserve_v2_bookings', JSON.stringify(bookings));
         renderSchedule(); renderReservasi();
 
-        // Open window immediately to avoid popup blocker, write loading skeleton
-        const waWindow = window.open('', '_blank');
-        if (waWindow) {
-          waWindow.document.write(`
-            <html><head><title>Memproses Reservasi...</title>
-            <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap" rel="stylesheet">
-            <style>
-              body { font-family: 'Raleway', sans-serif; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; margin:0; background:#f8fafc; color:#0f172a; }
-              .spinner { width: 50px; height: 50px; border: 4px solid #e2e8f0; border-top-color: #3b82f6; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
-              @keyframes spin { to { transform: rotate(360deg); } }
-              h2 { font-size: 1.25rem; font-weight: 600; margin: 0 0 10px 0; }
-              p { color: #64748b; font-size: 0.95rem; text-align: center; padding: 0 1rem; }
-            <\/head><body>
-              <div class="spinner"><\/div>
-              <h2>Sedang Memproses Dokumen...<\/h2>
-              <p>Mohon tunggu sebentar, Anda akan segera dialihkan ke WhatsApp.<\/p>
-            <\/body><\/html>
-          `);
-        }
+        pendingWaPayload = payload;
+        pendingWaStudio = selectedStudio;
 
-        const res = await fetch(GAS_URL, {
+        // Start fetch in background
+        pendingWaPromise = fetch(GAS_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify(payload)
-        });
-        const data = await res.json();
+        }).then(res => res.json()).catch(e => ({ result: 'error' }));
 
-        let finalFileUrl = 'Dilampirkan di sistem';
-        if (data.result === 'success' && data.fileUrl) {
-          finalFileUrl = data.fileUrl;
-          const idx = bookings.findIndex(b => b.id === payload.id);
-          if (idx !== -1) {
-            bookings[idx].file_url = data.fileUrl;
-            localStorage.setItem('podreserve_v2_bookings', JSON.stringify(bookings));
-            if (isAdmin) renderAdminData();
-          }
-        }
-
-        const waText = `Yth. Kepala Pusat Laboratorium Siber,%0A%0ASehubungan dengan keperluan penggunaan fasilitas studio, saya bermaksud untuk mengajukan permohonan reservasi dengan rincian sebagai berikut:%0A%0A*ID Reservasi:* ${payload.id}%0A*Nama:* ${payload.student_name}%0A*Identitas (NIM/NIP):* ${payload.student_id}%0A*Kategori:* ${payload.user_category}%0A*Instansi/Unit:* ${payload.organization}%0A*Kontak WA:* ${payload.phone_number}%0A%0A*Fasilitas Studio:* ${selectedStudio.name}%0A*Tanggal:* ${payload.date}%0A*Waktu (Sesi):* ${payload.start_time} - ${payload.end_time}%0A*Tujuan Penggunaan:* ${payload.purpose}%0A%0A*Tautan Dokumen Surat:* ${finalFileUrl}%0A%0ABesar harapan saya agar permohonan ini dapat ditindaklanjuti. Atas perhatian dan kebijaksanaan Bapak/Ibu, saya ucapkan terima kasih.`;
-
-        const waUrl = `https://wa.me/6282170735157?text=${waText}`;
-
-        if (waWindow) {
-          waWindow.location.href = waUrl;
-        } else {
-          // Fallback if popup blocker blocked the initial window.open
-          window.location.href = waUrl;
-        }
-
-        showToast("Permohonan Berhasil Dikirim!");
+        // Show Ticket Intercept Modal
         closeModal();
+        document.getElementById('intercept-ticket-code').innerText = payload.id;
+        document.getElementById('ticket-intercept-modal').classList.add('active');
+
       } catch (err) {
-        showToast("Gagal mengirim data!", "error");
+        showToast("Gagal memproses data!", "error");
       } finally {
         btn.disabled = false; btn.innerText = `Kirim Permohonan Reservasi`;
       }
@@ -2858,9 +2986,30 @@
         }).join('');
       }
 
-      window.adminPromptAddWA = async function (bookingId) {
-        const wa = prompt("Masukkan Nomor WhatsApp pemohon (contoh: 08123456789):");
-        if (!wa) return;
+      let currentWaBookingId = null;
+
+      window.adminPromptAddWA = function (bookingId) {
+        currentWaBookingId = bookingId;
+        document.getElementById('wa-prompt-input').value = '';
+        document.getElementById('wa-prompt-modal').classList.add('active');
+        setTimeout(() => document.getElementById('wa-prompt-input').focus(), 100);
+      };
+
+      window.closeWAPromptModal = function () {
+        document.getElementById('wa-prompt-modal').classList.remove('active');
+        currentWaBookingId = null;
+      };
+
+      window.submitWAPromptModal = async function () {
+        const wa = document.getElementById('wa-prompt-input').value.trim();
+        if (!wa) {
+          showToast("Nomor WA tidak boleh kosong", "error");
+          return;
+        }
+        
+        const bookingId = currentWaBookingId;
+        closeWAPromptModal();
+        
         try {
           showToast("Menyimpan nomor WA...");
           const payload = { action: 'updateBookingWA', id: bookingId, phone_number: wa };
@@ -3257,6 +3406,12 @@
     }
 
     init();
+
+    // Show Welcome Modal once per session
+    if (!sessionStorage.getItem('podreserve_welcomed')) {
+      sessionStorage.setItem('podreserve_welcomed', 'true');
+      document.getElementById('welcome-modal').classList.add('active');
+    }
 
     // Register PWA Service Worker
     if ('serviceWorker' in navigator) {
