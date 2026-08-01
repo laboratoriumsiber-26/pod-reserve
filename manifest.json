@@ -1,0 +1,17 @@
+{
+  "name": "PodReserve",
+  "short_name": "PodReserve",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#0f766e",
+  "description": "Platform pemesanan studio podcast dan fasilitas digital",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
