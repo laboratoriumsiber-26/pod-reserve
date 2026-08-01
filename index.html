@@ -11,6 +11,7 @@
     rel="stylesheet">
   <meta name="theme-color" content="#0f766e">
   <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icon.svg">
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -1399,14 +1400,21 @@
         margin-top: 0.5rem;
       }
     }
+
     .skeleton-box {
       background: linear-gradient(90deg, var(--border-color) 25%, #f1f5f9 50%, var(--border-color) 75%);
       background-size: 200% 100%;
       animation: shimmer 1.5s infinite;
     }
+
     @keyframes shimmer {
-      0% { background-position: -200% 0; }
-      100% { background-position: 200% 0; }
+      0% {
+        background-position: -200% 0;
+      }
+
+      100% {
+        background-position: 200% 0;
+      }
     }
   </style>
 </head>
@@ -1828,7 +1836,7 @@
 
   <script>
     // Config
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbyoeXF9gMo4qP4q9LkAMcMbCqKhgJtf9vOlh5fWToefFycIlDSPrs85GcXkq40l-93c/exec";
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbwY2d-ApNBFWCsmrms79jeYQX6gM1g9TjpHgQzoGyuepVDqYs4gsWpBVSN-0Hr0QK0/exec";
 
     let studios = [];
     const sessions = [
@@ -1939,7 +1947,7 @@
         studios = JSON.parse(savedS);
         renderStudios();
       } else {
-        document.getElementById('studios-container').innerHTML = [1,2,3].map(() => `
+        document.getElementById('studios-container').innerHTML = [1, 2, 3].map(() => `
           <div class="studio-card">
             <div class="skeleton-box" style="height:200px; width:100%; border-radius:1rem 1rem 0 0;"></div>
             <div class="studio-info">
@@ -1959,7 +1967,7 @@
       renderSchedule();
 
       if (!savedB || bookings.length === 0) {
-        document.getElementById('reservasi-list').innerHTML = [1,2,3].map(() => `
+        document.getElementById('reservasi-list').innerHTML = [1, 2, 3].map(() => `
           <div class="res-card" style="padding:1.5rem; border-radius:1rem; border:1px solid var(--border-color); margin-bottom:1rem;">
              <div class="skeleton-box" style="height:1.25rem; width:50%; margin-bottom:0.75rem; border-radius:0.5rem;"></div>
              <div class="skeleton-box" style="height:1rem; width:80%; margin-bottom:0.5rem; border-radius:0.5rem;"></div>
@@ -2041,12 +2049,23 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    function getDirectImageUrl(url) {
+      if (!url) return '';
+      if (url.includes("drive.google.com/file/d/")) {
+        const match = url.match(/file\/d\/([a-zA-Z0-9_-]+)/);
+        if (match && match[1]) {
+          return "https://drive.google.com/uc?export=view&id=" + match[1];
+        }
+      }
+      return url;
+    }
+
     function renderStudios() {
       const container = document.getElementById('studios-container');
       container.innerHTML = studios.map(s => `
         <div class="studio-card">
           <div class="studio-img-wrap">
-            <img src="${s.img}" alt="${s.name}" class="studio-img skeleton-box" onload="this.classList.remove('skeleton-box')" onerror="this.classList.remove('skeleton-box')">
+            <img src="${getDirectImageUrl(s.img)}" alt="${s.name}" class="studio-img skeleton-box" onload="this.classList.remove('skeleton-box')" onerror="this.classList.remove('skeleton-box')">
             <div class="studio-capacity"><i data-lucide="users" style="width:14px;height:14px;color:var(--text-main)"></i> ${s.cap} Orang</div>
           </div>
           <div class="studio-info">
@@ -2349,7 +2368,7 @@
           body: JSON.stringify(payload)
         });
         const data = await res.json();
-        
+
         let finalFileUrl = 'Dilampirkan di sistem';
         if (data.result === 'success' && data.fileUrl) {
           finalFileUrl = data.fileUrl;
@@ -2362,7 +2381,7 @@
         }
 
         const waText = `Yth. Kepala Pusat Laboratorium Siber,%0A%0ASehubungan dengan keperluan penggunaan fasilitas studio, saya bermaksud untuk mengajukan permohonan reservasi dengan rincian sebagai berikut:%0A%0A*ID Reservasi:* ${payload.id}%0A*Nama:* ${payload.student_name}%0A*Identitas (NIM/NIP):* ${payload.student_id}%0A*Kategori:* ${payload.user_category}%0A*Instansi/Unit:* ${payload.organization}%0A*Kontak WA:* ${payload.phone_number}%0A%0A*Fasilitas Studio:* ${selectedStudio.name}%0A*Tanggal:* ${payload.date}%0A*Waktu (Sesi):* ${payload.start_time} - ${payload.end_time}%0A*Tujuan Penggunaan:* ${payload.purpose}%0A%0A*Tautan Dokumen Surat:* ${finalFileUrl}%0A%0ABesar harapan saya agar permohonan ini dapat ditindaklanjuti. Atas perhatian dan kebijaksanaan Bapak/Ibu, saya ucapkan terima kasih.`;
-        
+
         const waUrl = `https://wa.me/6282170735157?text=${waText}`;
 
         if (waWindow) {
@@ -2450,7 +2469,7 @@
               <td data-label="ID" style="padding: 1rem; font-weight:800;">${s.id}</td>
               <td data-label="Nama Studio" style="padding: 1rem;"><strong>${s.name}</strong><br><span style="font-size:0.75rem; color:var(--text-muted);">${s.desc}</span></td>
               <td data-label="Kapasitas" style="padding: 1rem; font-weight:700;">${s.cap} Orang</td>
-              <td data-label="Gambar" style="padding: 1rem;"><img src="${s.img}" style="width:100%; max-width: 120px; height:auto; object-fit:cover; border-radius:0.5rem; border:1px solid var(--border-color);"></td>
+              <td data-label="Gambar" style="padding: 1rem;"><img src="${getDirectImageUrl(s.img)}" style="width:100%; max-width: 120px; height:auto; object-fit:cover; border-radius:0.5rem; border:1px solid var(--border-color);" class="skeleton-box" onload="this.classList.remove('skeleton-box')" onerror="this.classList.remove('skeleton-box')"></td>
               <td data-label="Aksi" style="padding: 1rem; text-align:right;">
                 <button class="btn-modal-outline" style="padding:0.35rem 0.75rem; font-size:0.75rem; margin-right:0.25rem;" onclick="openStudioFormModal('edit', '${s.id}')">Edit</button>
                 <button class="btn-modal-outline" style="padding:0.35rem 0.75rem; font-size:0.75rem; color:var(--error); border-color:var(--error-dim);" onclick="adminDeleteStudio('${s.id}')">Hapus</button>
