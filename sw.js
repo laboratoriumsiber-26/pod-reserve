@@ -1,9 +1,9 @@
-const CACHE_NAME = 'podreserve-v1.0.0';
+const CACHE_NAME = 'podreserve-v1.0.9';
 const ASSETS = [
   './index.html',
   './icon.svg',
   './manifest.json',
-  'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap',
+  'https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&display=swap',
   'https://unpkg.com/lucide@latest'
 ];
 
