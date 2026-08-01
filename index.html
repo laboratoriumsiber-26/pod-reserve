@@ -253,6 +253,37 @@
       justify-content: center;
     }
 
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.8));
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 700px;
+      margin-bottom: 2.5rem;
+      color: white;
+      text-align: center;
+      padding: 0 1.25rem;
+    }
+
+    .hero-title {
+      font-size: 2.25rem;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+    }
+
+    .hero-subtitle {
+      font-size: 1rem;
+      color: #cbd5e1;
+      font-weight: 500;
+      line-height: 1.6;
+    }
+
     .hero-slider-dots {
       position: absolute;
       bottom: 1.5rem;
@@ -361,8 +392,16 @@
 
     @media (min-width: 768px) {
       .hero-section {
-        padding: 6rem 2rem 8rem 2rem;
+        padding: 4rem 2rem 5rem 2rem;
         border-radius: 0 0 2rem 2rem;
+        aspect-ratio: auto;
+        height: 400px;
+      }
+
+      #tab-studios .content-wrapper {
+        max-width: 100%;
+        padding-left: 3rem;
+        padding-right: 3rem;
       }
 
       .hero-title {
@@ -1632,22 +1671,40 @@
     <div id="tab-studios" class="tab-content active">
 
       <div class="hero-section">
+        <div class="hero-content">
+          <h1 class="hero-title">Eksplorasi & Reservasi SiberStudio</h1>
+          <p class="hero-subtitle">Fasilitas podcast dan rekaman profesional di lingkungan UIN Siber Syekh Nurjati Cirebon.</p>
+        </div>
         <div class="hero-slider-dots" id="hero-dots"></div>
       </div>
 
-      <div class="search-bar">
+      <!-- Unified Search Bar -->
+      <div class="search-bar" style="margin-top: -2.5rem; position: relative; z-index: 10;">
+        <!-- Ticket Check -->
+        <div class="search-input" style="flex: 1.2;">
+          <i data-lucide="ticket"></i>
+          <div style="flex-grow: 1; width: 100%;">
+            <label>Cek Status Tiket</label>
+            <div style="display:flex; gap:0.5rem; align-items:center;">
+              <input type="text" id="front-ticket-input" placeholder="Kode (Misal: B-1234)" style="width: 100%; border: 1px solid var(--border-color); border-radius: 0.5rem; padding: 0.4rem 0.75rem; outline: none; font-family: var(--font-family); font-size: 0.875rem; background: var(--bg-main); color: var(--text-main); transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border-color)'" onkeydown="if(event.key === 'Enter') checkFrontTicket()">
+              <button onclick="checkFrontTicket()" style="padding: 0.35rem 0.75rem; font-size: 0.75rem; font-weight:800; border-radius: 0.5rem; border:none; background: var(--accent); color: white; cursor: pointer; white-space:nowrap; transition: background 0.2s;">Cek</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Schedule & Category -->
         <div class="search-input">
           <i data-lucide="calendar-days"></i>
-          <div>
+          <div style="width: 100%;">
             <label>Check-in Jadwal</label>
-            <input type="date" id="filter-date">
+            <input type="date" id="filter-date" style="width:100%; border:none; outline:none; font-family:var(--font-family); font-size:0.875rem; background:transparent;">
           </div>
         </div>
         <div class="search-input">
           <i data-lucide="users"></i>
-          <div>
+          <div style="width: 100%;">
             <label>Kategori Pengguna</label>
-            <select id="filter-category">
+            <select id="filter-category" style="width:100%; border:none; outline:none; font-family:var(--font-family); font-size:0.875rem; background:transparent;">
               <option value="">Semua Kategori</option>
               <option value="Mahasiswa">Mahasiswa</option>
               <option value="Dosen">Dosen</option>
@@ -1657,8 +1714,7 @@
             </select>
           </div>
         </div>
-        <button class="btn-search" onclick="switchTab('availability')">Cari Jadwal <i data-lucide="arrow-right"
-            style="width:18px;height:18px;"></i></button>
+        <button class="btn-search" onclick="switchTab('availability')">Cari Jadwal <i data-lucide="arrow-right" style="width:18px;height:18px;"></i></button>
       </div>
 
       <div class="content-wrapper">
@@ -2363,20 +2419,34 @@
       document.getElementById('check-ticket-modal').classList.remove('active');
     };
 
+    window.checkFrontTicket = function() {
+      const code = document.getElementById('front-ticket-input').value.trim();
+      if(!code) {
+        showToast("Masukkan kode tiket terlebih dahulu", "error");
+        return;
+      }
+      document.getElementById('check-ticket-input').value = code;
+      window.submitCheckTicket();
+      document.getElementById('check-ticket-modal').classList.add('active');
+    };
+
     window.submitCheckTicket = function() {
       const val = document.getElementById('check-ticket-input').value.trim();
       if (!val) return;
       const resBox = document.getElementById('check-ticket-result');
-      
       const b = bookings.find(x => x.id.toLowerCase() === val.toLowerCase());
+
       if (b) {
         const statusColor = b.status === 'approved' ? '#10b981' : b.status === 'rejected' ? '#ef4444' : '#f59e0b';
         const statusText = b.status === 'approved' ? 'DISETUJUI' : b.status === 'rejected' ? 'DITOLAK' : 'MENUNGGU';
+
         resBox.innerHTML = `
-          <div style="margin-bottom:0.5rem;"><strong>Pemesan:</strong> ${b.student_name}</div>
-          <div style="margin-bottom:0.5rem;"><strong>Jadwal:</strong> ${b.date} (${b.start_time} - ${b.end_time})</div>
-          <div style="margin-bottom:0.5rem;"><strong>Fasilitas:</strong> ${b.studio_id}</div>
-          <div style="margin-top:1rem; border-top:1px solid var(--border-color); padding-top:1rem; display:flex; justify-content:space-between; align-items:center;">
+          <div style="display:flex; flex-direction:column; gap:0.5rem; text-align:left;">
+            <strong>Tiket Ditemukan</strong>
+            <div><strong>Pemesan:</strong> ${b.student_name}</div>
+            <div><strong>Jadwal:</strong> ${b.date} (${b.start_time} - ${b.end_time})</div>
+            <div><strong>Fasilitas:</strong> ${b.studio_id}</div>
+            <hr style="border:none; border-top:1px dashed var(--border-color); margin: 0.5rem 0;">
             <strong>Status:</strong>
             <span style="padding: 0.25rem 0.75rem; border-radius: 1rem; font-size: 0.75rem; font-weight: 800; background: ${statusColor}22; color: ${statusColor};">${statusText}</span>
           </div>
