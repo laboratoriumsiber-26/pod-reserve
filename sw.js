@@ -1,4 +1,4 @@
-const CACHE_NAME = 'podreserve-v1.0.10';
+const CACHE_NAME = 'podreserve-v1.0.15';
 const ASSETS = [
   './index.html',
   './icon.svg',
