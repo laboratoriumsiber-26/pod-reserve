@@ -1399,6 +1399,15 @@
         margin-top: 0.5rem;
       }
     }
+    .skeleton-box {
+      background: linear-gradient(90deg, var(--border-color) 25%, #f1f5f9 50%, var(--border-color) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
   </style>
 </head>
 
@@ -1929,6 +1938,18 @@
       if (savedS) {
         studios = JSON.parse(savedS);
         renderStudios();
+      } else {
+        document.getElementById('studios-container').innerHTML = [1,2,3].map(() => `
+          <div class="studio-card">
+            <div class="skeleton-box" style="height:200px; width:100%; border-radius:1rem 1rem 0 0;"></div>
+            <div class="studio-info">
+              <div class="skeleton-box" style="height:1.5rem; width:60%; margin-bottom:0.5rem; border-radius:0.5rem;"></div>
+              <div class="skeleton-box" style="height:1rem; width:100%; margin-bottom:0.25rem; border-radius:0.5rem;"></div>
+              <div class="skeleton-box" style="height:1rem; width:80%; margin-bottom:1rem; border-radius:0.5rem;"></div>
+              <div class="skeleton-box" style="height:3rem; width:100%; border-radius:1rem;"></div>
+            </div>
+          </div>
+        `).join('');
       }
 
       const savedO = localStorage.getItem('podreserve_v2_opened_dates');
@@ -1936,7 +1957,20 @@
 
       renderCalendar();
       renderSchedule();
-      renderReservasi();
+
+      if (!savedB || bookings.length === 0) {
+        document.getElementById('reservasi-list').innerHTML = [1,2,3].map(() => `
+          <div class="res-card" style="padding:1.5rem; border-radius:1rem; border:1px solid var(--border-color); margin-bottom:1rem;">
+             <div class="skeleton-box" style="height:1.25rem; width:50%; margin-bottom:0.75rem; border-radius:0.5rem;"></div>
+             <div class="skeleton-box" style="height:1rem; width:80%; margin-bottom:0.5rem; border-radius:0.5rem;"></div>
+             <div class="skeleton-box" style="height:1rem; width:60%; margin-bottom:0.5rem; border-radius:0.5rem;"></div>
+             <div class="skeleton-box" style="height:1rem; width:40%; border-radius:0.5rem;"></div>
+          </div>
+        `).join('');
+      } else {
+        renderReservasi();
+      }
+
       fetchSyncData();
 
       // Fallback Admin Access via URL Parameter (?admin=true)
@@ -2012,7 +2046,7 @@
       container.innerHTML = studios.map(s => `
         <div class="studio-card">
           <div class="studio-img-wrap">
-            <img src="${s.img}" alt="${s.name}" class="studio-img">
+            <img src="${s.img}" alt="${s.name}" class="studio-img skeleton-box" onload="this.classList.remove('skeleton-box')" onerror="this.classList.remove('skeleton-box')">
             <div class="studio-capacity"><i data-lucide="users" style="width:14px;height:14px;color:var(--text-main)"></i> ${s.cap} Orang</div>
           </div>
           <div class="studio-info">
