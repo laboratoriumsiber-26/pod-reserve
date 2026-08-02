@@ -2204,7 +2204,11 @@
         </div>
         <nav class="admin-sidebar-nav">
           <button class="admin-sidebar-btn active" id="btn-adm-book" onclick="switchAdminTab('book')">
-            <i data-lucide="book-open"></i> Kelola Reservasi
+            <i data-lucide="book-open"></i> 
+            <span style="display:inline-flex; align-items:center; gap:0.25rem;">
+               Kelola Reservasi
+               <span id="pending-badge" style="display:none; background:var(--error); color:white; font-size:10px; font-weight:800; border-radius:999px; padding:2px 6px; box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);"></span>
+            </span>
           </button>
           <button class="admin-sidebar-btn" id="btn-adm-std" onclick="switchAdminTab('std')">
             <i data-lucide="mic"></i> Kelola Studio
@@ -2444,17 +2448,29 @@
       document.getElementById('prompt-modal').classList.remove('active');
       promptCallback = null;
     }
-    function submitPromptModal() {
-      const pwd = document.getElementById('prompt-input').value;
-      if (pwd === "admin123") {
-        const cb = promptCallback;
+    window.submitPromptModal = function () {
+      const p = document.getElementById('prompt-input').value;
+      if (p === 'admin123') {
+        isAdmin = true;
         closePromptModal();
-        if (cb) cb();
+        document.body.style.overflow = "auto";
+        document.querySelector("main").style.display = "none";
+        document.getElementById("pc-nav").style.display = "none";
+        document.getElementById("mobile-nav").style.display = "none";
+        document.getElementById("admin-view").style.display = "block";
+        renderAdminData();
+        showToast("Berhasil masuk mode Admin");
+        
+        if (!window.adminAutoRefreshInterval) {
+           window.adminAutoRefreshInterval = setInterval(() => {
+              if (isAdmin) fetchSyncData(true);
+           }, 60000);
+        }
       } else {
         showToast("Password salah!", "error");
         document.getElementById('prompt-input').value = '';
       }
-    }
+    };
 
     function handleSecretKnock() {
       secretKnocks++;
@@ -2483,6 +2499,11 @@
       document.getElementById("pc-nav").style.display = "";
       document.getElementById("mobile-nav").style.display = "";
       document.getElementById("admin-view").style.display = "none";
+      
+      if (window.adminAutoRefreshInterval) {
+         clearInterval(window.adminAutoRefreshInterval);
+         window.adminAutoRefreshInterval = null;
+      }
 
       if (window.location.search.includes('admin=true')) {
         const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
@@ -2740,6 +2761,28 @@
       }
     };
 
+    window.playNotificationSound = function() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const ctx = new AudioContext();
+        const osc = ctx.createOscillator();
+        const gainNode = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.1);
+        gainNode.gain.setValueAtTime(0, ctx.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0.5, ctx.currentTime + 0.05);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+        osc.connect(gainNode);
+        gainNode.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.5);
+      } catch (e) {
+        console.log("Audio play failed:", e);
+      }
+    };
+
     async function init() {
       lucide.createIcons();
       document.getElementById('filter-date').value = getISODateStr(new Date());
@@ -2804,6 +2847,12 @@
             document.getElementById("admin-view").style.display = "block";
             renderAdminData();
             showToast("Berhasil masuk mode Admin");
+            
+            if (!window.adminAutoRefreshInterval) {
+               window.adminAutoRefreshInterval = setInterval(() => {
+                  if (isAdmin) fetchSyncData(true);
+               }, 60000);
+            }
           });
         }, 500); // Small delay to let UI render first
       }
@@ -2821,51 +2870,63 @@
       else { idLabel.innerText = 'NIK KTP'; orgLabel.innerText = 'Alamat Lengkap'; }
     }
 
-    async function fetchSyncData() {
+    async function fetchSyncData(isSilent = false) {
       const icon = document.getElementById('sync-icon');
-      if (icon) icon.classList.add('lucide-spin');
+      if (icon && !isSilent) icon.classList.add('lucide-spin');
 
-      // Tampilkan Loading Skeleton
-      const studiosBox = document.getElementById('studios-container');
-      if (studiosBox) {
-        studiosBox.innerHTML = Array(3).fill(`
-          <div class="studio-card" style="width: 320px; flex-shrink: 0; min-height: 380px;">
-            <div class="skeleton-box" style="width: 100%; height: 220px; border-radius: 1rem;"></div>
-            <div style="padding: 1.25rem;">
-              <div class="skeleton-box" style="width: 60%; height: 1.5rem; margin-bottom: 0.5rem; border-radius: 0.25rem;"></div>
-              <div class="skeleton-box" style="width: 90%; height: 1rem; margin-bottom: 0.25rem; border-radius: 0.25rem;"></div>
-              <div class="skeleton-box" style="width: 80%; height: 1rem; margin-bottom: 1.5rem; border-radius: 0.25rem;"></div>
-              <div class="skeleton-box" style="width: 100%; height: 3rem; border-radius: 999px;"></div>
+      if (!isSilent) {
+        // Tampilkan Loading Skeleton
+        const studiosBox = document.getElementById('studios-container');
+        if (studiosBox) {
+          studiosBox.innerHTML = Array(3).fill(`
+            <div class="studio-card" style="width: 320px; flex-shrink: 0; min-height: 380px;">
+              <div class="skeleton-box" style="width: 100%; height: 220px; border-radius: 1rem;"></div>
+              <div style="padding: 1.25rem;">
+                <div class="skeleton-box" style="width: 60%; height: 1.5rem; margin-bottom: 0.5rem; border-radius: 0.25rem;"></div>
+                <div class="skeleton-box" style="width: 90%; height: 1rem; margin-bottom: 0.25rem; border-radius: 0.25rem;"></div>
+                <div class="skeleton-box" style="width: 80%; height: 1rem; margin-bottom: 1.5rem; border-radius: 0.25rem;"></div>
+                <div class="skeleton-box" style="width: 100%; height: 3rem; border-radius: 999px;"></div>
+              </div>
             </div>
-          </div>
-        `).join('');
-      }
+          `).join('');
+        }
 
-      const adminTable = document.getElementById('admin-bookings-table');
-      if (adminTable) {
-        adminTable.innerHTML = Array(4).fill(`
-          <tr>
-            <td colspan="15" style="padding:1rem;">
-              <div class="skeleton-box" style="width: 100%; height: 2.5rem; border-radius: 0.5rem;"></div>
-            </td>
-          </tr>
-        `).join('');
-      }
+        const adminTable = document.getElementById('admin-bookings-table');
+        if (adminTable) {
+          adminTable.innerHTML = Array(4).fill(`
+            <tr>
+              <td colspan="15" style="padding:1rem;">
+                <div class="skeleton-box" style="width: 100%; height: 2.5rem; border-radius: 0.5rem;"></div>
+              </td>
+            </tr>
+          `).join('');
+        }
 
-      const scheduleBody = document.getElementById('availability-body');
-      if (scheduleBody) {
-        scheduleBody.innerHTML = Array(3).fill(`
-          <tr>
-            <td colspan="4" style="padding:1rem;">
-              <div class="skeleton-box" style="width: 100%; height: 2.5rem; border-radius: 0.5rem;"></div>
-            </td>
-          </tr>
-        `).join('');
+        const scheduleBody = document.getElementById('availability-body');
+        if (scheduleBody) {
+          scheduleBody.innerHTML = Array(3).fill(`
+            <tr>
+              <td colspan="4" style="padding:1rem;">
+                <div class="skeleton-box" style="width: 100%; height: 2.5rem; border-radius: 0.5rem;"></div>
+              </td>
+            </tr>
+          `).join('');
+        }
       }
       try {
         const res = await fetch(GAS_URL + "?action=getInit");
         if (res.ok) {
           const data = await res.json();
+          
+          let newBookingCount = 0;
+          if (isAdmin) {
+             const oldIds = new Set(bookings.map(b => b.id));
+             const incomingBookings = data.bookings || [];
+             incomingBookings.forEach(b => {
+                if (!oldIds.has(b.id)) newBookingCount++;
+             });
+          }
+          
           bookings = data.bookings || [];
           studios = data.studios || [];
           openedDates = data.openedDates || [];
@@ -2875,12 +2936,23 @@
           localStorage.setItem('podreserve_v2_opened_dates', JSON.stringify(openedDates));
           localStorage.setItem('podreserve_v2_settings', JSON.stringify(appSettings));
 
-          applySettings();
-          renderStudios(); renderCalendar(); renderSchedule(); renderReservasi();
-          if (isAdmin) renderAdminData();
+          if (!isSilent) {
+            applySettings();
+            renderStudios(); renderCalendar(); renderSchedule(); renderReservasi();
+          }
+          
+          if (isAdmin) {
+            renderAdminData();
+            if (newBookingCount > 0) {
+              playNotificationSound();
+              showToast(`Ada ${newBookingCount} permohonan reservasi baru!`);
+            }
+          }
         }
       } catch (e) { console.warn("GAS Sync failed", e); }
-      setTimeout(() => { if (icon) icon.classList.remove('lucide-spin'); }, 500);
+      if (!isSilent) {
+        setTimeout(() => { if (icon) icon.classList.remove('lucide-spin'); }, 500);
+      }
     }
 
     async function adminRefreshData() {
@@ -3372,10 +3444,21 @@
       if (titleEl) titleEl.innerText = titles[tab] || 'Admin Dashboard';
     }
 
-    function renderAdminData() {
-      // Render Bookings
+    window.renderAdminData = function () {
       const bTable = document.getElementById('admin-bookings-table');
       if (!bTable) return;
+      
+      const pendingCount = bookings.filter(b => !b.status || b.status === 'pending').length;
+      const badge = document.getElementById('pending-badge');
+      if (badge) {
+         if (pendingCount > 0) {
+            badge.textContent = pendingCount;
+            badge.style.display = 'inline-block';
+         } else {
+            badge.style.display = 'none';
+         }
+      }
+
       if (bookings.length === 0) {
         bTable.innerHTML = `<tr><td colspan="15" style="padding:1rem;text-align:center;">Tidak ada data pemesanan</td></tr>`;
       } else {
