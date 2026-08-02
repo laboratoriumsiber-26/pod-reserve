@@ -2204,10 +2204,11 @@
         </div>
         <nav class="admin-sidebar-nav">
           <button class="admin-sidebar-btn active" id="btn-adm-book" onclick="switchAdminTab('book')">
-            <i data-lucide="book-open"></i> 
+            <i data-lucide="book-open"></i>
             <span style="display:inline-flex; align-items:center; gap:0.25rem;">
-               Kelola Reservasi
-               <span id="pending-badge" style="display:none; background:var(--error); color:white; font-size:10px; font-weight:800; border-radius:999px; padding:2px 6px; box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);"></span>
+              Kelola Reservasi
+              <span id="pending-badge"
+                style="display:none; background:var(--error); color:white; font-size:10px; font-weight:800; border-radius:999px; padding:2px 6px; box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);"></span>
             </span>
           </button>
           <button class="admin-sidebar-btn" id="btn-adm-std" onclick="switchAdminTab('std')">
@@ -2460,11 +2461,11 @@
         document.getElementById("admin-view").style.display = "block";
         renderAdminData();
         showToast("Berhasil masuk mode Admin");
-        
+
         if (!window.adminAutoRefreshInterval) {
-           window.adminAutoRefreshInterval = setInterval(() => {
-              if (isAdmin) fetchSyncData(true);
-           }, 60000);
+          window.adminAutoRefreshInterval = setInterval(() => {
+            if (isAdmin) fetchSyncData(true);
+          }, 60000);
         }
       } else {
         showToast("Password salah!", "error");
@@ -2499,10 +2500,10 @@
       document.getElementById("pc-nav").style.display = "";
       document.getElementById("mobile-nav").style.display = "";
       document.getElementById("admin-view").style.display = "none";
-      
+
       if (window.adminAutoRefreshInterval) {
-         clearInterval(window.adminAutoRefreshInterval);
-         window.adminAutoRefreshInterval = null;
+        clearInterval(window.adminAutoRefreshInterval);
+        window.adminAutoRefreshInterval = null;
       }
 
       if (window.location.search.includes('admin=true')) {
@@ -2761,7 +2762,7 @@
       }
     };
 
-    window.playNotificationSound = function() {
+    window.playNotificationSound = function () {
       try {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         if (!AudioContext) return;
@@ -2847,11 +2848,11 @@
             document.getElementById("admin-view").style.display = "block";
             renderAdminData();
             showToast("Berhasil masuk mode Admin");
-            
+
             if (!window.adminAutoRefreshInterval) {
-               window.adminAutoRefreshInterval = setInterval(() => {
-                  if (isAdmin) fetchSyncData(true);
-               }, 60000);
+              window.adminAutoRefreshInterval = setInterval(() => {
+                if (isAdmin) fetchSyncData(true);
+              }, 60000);
             }
           });
         }, 500); // Small delay to let UI render first
@@ -2912,21 +2913,33 @@
             </tr>
           `).join('');
         }
+
+        const resList = document.getElementById('reservasi-list');
+        if (resList) {
+          resList.innerHTML = Array(3).fill(`
+            <div class="res-card" style="padding:1.5rem; border-radius:1rem; border:1px solid var(--border-color); margin-bottom:1rem;">
+               <div class="skeleton-box" style="height:1.25rem; width:50%; margin-bottom:0.75rem; border-radius:0.5rem;"></div>
+               <div class="skeleton-box" style="height:1rem; width:80%; margin-bottom:0.5rem; border-radius:0.5rem;"></div>
+               <div class="skeleton-box" style="height:1rem; width:60%; margin-bottom:0.5rem; border-radius:0.5rem;"></div>
+               <div class="skeleton-box" style="height:1rem; width:40%; border-radius:0.5rem;"></div>
+            </div>
+          `).join('');
+        }
       }
       try {
         const res = await fetch(GAS_URL + "?action=getInit");
         if (res.ok) {
           const data = await res.json();
-          
+
           let newBookingCount = 0;
           if (isAdmin) {
-             const oldIds = new Set(bookings.map(b => b.id));
-             const incomingBookings = data.bookings || [];
-             incomingBookings.forEach(b => {
-                if (!oldIds.has(b.id)) newBookingCount++;
-             });
+            const oldIds = new Set(bookings.map(b => b.id));
+            const incomingBookings = data.bookings || [];
+            incomingBookings.forEach(b => {
+              if (!oldIds.has(b.id)) newBookingCount++;
+            });
           }
-          
+
           bookings = data.bookings || [];
           studios = data.studios || [];
           openedDates = data.openedDates || [];
@@ -2940,7 +2953,7 @@
             applySettings();
             renderStudios(); renderCalendar(); renderSchedule(); renderReservasi();
           }
-          
+
           if (isAdmin) {
             renderAdminData();
             if (newBookingCount > 0) {
@@ -3447,16 +3460,16 @@
     window.renderAdminData = function () {
       const bTable = document.getElementById('admin-bookings-table');
       if (!bTable) return;
-      
+
       const pendingCount = bookings.filter(b => !b.status || b.status === 'pending').length;
       const badge = document.getElementById('pending-badge');
       if (badge) {
-         if (pendingCount > 0) {
-            badge.textContent = pendingCount;
-            badge.style.display = 'inline-block';
-         } else {
-            badge.style.display = 'none';
-         }
+        if (pendingCount > 0) {
+          badge.textContent = pendingCount;
+          badge.style.display = 'inline-block';
+        } else {
+          badge.style.display = 'none';
+        }
       }
 
       if (bookings.length === 0) {
