@@ -1735,6 +1735,11 @@
     </nav>
   </header>
 
+  <!-- Mobile Floating Action Button for Schedule Scroll -->
+  <button id="fab-scroll-schedule" onclick="document.getElementById('schedule-container').scrollIntoView({ behavior: 'smooth', block: 'start' }); this.style.transform='translateX(-50%) translateY(100px)'; this.style.opacity='0';" style="position:fixed; bottom: calc(var(--nav-height) + 1.5rem + env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%) translateY(100px); background: var(--accent); color: #fff; border: none; border-radius: 999px; padding: 0.75rem 1.5rem; font-weight: 800; font-size: 0.875rem; box-shadow: 0 8px 16px rgba(15, 118, 110, 0.4); z-index: 90; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); opacity: 0; pointer-events: none; display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-family);">
+    Lihat Jadwal <i data-lucide="arrow-down" style="width:16px;height:16px;"></i>
+  </button>
+
   <!-- Mobile Bottom Navigation (Hidden on PC) -->
   <nav class="bottom-nav" id="mobile-nav">
     <button class="nav-item active" onclick="switchTab('studios', 'mobile')">
@@ -3157,7 +3162,24 @@
     function selectDate(y, m, d) {
       selectedDate = new Date(y, m, d);
       document.getElementById('filter-date').value = getISODateStr(selectedDate);
-      renderCalendar(); renderSchedule();
+      renderCalendar(); 
+      renderSchedule();
+      
+      if (window.innerWidth < 768) {
+        const fab = document.getElementById('fab-scroll-schedule');
+        if (fab) {
+          fab.style.transform = 'translateX(-50%) translateY(0)';
+          fab.style.opacity = '1';
+          fab.style.pointerEvents = 'auto';
+          
+          clearTimeout(window.fabTimeout);
+          window.fabTimeout = setTimeout(() => {
+             fab.style.transform = 'translateX(-50%) translateY(100px)';
+             fab.style.opacity = '0';
+             fab.style.pointerEvents = 'none';
+          }, 4000);
+        }
+      }
     }
 
     function getISODateStr(date) {
