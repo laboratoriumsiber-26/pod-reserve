@@ -3949,8 +3949,21 @@
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
-          .then(reg => console.log('PWA ServiceWorker registered', reg.scope))
+          .then(reg => {
+            console.log('PWA ServiceWorker registered', reg.scope);
+            reg.update(); // Force check for new service worker on load
+          })
           .catch(err => console.warn('PWA ServiceWorker registration failed: ', err));
+      });
+
+      // Handle seamless auto-reloads when a new service worker takes over
+      let refreshing = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!refreshing) {
+          refreshing = true;
+          showToast("Pembaruan sistem tersedia! Menyegarkan...", "info");
+          setTimeout(() => window.location.reload(), 1500);
+        }
       });
     }
   </script>
