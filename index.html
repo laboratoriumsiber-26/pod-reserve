@@ -149,6 +149,18 @@
       user-select: none;
     }
 
+    .fasilitas-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: var(--accent-dim);
+      color: var(--accent-hover);
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
     .brand-icon {
       width: 2.5rem;
       height: 2.5rem;
@@ -1752,7 +1764,9 @@
   </header>
 
   <!-- Mobile Floating Action Button for Schedule Scroll -->
-  <button id="fab-scroll-schedule" onclick="document.getElementById('schedule-container').scrollIntoView({ behavior: 'smooth', block: 'start' }); this.style.transform='translateX(-50%) translateY(100px)'; this.style.opacity='0';" style="position:fixed; bottom: calc(var(--nav-height) + 1.5rem + env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%) translateY(100px); background: var(--accent); color: #fff; border: none; border-radius: 999px; padding: 0.75rem 1.5rem; font-weight: 800; font-size: 0.875rem; box-shadow: 0 8px 16px rgba(15, 118, 110, 0.4); z-index: 90; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); opacity: 0; pointer-events: none; display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-family);">
+  <button id="fab-scroll-schedule"
+    onclick="document.getElementById('schedule-container').scrollIntoView({ behavior: 'smooth', block: 'start' }); this.style.transform='translateX(-50%) translateY(100px)'; this.style.opacity='0';"
+    style="position:fixed; bottom: calc(var(--nav-height) + 1.5rem + env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%) translateY(100px); background: var(--accent); color: #fff; border: none; border-radius: 999px; padding: 0.75rem 1.5rem; font-weight: 800; font-size: 0.875rem; box-shadow: 0 8px 16px rgba(15, 118, 110, 0.4); z-index: 90; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); opacity: 0; pointer-events: none; display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-family);">
     Lihat Jadwal <i data-lucide="arrow-down" style="width:16px;height:16px;"></i>
   </button>
 
@@ -2024,6 +2038,48 @@
   </div>
 
   <!-- CUSTOM CONFIRM MODAL -->
+  <!-- STUDIO DETAIL MODAL -->
+  <div class="custom-modal-overlay" id="studio-detail-modal">
+    <div class="custom-modal-card" style="max-width:500px; padding:0; overflow:hidden; border-radius:1.5rem;">
+      <div style="position:relative; width:100%; height:220px; background:#e2e8f0;">
+        <img id="detail-modal-img" src="" alt="Studio" style="width:100%; height:100%; object-fit:cover;">
+        <div
+          style="position:absolute; top:0; left:0; width:100%; height:100%; background:linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, transparent 50%, rgba(0,0,0,0.6) 100%);">
+        </div>
+        <button class="btn-icon" onclick="closeStudioDetailModal()"
+          style="position:absolute; top:12px; right:12px; background:rgba(255,255,255,0.2); backdrop-filter:blur(8px); color:#fff; border-radius:50%; width:36px; height:36px; display:flex; align-items:center; justify-content:center;">
+          <i data-lucide="x" style="width:20px;height:20px;"></i>
+        </button>
+        <div
+          style="position:absolute; bottom:16px; left:20px; right:20px; display:flex; justify-content:space-between; align-items:flex-end;">
+          <h3 id="detail-modal-title"
+            style="font-size:1.5rem; font-weight:800; margin:0; color:#fff; text-shadow:0 2px 4px rgba(0,0,0,0.5);">
+          </h3>
+          <span
+            style="display:flex; align-items:center; gap:0.25rem; background:rgba(255,255,255,0.9); padding:0.35rem 0.75rem; border-radius:999px; font-size:0.75rem; font-weight:800; color:var(--text-main); box-shadow:0 2px 8px rgba(0,0,0,0.2);">
+            <i data-lucide="users" style="width:14px;height:14px; color:var(--accent);"></i> <span
+              id="detail-modal-cap"></span>
+          </span>
+        </div>
+      </div>
+      <div style="padding: 1.5rem 1.5rem 2rem 1.5rem;">
+        <p id="detail-modal-desc"
+          style="color:var(--text-muted); font-size:0.95rem; margin-bottom:1.5rem; line-height:1.6;"></p>
+
+        <h4
+          style="font-size:0.95rem; font-weight:800; margin-bottom:1rem; color:var(--text-main); display:flex; align-items:center; gap:0.5rem;">
+          <i data-lucide="check-circle-2" style="width:18px;height:18px; color:var(--accent);"></i> Fasilitas Termasuk:
+        </h4>
+        <div id="detail-modal-fasilitas" style="display:flex; flex-wrap:wrap; margin-bottom:2rem; gap:0.5rem;"></div>
+
+        <button id="detail-modal-book-btn" class="btn-modal-fill" style="width:100%; padding:1rem; font-size:1rem;">
+          <i data-lucide="calendar" style="width:18px;height:18px; margin-right:0.5rem;"></i> Cek Jadwal & Pesan Studio
+          Ini
+        </button>
+      </div>
+    </div>
+  </div>
+
   <div class="custom-modal-overlay" id="confirm-modal">
     <div class="custom-modal-card">
       <div class="modal-title-row">
@@ -2197,6 +2253,45 @@
         <div class="admin-form-group">
           <label>Deskripsi Singkat</label>
           <textarea id="sf_desc" class="admin-form-input" rows="3" required></textarea>
+        </div>
+        <div class="admin-form-group" style="background: var(--bg-main); padding: 1.25rem; border-radius: 0.75rem; margin-bottom: 1.5rem; border: 1px solid var(--border-color);">
+          <label style="font-size: 1rem; color: var(--text-main); margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; display:block; font-weight:800;">Fasilitas Studio Terstruktur</label>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+            <div>
+              <label style="font-size: 0.75rem; color:var(--text-muted); font-weight:700;">Jumlah Mic</label>
+              <input type="number" id="sf_fas_mic" class="admin-form-input" placeholder="Cth: 2">
+            </div>
+            <div>
+              <label style="font-size: 0.75rem; color:var(--text-muted); font-weight:700;">Jumlah Lighting</label>
+              <input type="number" id="sf_fas_lighting" class="admin-form-input" placeholder="Cth: 2">
+            </div>
+            <div>
+              <label style="font-size: 0.75rem; color:var(--text-muted); font-weight:700;">Jumlah Kursi</label>
+              <input type="number" id="sf_fas_kursi" class="admin-form-input" placeholder="Cth: 3">
+            </div>
+            <div>
+              <label style="font-size: 0.75rem; color:var(--text-muted); font-weight:700;">Layar TV (Background)</label>
+              <select id="sf_fas_tv" class="admin-form-input">
+                <option value="Tidak Ada">Tidak Ada</option>
+                <option value="Ada">Ada</option>
+              </select>
+            </div>
+          </div>
+          
+          <div style="margin-bottom: 1rem;">
+            <label style="font-size: 0.75rem; color:var(--text-muted); font-weight:700;">Tema / Vibe Studio</label>
+            <select id="sf_fas_tema" class="admin-form-input">
+              <option value="Fleksibel">Fleksibel</option>
+              <option value="Formal">Formal</option>
+              <option value="Santai">Santai</option>
+            </select>
+          </div>
+          
+          <div>
+            <label style="font-size: 0.75rem; color:var(--text-muted); font-weight:700;">Fasilitas Tambahan (Lainnya)</label>
+            <textarea id="sf_fas_lainnya" class="admin-form-input" rows="2" placeholder="Sofa, AC, Papan Tulis, dll (pisahkan dengan koma)"></textarea>
+          </div>
         </div>
         <div class="admin-form-group">
           <label>URL Gambar atau Upload File Foto</label>
@@ -2409,7 +2504,7 @@
 
   <script>
     // Config
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbyoAfzH5roFBhjLD2Yg5gi1xOqpV0U2dokfazTSAr0r3yHcOx6e8R7E_KpAxr9J9M8/exec";
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbz-wA9SLIBmLaDVpMuYJi-ui0phoFLbI-K37CwZ3VVYSRah-uoTDNYT5isNO5ICNqm1/exec";
 
     let studios = [];
     const sessions = [
@@ -3138,7 +3233,7 @@
           <div class="studio-info">
             <h3>${s.name}</h3>
             <p>${s.desc}</p>
-            <button class="btn-book" onclick="openBookingModal('${s.id}')">
+            <button class="btn-book" onclick="openStudioDetailModal('${s.id}')">
               Lihat Detail & Pesan
             </button>
           </div>
@@ -3178,21 +3273,21 @@
     function selectDate(y, m, d) {
       selectedDate = new Date(y, m, d);
       document.getElementById('filter-date').value = getISODateStr(selectedDate);
-      renderCalendar(); 
+      renderCalendar();
       renderSchedule();
-      
+
       if (window.innerWidth < 768) {
         const fab = document.getElementById('fab-scroll-schedule');
         if (fab) {
           fab.style.transform = 'translateX(-50%) translateY(0)';
           fab.style.opacity = '1';
           fab.style.pointerEvents = 'auto';
-          
+
           clearTimeout(window.fabTimeout);
           window.fabTimeout = setTimeout(() => {
-             fab.style.transform = 'translateX(-50%) translateY(100px)';
-             fab.style.opacity = '0';
-             fab.style.pointerEvents = 'none';
+            fab.style.transform = 'translateX(-50%) translateY(100px)';
+            fab.style.opacity = '0';
+            fab.style.pointerEvents = 'none';
           }, 4000);
         }
       }
@@ -3610,6 +3705,10 @@
               <td data-label="Kapasitas" style="padding: 1rem; font-weight:700;">${s.cap} Orang</td>
               <td data-label="Gambar" style="padding: 1rem;"><img src="${getDirectImageUrl(s.img)}" style="width: 140px; height: 80px; object-fit:cover; border-radius:0.5rem; border:1px solid var(--border-color); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);" class="skeleton-box" onload="this.classList.remove('skeleton-box')" onerror="this.classList.remove('skeleton-box')"></td>
               <td data-label="Aksi" style="padding: 1rem; text-align:right;">
+                <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-bottom:0.75rem;">
+                  <button class="btn-icon" style="width:32px;height:32px;background:var(--bg-main);" onclick="adminMoveStudio('${s.id}', 'up')" title="Pindah ke Atas"><i data-lucide="arrow-up" style="width:16px;height:16px;"></i></button>
+                  <button class="btn-icon" style="width:32px;height:32px;background:var(--bg-main);" onclick="adminMoveStudio('${s.id}', 'down')" title="Pindah ke Bawah"><i data-lucide="arrow-down" style="width:16px;height:16px;"></i></button>
+                </div>
                 <button class="btn-modal-outline" style="padding:0.35rem 0.75rem; font-size:0.75rem; margin-right:0.25rem;" onclick="openStudioFormModal('edit', '${s.id}')">Edit</button>
                 <button class="btn-modal-outline" style="padding:0.35rem 0.75rem; font-size:0.75rem; color:var(--error); border-color:var(--error-dim);" onclick="adminDeleteStudio('${s.id}')">Hapus</button>
               </td>
@@ -3690,6 +3789,18 @@
           document.getElementById('sf_cap').value = s.cap;
           document.getElementById('sf_desc').value = s.desc;
           document.getElementById('sf_img').value = s.img;
+          
+          let fas = {};
+          if (s.fasilitas) {
+            try { fas = JSON.parse(s.fasilitas); }
+            catch(e) { fas.lainnya = s.fasilitas; }
+          }
+          document.getElementById('sf_fas_mic').value = fas.mic || "";
+          document.getElementById('sf_fas_lighting').value = fas.lighting || "";
+          document.getElementById('sf_fas_kursi').value = fas.kursi || "";
+          document.getElementById('sf_fas_tv').value = fas.tv || "Tidak Ada";
+          document.getElementById('sf_fas_tema').value = fas.tema || "Fleksibel";
+          document.getElementById('sf_fas_lainnya').value = fas.lainnya || "";
         }
       } else {
         document.getElementById('studio-form-title').innerText = 'Tambah Studio Baru';
@@ -3710,6 +3821,16 @@
       btn.disabled = true; btn.innerText = 'Menyimpan...';
 
       const mode = document.getElementById('sf_mode').value;
+      
+      const fasObj = {
+        mic: document.getElementById('sf_fas_mic').value,
+        lighting: document.getElementById('sf_fas_lighting').value,
+        kursi: document.getElementById('sf_fas_kursi').value,
+        tv: document.getElementById('sf_fas_tv').value,
+        tema: document.getElementById('sf_fas_tema').value,
+        lainnya: document.getElementById('sf_fas_lainnya').value
+      };
+
       const payload = {
         action: mode === 'edit' ? 'editStudio' : 'addStudio',
         studio: {
@@ -3717,6 +3838,7 @@
           name: document.getElementById('sf_name').value,
           cap: parseInt(document.getElementById('sf_cap').value),
           desc: document.getElementById('sf_desc').value,
+          fasilitas: JSON.stringify(fasObj),
           img: document.getElementById('sf_img').value // fallback to url if file upload fails
         }
       };
@@ -3773,13 +3895,15 @@
     function adminDeleteStudio(studioId) {
       openConfirmModal(
         "Hapus Studio",
-        `Apakah Anda yakin ingin menghapus studio ID ${studioId} secara permanen?`,
+        "Yakin ingin menghapus studio ini permanen? Data tidak dapat dikembalikan.",
         async () => {
-          // Optimistic
-          studios = studios.filter(s => s.id !== studioId);
-          localStorage.setItem('podreserve_v2_studios', JSON.stringify(studios));
-          renderAdminData(); renderStudios(); renderCalendar(); renderSchedule();
-          showToast("Studio berhasil dihapus");
+          showToast("Menghapus studio...");
+          const idx = studios.findIndex(s => s.id === studioId);
+          if (idx !== -1) {
+            studios.splice(idx, 1);
+            localStorage.setItem('podreserve_v2_studios', JSON.stringify(studios));
+            renderAdminData(); renderStudios(); renderCalendar(); renderSchedule();
+          }
 
           try {
             await fetch(GAS_URL, {
@@ -3787,12 +3911,99 @@
               headers: { 'Content-Type': 'text/plain;charset=utf-8' },
               body: JSON.stringify({ action: 'deleteStudio', id: studioId })
             });
+            showToast("Studio berhasil dihapus");
           } catch (err) {
-            console.warn("GAS delete studio error", err);
+            showToast("Sinkronisasi gagal", "error");
           }
         },
         true
       );
+    }
+
+    async function adminMoveStudio(studioId, dir) {
+      const idx = studios.findIndex(s => s.id === studioId);
+      if (idx === -1) return;
+
+      if (dir === 'up' && idx > 0) {
+        const temp = studios[idx];
+        studios[idx] = studios[idx - 1];
+        studios[idx - 1] = temp;
+      } else if (dir === 'down' && idx < studios.length - 1) {
+        const temp = studios[idx];
+        studios[idx] = studios[idx + 1];
+        studios[idx + 1] = temp;
+      } else {
+        return; // Cannot move further
+      }
+
+      // Optimistic update
+      renderAdminData();
+      renderStudios();
+      localStorage.setItem('podreserve_v2_studios', JSON.stringify(studios));
+
+      try {
+        await fetch(GAS_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'moveStudio', id: studioId, dir: dir })
+        });
+      } catch (e) {
+        console.warn("Gagal sinkronisasi urutan", e);
+      }
+    }
+
+    window.openStudioDetailModal = function (id) {
+      const s = studios.find(x => x.id === id);
+      if (!s) return;
+      document.getElementById('detail-modal-img').src = getDirectImageUrl(s.img);
+      document.getElementById('detail-modal-title').innerText = s.name;
+      document.getElementById('detail-modal-desc').innerText = s.desc;
+      document.getElementById('detail-modal-cap').innerText = s.cap + ' Orang';
+
+      let fasHtml = '';
+      if (s.fasilitas) {
+        try {
+          const fas = JSON.parse(s.fasilitas);
+          if (fas.mic) fasHtml += `<span class="fasilitas-badge"><i data-lucide="mic" style="width:14px;height:14px;"></i> ${fas.mic} Mic</span>`;
+          if (fas.lighting) fasHtml += `<span class="fasilitas-badge"><i data-lucide="lightbulb" style="width:14px;height:14px;"></i> ${fas.lighting} Lighting</span>`;
+          if (fas.kursi) fasHtml += `<span class="fasilitas-badge"><i data-lucide="check-circle-2" style="width:14px;height:14px;"></i> ${fas.kursi} Tempat Duduk</span>`;
+          if (fas.tv && fas.tv === "Ada") fasHtml += `<span class="fasilitas-badge"><i data-lucide="tv" style="width:14px;height:14px;"></i> Layar TV</span>`;
+          if (fas.tema) fasHtml += `<span class="fasilitas-badge"><i data-lucide="palette" style="width:14px;height:14px;"></i> Vibe: ${fas.tema}</span>`;
+          
+          if (fas.lainnya) {
+            const items = fas.lainnya.split(',').map(x => x.trim()).filter(x => x);
+            fasHtml += items.map(x => `<span class="fasilitas-badge"><i data-lucide="check-circle-2" style="width:14px;height:14px;"></i> ${x}</span>`).join('');
+          }
+        } catch(e) {
+          // Fallback if not JSON
+          const items = s.fasilitas.split(',').map(x => x.trim()).filter(x => x);
+          fasHtml = items.map(x => `<span class="fasilitas-badge"><i data-lucide="check-circle-2" style="width:14px;height:14px;"></i> ${x}</span>`).join('');
+        }
+      }
+      if (!fasHtml) {
+        fasHtml = '<span style="color:var(--text-muted);font-size:0.875rem;font-style:italic;">Belum ada data fasilitas tambahan.</span>';
+      }
+      document.getElementById('detail-modal-fasilitas').innerHTML = fasHtml;
+
+      document.getElementById('detail-modal-book-btn').onclick = function () {
+        closeStudioDetailModal();
+        switchTab('availability');
+        setTimeout(() => {
+          const scheduleSec = document.getElementById('schedule-section');
+          if (scheduleSec) {
+            scheduleSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 100);
+      };
+
+      document.getElementById('studio-detail-modal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+      lucide.createIcons();
+    }
+
+    window.closeStudioDetailModal = function () {
+      document.getElementById('studio-detail-modal').classList.remove('active');
+      document.body.style.overflow = '';
     }
 
     // --- OPENED DATES (WHITELIST) LOGIC ---
