@@ -772,6 +772,63 @@
       gap: 0.75rem;
     }
 
+    /* GOJEK-STYLE STUDIO SLIDER */
+    .studio-slider {
+      display: flex;
+      gap: 1.25rem;
+      overflow-x: auto;
+      padding: 0.5rem 1rem 1.5rem 1rem;
+      margin: 0 -1rem;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE/Edge */
+    }
+    .studio-slider::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+    }
+    .studio-circle-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      min-width: 76px;
+      transition: transform 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .studio-circle-item:active {
+      transform: scale(0.95);
+    }
+    .studio-circle-img {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid transparent;
+      padding: 2px;
+      background-clip: content-box;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: all 0.2s;
+    }
+    .studio-circle-item.active .studio-circle-img {
+      border-color: var(--accent);
+      box-shadow: 0 6px 16px rgba(15, 118, 110, 0.2);
+    }
+    .studio-circle-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 80px;
+      transition: color 0.2s;
+    }
+    .studio-circle-item.active .studio-circle-label {
+      color: var(--accent);
+      font-weight: 800;
+    }
+
     @media(min-width: 480px) {
       .slots-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -3318,6 +3375,13 @@
       }
     };
 
+    let selectedScheduleStudioId = null;
+
+    window.selectScheduleStudio = function(studioId) {
+      selectedScheduleStudioId = studioId;
+      renderSchedule();
+    };
+
     function renderSchedule() {
       const dateStr = getISODateStr(selectedDate);
       const isOpened = openedDates.some(o => o.date === dateStr);
@@ -3350,11 +3414,29 @@
 
       document.getElementById('schedule-date-title').innerText = `Jadwal: ${selectedDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}`;
 
-      container.innerHTML = studios.map((studio, index) => {
-        let slotsHtml = sessions.map(slot => {
-          const booking = bookings.find(b => b.studio_id == studio.id && b.date == dateStr && b.start_time == slot.start);
+      // Default active studio if not set or invalid
+      if (!selectedScheduleStudioId || !studios.some(s => s.id === selectedScheduleStudioId)) {
+        selectedScheduleStudioId = studios[0].id;
+      }
+
+      const activeStudio = studios.find(s => s.id === selectedScheduleStudioId);
+
+      let sliderHtml = `
+        <div class="studio-slider">
+          ${studios.map(s => `
+            <div class="studio-circle-item ${s.id === selectedScheduleStudioId ? 'active' : ''}" onclick="selectScheduleStudio('${s.id}')">
+              <img src="${getDirectImageUrl(s.img)}" class="studio-circle-img skeleton-box" onload="this.classList.remove('skeleton-box')" onerror="this.classList.remove('skeleton-box')">
+              <span class="studio-circle-label">${s.name}</span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+
+      let slotsHtml = '';
+      if (activeStudio) {
+        slotsHtml = sessions.map(slot => {
+          const booking = bookings.find(b => b.studio_id == activeStudio.id && b.date == dateStr && b.start_time == slot.start);
           if (booking) {
-            // Jika sudah ada booking di sistem (baik pending/approved), slot dikunci (merah/kuning). Tidak bisa diklik.
             const isConfirmed = booking.status === 'approved';
             return `
             <div class="slot-item ${isConfirmed ? 'confirmed' : 'pending'}">
@@ -3362,31 +3444,24 @@
               <span style="font-size:10px;text-transform:uppercase;font-weight:800;letter-spacing:0.05em;">${isConfirmed ? 'Booked' : 'Pending'}</span>
             </div>`;
           }
-          // Jika kosong, bisa diklik dengan icon calendar-plus
           return `
-          <div class="slot-item available" onclick="openBookingModal('${studio.id}', '${slot.start}')">
+          <div class="slot-item available" onclick="openBookingModal('${activeStudio.id}', '${slot.start}')">
             <span style="display:flex;align-items:center;gap:0.5rem;"><i data-lucide="clock" style="width:14px;height:14px;color:var(--text-muted)"></i> ${slot.start} - ${slot.end}</span>
             <i data-lucide="calendar-plus" style="width:16px;height:16px;color:var(--text-main);"></i>
           </div>`;
         }).join('');
+      }
 
-        // Buka accordion pertama secara default agar user tahu cara kerjanya
-        const isOpen = index === 0;
-
-        return `
-        <div class="schedule-studio">
-          <div class="studio-header" onclick="toggleAccordion('${studio.id}')">
-            <div class="studio-title">
-              <i data-lucide="mic-2" style="width:20px;height:20px;color:var(--text-main);"></i>
-              <span>${studio.name}</span>
-            </div>
-            <i data-lucide="chevron-down" id="icon-${studio.id}" class="studio-chevron" style="transform: ${isOpen ? 'rotate(180deg)' : 'rotate(0deg)'}"></i>
-          </div>
-          <div class="slots-wrapper ${isOpen ? 'open' : ''}" id="slots-${studio.id}">
-            <div class="slots-grid">${slotsHtml}</div>
-          </div>
-        </div>`;
-      }).join('');
+      container.innerHTML = `
+        ${sliderHtml}
+        <div style="background:var(--bg-panel); border-radius:1rem; padding:1.5rem; border:1px solid var(--border-color); margin-bottom:2rem;">
+          <h3 style="font-size:1.125rem; font-weight:800; margin-bottom:0.25rem; color:var(--text-main); display:flex; align-items:center; gap:0.5rem;">
+            <i data-lucide="mic-2" style="width:20px;height:20px;color:var(--accent);"></i> ${activeStudio ? activeStudio.name : ''}
+          </h3>
+          <p style="font-size:0.875rem; color:var(--text-muted); margin-bottom:1.25rem;">Sesi pemesanan yang tersedia untuk tanggal terpilih.</p>
+          <div class="slots-grid">${slotsHtml}</div>
+        </div>
+      `;
       lucide.createIcons();
     }
 
