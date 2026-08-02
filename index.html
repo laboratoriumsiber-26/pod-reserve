@@ -62,6 +62,11 @@
         -ms-overflow-style: none;
         scrollbar-width: none;
       }
+
+      html {
+        font-size: 93.75%;
+        /* 15px base on mobile to slightly reduce all rem-based sizes */
+      }
     }
 
     @media (min-width: 768px) {
@@ -271,7 +276,7 @@
     }
 
     .hero-title {
-      font-size: 2.25rem;
+      font-size: clamp(1.75rem, 5vw, 2.25rem);
       margin-bottom: 1rem;
       line-height: 1.2;
       letter-spacing: -0.03em;
@@ -1255,6 +1260,10 @@
       color: var(--text-main);
       cursor: pointer;
       transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
     }
 
     .btn-modal-outline:hover {
@@ -1272,6 +1281,10 @@
       cursor: pointer;
       transition: all 0.2s;
       box-shadow: 0 4px 14px rgba(15, 118, 110, 0.3);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
     }
 
     .btn-modal-fill:hover {
@@ -1398,6 +1411,57 @@
     .admin-sidebar-footer {
       padding: 1.5rem 1rem;
       border-top: 1px solid var(--border-color);
+    }
+
+    @media (max-width: 767px) {
+      html {
+        font-size: 14px;
+      }
+    }
+
+    @media screen {
+      #print-area { display: none; }
+    }
+    
+    @media print {
+      body > *:not(#print-area) {
+        display: none !important;
+      }
+      body {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff !important;
+      }
+      #print-area {
+        display: block !important;
+        width: 100%;
+      }
+      #print-area table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: sans-serif;
+        font-size: 10pt;
+        page-break-inside: auto;
+      }
+      #print-area tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+      }
+      #print-area th, #print-area td {
+        border: 1px solid #000;
+        padding: 8px;
+        text-align: left;
+        vertical-align: top;
+      }
+      #print-area th {
+        background-color: #f3f4f6 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      @page {
+        size: landscape;
+        margin: 15mm;
+      }
     }
 
     @media (max-width: 1024px) {
@@ -1621,11 +1685,17 @@
         background-position: 200% 0;
       }
     }
+    
+    @media print {
+      body > *:not(#print-area) { display: none !important; }
+      #print-area { display: block !important; }
+    }
   </style>
 </head>
 
 <body>
-
+  <div id="print-area"></div>
+  
   <!-- App Header -->
   <header class="app-header">
     <div class="brand" onclick="handleSecretKnock()">
@@ -1673,7 +1743,8 @@
       <div class="hero-section">
         <div class="hero-content">
           <h1 class="hero-title">Eksplorasi & Reservasi SiberStudio</h1>
-          <p class="hero-subtitle">Fasilitas podcast dan rekaman profesional di lingkungan UIN Siber Syekh Nurjati Cirebon.</p>
+          <p class="hero-subtitle">Fasilitas podcast dan rekaman profesional di lingkungan UIN Siber Syekh Nurjati
+            Cirebon.</p>
         </div>
         <div class="hero-slider-dots" id="hero-dots"></div>
       </div>
@@ -1686,8 +1757,12 @@
           <div style="flex-grow: 1; width: 100%;">
             <label>Cek Status Tiket</label>
             <div style="display:flex; gap:0.5rem; align-items:center;">
-              <input type="text" id="front-ticket-input" placeholder="Kode (Misal: B-1234)" style="width: 100%; border: 1px solid var(--border-color); border-radius: 0.5rem; padding: 0.4rem 0.75rem; outline: none; font-family: var(--font-family); font-size: 0.875rem; background: var(--bg-main); color: var(--text-main); transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border-color)'" onkeydown="if(event.key === 'Enter') checkFrontTicket()">
-              <button onclick="checkFrontTicket()" style="padding: 0.35rem 0.75rem; font-size: 0.75rem; font-weight:800; border-radius: 0.5rem; border:none; background: var(--accent); color: white; cursor: pointer; white-space:nowrap; transition: background 0.2s;">Cek</button>
+              <input type="text" id="front-ticket-input" placeholder="Kode (Misal: B-1234)"
+                style="width: 100%; border: 1px solid var(--border-color); border-radius: 0.5rem; padding: 0.4rem 0.75rem; outline: none; font-family: var(--font-family); font-size: 0.875rem; background: var(--bg-main); color: var(--text-main); transition: border-color 0.2s;"
+                onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border-color)'"
+                onkeydown="if(event.key === 'Enter') checkFrontTicket()">
+              <button onclick="checkFrontTicket()"
+                style="padding: 0.35rem 0.75rem; font-size: 0.75rem; font-weight:800; border-radius: 0.5rem; border:none; background: var(--accent); color: white; cursor: pointer; white-space:nowrap; transition: background 0.2s;">Cek</button>
             </div>
           </div>
         </div>
@@ -1697,14 +1772,16 @@
           <i data-lucide="calendar-days"></i>
           <div style="width: 100%;">
             <label>Check-in Jadwal</label>
-            <input type="date" id="filter-date" style="width:100%; border:none; outline:none; font-family:var(--font-family); font-size:0.875rem; background:transparent;">
+            <input type="date" id="filter-date"
+              style="width:100%; border:none; outline:none; font-family:var(--font-family); font-size:0.875rem; background:transparent;">
           </div>
         </div>
         <div class="search-input">
           <i data-lucide="users"></i>
           <div style="width: 100%;">
             <label>Kategori Pengguna</label>
-            <select id="filter-category" style="width:100%; border:none; outline:none; font-family:var(--font-family); font-size:0.875rem; background:transparent;">
+            <select id="filter-category"
+              style="width:100%; border:none; outline:none; font-family:var(--font-family); font-size:0.875rem; background:transparent;">
               <option value="">Semua Kategori</option>
               <option value="Mahasiswa">Mahasiswa</option>
               <option value="Dosen">Dosen</option>
@@ -1714,7 +1791,8 @@
             </select>
           </div>
         </div>
-        <button class="btn-search" onclick="switchTab('availability')">Cari Jadwal <i data-lucide="arrow-right" style="width:18px;height:18px;"></i></button>
+        <button class="btn-search" onclick="switchTab('availability')">Cari Jadwal <i data-lucide="arrow-right"
+            style="width:18px;height:18px;"></i></button>
       </div>
 
       <div class="content-wrapper">
@@ -1864,6 +1942,32 @@
     </div>
   </div>
 
+  <div class="modal-overlay" id="edit-booking-modal">
+    <div class="modal-content" style="max-width: 400px;">
+      <h3 style="margin-top:0; color:var(--text-color); font-weight:800;">Ubah Jadwal / Studio</h3>
+      <p style="font-size:0.875rem; color:var(--text-muted); margin-bottom:1.5rem;">Pindahkan reservasi ini ke studio
+        atau sesi waktu yang berbeda.</p>
+
+      <div class="admin-form-group">
+        <label>Pilih Studio Baru</label>
+        <select id="edit-b-studio" class="admin-form-input"></select>
+      </div>
+      <div class="admin-form-group">
+        <label>Tanggal</label>
+        <input type="date" id="edit-b-date" class="admin-form-input">
+      </div>
+      <div class="admin-form-group">
+        <label>Pilih Sesi</label>
+        <select id="edit-b-session" class="admin-form-input"></select>
+      </div>
+
+      <div style="display:flex; gap:1rem; margin-top:2rem;">
+        <button class="btn-modal-outline" style="flex:1;" onclick="closeEditBookingModal()">Batal</button>
+        <button class="btn-modal-fill" style="flex:1;" onclick="submitEditBooking()">Simpan Perubahan</button>
+      </div>
+    </div>
+  </div>
+
   <div class="toast" id="toast">
     <i data-lucide="check-circle-2" id="toast-icon"></i>
     <span id="toast-msg">Success</span>
@@ -1926,7 +2030,8 @@
       </div>
       <div class="modal-actions">
         <button class="btn-modal-outline" onclick="closeWAPromptModal()">Batal</button>
-        <button class="btn-modal-fill" style="background:#25D366; color:#fff;" onclick="submitWAPromptModal()">Simpan</button>
+        <button class="btn-modal-fill" style="background:#25D366; color:#fff;"
+          onclick="submitWAPromptModal()">Simpan</button>
       </div>
     </div>
   </div>
@@ -1934,7 +2039,8 @@
   <!-- WELCOME MODAL -->
   <div class="custom-modal-overlay" id="welcome-modal">
     <div class="custom-modal-card" style="text-align:center; max-width:400px;">
-      <div style="width:4rem; height:4rem; border-radius:1rem; background:var(--accent-dim); color:var(--accent); display:flex; align-items:center; justify-content:center; margin:0 auto 1.5rem auto;">
+      <div
+        style="width:4rem; height:4rem; border-radius:1rem; background:var(--accent-dim); color:var(--accent); display:flex; align-items:center; justify-content:center; margin:0 auto 1.5rem auto;">
         <i data-lucide="mic" style="width:2rem; height:2rem;"></i>
       </div>
       <h3 style="font-weight:800; font-size:1.5rem; margin-bottom:0.5rem; color:var(--text-main);">Selamat Datang</h3>
@@ -1942,8 +2048,11 @@
         Platform Reservasi SiberStudio. Apakah Anda ingin membuat reservasi baru atau mengecek status reservasi?
       </p>
       <div style="display:flex; flex-direction:column; gap:0.75rem;">
-        <button class="btn-modal-fill" style="width:100%; padding:1rem; border-radius:1rem; font-size:1rem;" onclick="closeWelcomeModal()">Saya Mau Reservasi Baru</button>
-        <button class="btn-modal-outline" style="width:100%; padding:1rem; border-radius:1rem; font-size:1rem; border-color:var(--accent); color:var(--accent);" onclick="openCheckTicketModal()">Cek Status Tiket Saya</button>
+        <button class="btn-modal-fill" style="width:100%; padding:1rem; border-radius:1rem; font-size:1rem;"
+          onclick="closeWelcomeModal()">Saya Mau Reservasi Baru</button>
+        <button class="btn-modal-outline"
+          style="width:100%; padding:1rem; border-radius:1rem; font-size:1rem; border-color:var(--accent); color:var(--accent);"
+          onclick="openCheckTicketModal()">Cek Status Tiket Saya</button>
       </div>
     </div>
   </div>
@@ -1952,16 +2061,20 @@
   <div class="custom-modal-overlay" id="check-ticket-modal">
     <div class="custom-modal-card" style="max-width:400px;">
       <div class="modal-title-row">
-        <div style="width:2.5rem;height:2.5rem;border-radius:0.5rem;background:var(--accent-dim);color:var(--accent);display:flex;align-items:center;justify-content:center;">
+        <div
+          style="width:2.5rem;height:2.5rem;border-radius:0.5rem;background:var(--accent-dim);color:var(--accent);display:flex;align-items:center;justify-content:center;">
           <i data-lucide="ticket"></i>
         </div>
         <h3>Cek Tiket Reservasi</h3>
       </div>
       <p class="modal-desc">Masukkan ID Reservasi / Kode Tiket Anda (contoh: B-1234).</p>
       <div class="admin-form-group">
-        <input type="text" id="check-ticket-input" class="admin-form-input" placeholder="B-..." onkeypress="if(event.key==='Enter') submitCheckTicket()">
+        <input type="text" id="check-ticket-input" class="admin-form-input" placeholder="B-..."
+          onkeypress="if(event.key==='Enter') submitCheckTicket()">
       </div>
-      <div id="check-ticket-result" style="margin-top:1rem; display:none; padding:1rem; border-radius:0.75rem; background:var(--bg-main); font-size:0.875rem;"></div>
+      <div id="check-ticket-result"
+        style="margin-top:1rem; display:none; padding:1rem; border-radius:0.75rem; background:var(--bg-main); font-size:0.875rem;">
+      </div>
       <div class="modal-actions" style="margin-top:1.5rem;">
         <button class="btn-modal-outline" onclick="closeCheckTicketModal()">Tutup</button>
         <button class="btn-modal-fill" onclick="submitCheckTicket()">Cari Tiket</button>
@@ -1972,25 +2085,36 @@
   <!-- TICKET INTERCEPT MODAL -->
   <div class="custom-modal-overlay" id="ticket-intercept-modal">
     <div class="custom-modal-card" style="text-align:center; max-width:400px;">
-      <div style="width:4rem; height:4rem; border-radius:50%; background:#10b98122; color:#10b981; display:flex; align-items:center; justify-content:center; margin:0 auto 1.5rem auto;">
+      <div
+        style="width:4rem; height:4rem; border-radius:50%; background:#10b98122; color:#10b981; display:flex; align-items:center; justify-content:center; margin:0 auto 1.5rem auto;">
         <i data-lucide="check-circle-2" style="width:2rem; height:2rem;"></i>
       </div>
-      <h3 style="font-weight:800; font-size:1.25rem; margin-bottom:0.5rem; color:var(--text-main);">Reservasi Tercatat!</h3>
+      <h3 style="font-weight:800; font-size:1.25rem; margin-bottom:0.5rem; color:var(--text-main);">Reservasi Tercatat!
+      </h3>
       <p style="color:var(--text-muted); font-size:0.875rem; margin-bottom:1.5rem; line-height:1.5;">
-        Sistem telah menyimpan permohonan Anda. Berikut adalah Kode Tiket Anda. <strong>Harap simpan kode ini</strong> untuk mengecek status reservasi nanti.
+        Sistem telah menyimpan permohonan Anda. Berikut adalah Kode Tiket Anda. <strong>Harap simpan kode ini</strong>
+        untuk mengecek status reservasi nanti.
       </p>
-      
-      <div style="background:var(--bg-main); border:1px dashed var(--border-color); border-radius:1rem; padding:1.5rem; margin-bottom:1.5rem; display:flex; flex-direction:column; align-items:center; gap:0.5rem;">
-        <span style="font-size:0.75rem; color:var(--text-muted); font-weight:700; text-transform:uppercase; letter-spacing:0.1em;">KODE TIKET ANDA</span>
-        <div style="font-size:2rem; font-weight:800; color:var(--accent); letter-spacing:0.05em;" id="intercept-ticket-code">B-XXXX</div>
-        <button class="btn-modal-outline" style="padding:0.25rem 0.75rem; font-size:0.75rem; margin-top:0.5rem;" onclick="copyInterceptTicket()"><i data-lucide="copy" style="width:14px;height:14px;margin-right:4px;"></i> Salin Kode</button>
+
+      <div
+        style="background:var(--bg-main); border:1px dashed var(--border-color); border-radius:1rem; padding:1.5rem; margin-bottom:1.5rem; display:flex; flex-direction:column; align-items:center; gap:0.5rem;">
+        <span
+          style="font-size:0.75rem; color:var(--text-muted); font-weight:700; text-transform:uppercase; letter-spacing:0.1em;">KODE
+          TIKET ANDA</span>
+        <div style="font-size:2rem; font-weight:800; color:var(--accent); letter-spacing:0.05em;"
+          id="intercept-ticket-code">B-XXXX</div>
+        <button class="btn-modal-outline" style="padding:0.25rem 0.75rem; font-size:0.75rem; margin-top:0.5rem;"
+          onclick="copyInterceptTicket()"><i data-lucide="copy" style="width:14px;height:14px;margin-right:4px;"></i>
+          Salin Kode</button>
       </div>
 
       <p style="color:var(--text-muted); font-size:0.875rem; margin-bottom:1.5rem; line-height:1.5;">
         Langkah terakhir: Kirim format pesan konfirmasi beserta dokumen pendukung ke WhatsApp Kepala Lab Siber.
       </p>
 
-      <button class="btn-modal-fill" style="width:100%; padding:1rem; border-radius:1rem; font-size:1rem; background:#25D366; display:flex; align-items:center; justify-content:center; gap:0.5rem; transition:transform 0.2s; box-shadow:0 4px 6px rgba(37,211,102,0.3);" onclick="continueToWhatsApp()">
+      <button class="btn-modal-fill"
+        style="width:100%; padding:1rem; border-radius:1rem; font-size:1rem; background:#25D366; display:flex; align-items:center; justify-content:center; gap:0.5rem; transition:transform 0.2s; box-shadow:0 4px 6px rgba(37,211,102,0.3);"
+        onclick="continueToWhatsApp()">
         <i data-lucide="send" style="width:18px;height:18px;"></i> Lanjut ke WhatsApp
       </button>
     </div>
@@ -2074,28 +2198,39 @@
       <!-- Main Content -->
       <main class="admin-main-content">
         <div
-          style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 2rem; padding: 0 0.5rem;">
+          style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 2rem; padding: 0 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
           <h2 class="section-title" style="margin-bottom:0;" id="admin-page-title">Kelola Reservasi</h2>
-          <button class="btn-modal-outline"
-            style="padding:0.5rem 1rem; border-color:var(--error-dim); color:var(--error); font-size:0.75rem;"
-            onclick="exitAdminMode()" id="mobile-admin-exit">Keluar</button>
+          <div style="display:flex; gap: 0.5rem;">
+            <button class="btn-modal-outline"
+              style="padding:0.5rem 1rem; color:var(--accent); font-size:0.75rem; display:flex; align-items:center; gap:0.25rem;"
+              onclick="adminRefreshData()" id="admin-refresh-btn"><i data-lucide="refresh-cw"
+                style="width:14px;height:14px;"></i> Refresh</button>
+            <button class="btn-modal-outline"
+              style="padding:0.5rem 1rem; border-color:var(--error-dim); color:var(--error); font-size:0.75rem;"
+              onclick="exitAdminMode()" id="mobile-admin-exit">Keluar</button>
+          </div>
         </div>
 
         <div id="adm-book" style="display:block;">
+          <div style="margin-bottom: 1rem; display:flex; justify-content:flex-end;">
+            <button class="btn-modal-fill" style="background:var(--accent); color:#fff;" onclick="printAdminReport()">
+              <i data-lucide="printer" style="width:16px;height:16px;margin-right:0.5rem;"></i> Download Laporan (PDF)
+            </button>
+          </div>
           <div class="admin-table-container">
             <table class="admin-table">
               <thead>
                 <tr>
                   <th>ID / Waktu</th>
                   <th>Pemesan</th>
-                  <th>Kontak</th>
-                  <th>Fasilitas</th>
-                  <th>Surat</th>
-                  <th>Status</th>
-                  <th>Aksi</th>
+                  <th>Kontak & Fasilitas</th>
+                  <th>Surat / Tujuan</th>
+                  <th>Status & Aksi</th>
                 </tr>
               </thead>
-              <tbody id="admin-bookings-table"></tbody>
+              <tbody id="admin-bookings-table">
+                <!-- Data here -->
+              </tbody>
             </table>
           </div>
         </div>
@@ -2219,7 +2354,7 @@
 
   <script>
     // Config
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbxXxyZRIctgP9c6-YvD4QB83aT1Z7To-6zXchd1ysafIwkrsCLZzO_vSASd8eEtiNLV/exec";
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbyoAfzH5roFBhjLD2Yg5gi1xOqpV0U2dokfazTSAr0r3yHcOx6e8R7E_KpAxr9J9M8/exec";
 
     let studios = [];
     const sessions = [
@@ -2243,7 +2378,11 @@
     let secretKnocks = 0;
     let knockTimeout;
     let heroSliderInterval = null;
+    let pendingWaPayload = null;
+    let pendingWaPromise = null;
+    let pendingWaStudio = null;
     let currentHeroIndex = 0;
+    let currentWaBookingId = null;
 
     // MODAL STATE & HELPERS
     let confirmCallback = null;
@@ -2323,9 +2462,9 @@
       showToast("Berhasil keluar dari mode Admin");
     }
 
-    window.continueToWhatsApp = async function() {
+    window.continueToWhatsApp = async function () {
       document.getElementById('ticket-intercept-modal').classList.remove('active');
-      
+
       const payload = pendingWaPayload;
       const studio = pendingWaStudio;
       if (!payload) return;
@@ -2385,7 +2524,7 @@
 
         if (waWindow) waWindow.location.href = waUrl;
         else window.location.href = waUrl;
-        
+
       } catch (e) {
         // Fallback
         const waText = `Yth. Kepala Pusat Laboratorium Siber,%0A%0ASehubungan dengan keperluan penggunaan fasilitas studio, saya bermaksud untuk mengajukan permohonan reservasi dengan rincian sebagai berikut:%0A%0A*ID Reservasi:* ${payload.id}%0A*Nama:* ${payload.student_name}%0A*Identitas (NIM/NIP):* ${payload.student_id}%0A*Kategori:* ${payload.user_category}%0A*Instansi/Unit:* ${payload.organization}%0A*Kontak WA:* ${payload.phone_number}%0A%0A*Fasilitas Studio:* ${studio.name}%0A*Tanggal:* ${payload.date}%0A*Waktu (Sesi):* ${payload.start_time} - ${payload.end_time}%0A*Tujuan Penggunaan:* ${payload.purpose}%0A%0A*Tautan Dokumen Surat:* [Gagal Terlampir Otomatis]%0A%0ABesar harapan saya agar permohonan ini dapat ditindaklanjuti. Atas perhatian dan kebijaksanaan Bapak/Ibu, saya ucapkan terima kasih.`;
@@ -2393,21 +2532,21 @@
         if (waWindow) waWindow.location.href = waUrl;
         else window.location.href = waUrl;
       }
-      
+
       showToast("Permohonan Berhasil Dikirim!");
     };
 
-    window.copyInterceptTicket = function() {
+    window.copyInterceptTicket = function () {
       const code = document.getElementById('intercept-ticket-code').innerText;
       navigator.clipboard.writeText(code);
       showToast("Kode Tiket disalin!");
     };
 
-    window.closeWelcomeModal = function() {
+    window.closeWelcomeModal = function () {
       document.getElementById('welcome-modal').classList.remove('active');
     };
 
-    window.openCheckTicketModal = function() {
+    window.openCheckTicketModal = function () {
       closeWelcomeModal();
       document.getElementById('check-ticket-input').value = '';
       document.getElementById('check-ticket-result').style.display = 'none';
@@ -2415,13 +2554,127 @@
       setTimeout(() => document.getElementById('check-ticket-input').focus(), 100);
     };
 
-    window.closeCheckTicketModal = function() {
+    window.closeCheckTicketModal = function () {
       document.getElementById('check-ticket-modal').classList.remove('active');
     };
 
-    window.checkFrontTicket = function() {
+    window.printAdminReport = function () {
+      let html = `
+        <h2 style="text-align:center; font-family:sans-serif;">Rekap Reservasi Studio</h2>
+        <p style="text-align:center; font-family:sans-serif; margin-bottom:20px;">Waktu Cetak: ${new Date().toLocaleString('id-ID')}</p>
+        <table>
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>ID Booking</th>
+              <th>Waktu Sewa</th>
+              <th>Nama / Instansi</th>
+              <th>Kontak</th>
+              <th>Fasilitas</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+      
+      bookings.forEach((b, idx) => {
+        const statusText = b.status === 'approved' ? 'DISETUJUI' : b.status === 'rejected' ? 'DITOLAK' : 'PENDING';
+        html += `
+          <tr>
+            <td>${idx + 1}</td>
+            <td><strong>${b.id}</strong></td>
+            <td>${b.date}<br>${b.start_time} - ${b.end_time}</td>
+            <td>${b.student_name}<br><em>${b.nim_nip}</em></td>
+            <td>${b.phone_number}</td>
+            <td>${b.studio_id}</td>
+            <td>${statusText}</td>
+          </tr>
+        `;
+      });
+      
+      html += `</tbody></table>`;
+      document.getElementById('print-area').innerHTML = html;
+      window.print();
+    };
+
+    window.adminPromptEditBooking = function (id) {
+      const b = bookings.find(x => x.id === id);
+      if (!b) return;
+      currentWaBookingId = id; // reuse var
+
+      const stSelect = document.getElementById('edit-b-studio');
+      stSelect.innerHTML = studios.map(s => `<option value="${s.id}" ${s.id === b.studio_id ? 'selected' : ''}>${s.name}</option>`).join('');
+
+      const seSelect = document.getElementById('edit-b-session');
+      seSelect.innerHTML = sessions.map(s => `<option value="${s.id}" ${s.start === b.start_time ? 'selected' : ''}>${s.name} (${s.start} - ${s.end})</option>`).join('');
+
+      document.getElementById('edit-b-date').value = b.date;
+      document.getElementById('edit-booking-modal').classList.add('active');
+    };
+
+    window.closeEditBookingModal = function () {
+      document.getElementById('edit-booking-modal').classList.remove('active');
+      currentWaBookingId = null;
+    };
+
+    window.submitEditBooking = async function () {
+      const studioId = document.getElementById('edit-b-studio').value;
+      const date = document.getElementById('edit-b-date').value;
+      const sessionId = document.getElementById('edit-b-session').value;
+
+      if (!studioId || !date || !sessionId) { showToast("Lengkapi semua data jadwal", "error"); return; }
+
+      const sess = sessions.find(s => s.id == sessionId);
+      const bookingId = currentWaBookingId;
+      closeEditBookingModal();
+
+      try {
+        showToast("Menyimpan jadwal baru...");
+        const payload = {
+          action: 'editBookingSchedule',
+          id: bookingId,
+          studio_id: studioId,
+          date: date,
+          start_time: sess.start,
+          end_time: sess.end
+        };
+        const res = await fetch(GAS_URL, { method: "POST", body: JSON.stringify(payload) });
+        const data = await res.json();
+        if (data.result === 'success') {
+          const bIndex = bookings.findIndex(b => b.id === bookingId);
+          if (bIndex > -1) {
+            bookings[bIndex].studio_id = studioId;
+            bookings[bIndex].date = date;
+            bookings[bIndex].start_time = sess.start;
+            bookings[bIndex].end_time = sess.end;
+            localStorage.setItem('podreserve_v2_bookings', JSON.stringify(bookings));
+          }
+          renderAdminData();
+          showToast("Jadwal berhasil diubah!");
+        } else throw new Error(data.message || "Gagal update");
+      } catch (e) { showToast(e.message || "Gagal menyimpan jadwal", "error"); }
+    };
+
+    window.adminPromptDeleteBooking = async function (id) {
+      if (!confirm("Yakin ingin menghapus riwayat reservasi ini secara permanen?")) return;
+
+      try {
+        showToast("Menghapus reservasi...");
+        const payload = { action: 'deleteBooking', id: id };
+        const res = await fetch(GAS_URL, { method: "POST", body: JSON.stringify(payload) });
+        const data = await res.json();
+        if (data.result === 'success') {
+          bookings = bookings.filter(b => b.id !== id);
+          localStorage.setItem('podreserve_v2_bookings', JSON.stringify(bookings));
+          renderAdminData();
+          showToast("Reservasi berhasil dihapus!");
+        } else throw new Error(data.message || "Gagal menghapus");
+      } catch (e) { showToast(e.message || "Gagal menghapus", "error"); }
+    };
+
+    window.checkFrontTicket = function () {
       const code = document.getElementById('front-ticket-input').value.trim();
-      if(!code) {
+      if (!code) {
         showToast("Masukkan kode tiket terlebih dahulu", "error");
         return;
       }
@@ -2430,7 +2683,7 @@
       document.getElementById('check-ticket-modal').classList.add('active');
     };
 
-    window.submitCheckTicket = function() {
+    window.submitCheckTicket = function () {
       const val = document.getElementById('check-ticket-input').value.trim();
       if (!val) return;
       const resBox = document.getElementById('check-ticket-result');
@@ -2542,6 +2795,44 @@
     async function fetchSyncData() {
       const icon = document.getElementById('sync-icon');
       if (icon) icon.classList.add('lucide-spin');
+
+      // Tampilkan Loading Skeleton
+      const studiosBox = document.getElementById('studios-container');
+      if (studiosBox) {
+        studiosBox.innerHTML = Array(3).fill(`
+          <div class="studio-card" style="width: 320px; flex-shrink: 0; min-height: 380px;">
+            <div class="skeleton-box" style="width: 100%; height: 220px; border-radius: 1rem;"></div>
+            <div style="padding: 1.25rem;">
+              <div class="skeleton-box" style="width: 60%; height: 1.5rem; margin-bottom: 0.5rem; border-radius: 0.25rem;"></div>
+              <div class="skeleton-box" style="width: 90%; height: 1rem; margin-bottom: 0.25rem; border-radius: 0.25rem;"></div>
+              <div class="skeleton-box" style="width: 80%; height: 1rem; margin-bottom: 1.5rem; border-radius: 0.25rem;"></div>
+              <div class="skeleton-box" style="width: 100%; height: 3rem; border-radius: 999px;"></div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      const adminTable = document.getElementById('admin-bookings-table');
+      if (adminTable) {
+        adminTable.innerHTML = Array(4).fill(`
+          <tr>
+            <td colspan="15" style="padding:1rem;">
+              <div class="skeleton-box" style="width: 100%; height: 2.5rem; border-radius: 0.5rem;"></div>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      const scheduleBody = document.getElementById('availability-body');
+      if (scheduleBody) {
+        scheduleBody.innerHTML = Array(3).fill(`
+          <tr>
+            <td colspan="4" style="padding:1rem;">
+              <div class="skeleton-box" style="width: 100%; height: 2.5rem; border-radius: 0.5rem;"></div>
+            </td>
+          </tr>
+        `).join('');
+      }
       try {
         const res = await fetch(GAS_URL + "?action=getInit");
         if (res.ok) {
@@ -2561,6 +2852,21 @@
         }
       } catch (e) { console.warn("GAS Sync failed", e); }
       setTimeout(() => { if (icon) icon.classList.remove('lucide-spin'); }, 500);
+    }
+
+    async function adminRefreshData() {
+      const btn = document.getElementById('admin-refresh-btn');
+      if (!btn) return;
+      btn.disabled = true;
+      btn.innerHTML = `<i data-lucide="refresh-cw" class="lucide-spin" style="width:14px;height:14px;"></i> Memperbarui...`;
+      lucide.createIcons();
+
+      await fetchSyncData();
+
+      btn.innerHTML = `<i data-lucide="refresh-cw" style="width:14px;height:14px;"></i> Refresh`;
+      btn.disabled = false;
+      lucide.createIcons();
+      showToast("Data berhasil diperbarui!");
     }
 
     // Navigation Switch Logic
@@ -2602,6 +2908,8 @@
 
       if (heroSliderInterval) {
         clearInterval(heroSliderInterval);
+      }
+      if (images.length > 1) {
         heroSliderInterval = setInterval(() => {
           currentHeroIndex = (currentHeroIndex + 1) % images.length;
           window.setHeroSlide(currentHeroIndex);
@@ -2682,6 +2990,10 @@
 
     function renderStudios() {
       const container = document.getElementById('studios-container');
+      if (studios.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding: 3rem 1.25rem; width: 100%; color: var(--text-muted); font-style: italic;">Belum ada studio yang terdaftar saat ini.</div>`;
+        return;
+      }
       container.innerHTML = studios.map(s => `
         <div class="studio-card">
           <div class="studio-img-wrap">
@@ -2764,6 +3076,18 @@
       const isOpened = openedDates.some(o => o.date === dateStr);
 
       const container = document.getElementById('schedule-container');
+
+      if (studios.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i data-lucide="layout-grid" style="width:48px;height:48px;margin-bottom:1rem;color:var(--text-muted);opacity:0.5;"></i>
+            <h3>Tidak Ada Studio</h3>
+            <p>Belum ada fasilitas studio yang didaftarkan pada sistem. Harap tambahkan dari menu Admin.</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
 
       if (!isOpened) {
         container.innerHTML = `
@@ -2954,9 +3278,9 @@
         fileName: fileName
       };
 
-      let pendingWaPayload = null;
-      let pendingWaPromise = null;
-      let pendingWaStudio = null;
+      pendingWaPayload = null;
+      pendingWaPromise = null;
+      pendingWaStudio = null;
 
       try {
         // Optimistic UI Update
@@ -3024,32 +3348,45 @@
       const bTable = document.getElementById('admin-bookings-table');
       if (!bTable) return;
       if (bookings.length === 0) {
-        bTable.innerHTML = `<tr><td colspan="7" style="padding:1rem;text-align:center;">Tidak ada data pemesanan</td></tr>`;
+        bTable.innerHTML = `<tr><td colspan="15" style="padding:1rem;text-align:center;">Tidak ada data pemesanan</td></tr>`;
       } else {
         const sorted = [...bookings].sort((a, b) => new Date(b.date) - new Date(a.date));
         bTable.innerHTML = sorted.map(b => {
           const statusColor = b.status === 'approved' ? '#10b981' : b.status === 'rejected' ? '#ef4444' : '#f59e0b';
+          const waClean = b.phone_number ? b.phone_number.toString().replace(/\\D/g, '').replace(/^0/, '62') : '';
 
           return `
             <tr>
-              <td data-label="ID / Waktu" style="padding: 1rem;"><strong>${b.id}</strong><br><span style="font-size:0.75rem; color:var(--text-muted);">${b.date}<br>${b.start_time} - ${b.end_time}</span></td>
-              <td data-label="Pemesan" style="padding: 1rem;"><strong>${b.student_name}</strong><br><span style="font-size:0.75rem; color:var(--text-muted);">${b.user_category} - ${b.organization}</span></td>
-              <td data-label="Kontak WA" style="padding: 1rem; font-size:0.875rem;">
-                ${b.email}<br>
-                ${b.phone_number ? `<a href="https://wa.me/${b.phone_number.replace(/^0/, '62').replace(/\D/g, '')}" target="_blank" class="btn-modal-fill" style="background:#25D366; color:#fff; text-decoration:none; display:inline-flex; align-items:center; gap:0.5rem; padding: 0.5rem 1rem; border-radius:999px; font-weight:800; font-size:0.875rem; margin-top:0.5rem; transition: transform 0.2s; box-shadow: 0 4px 6px rgba(37, 211, 102, 0.3);"><i data-lucide="message-circle" style="width:16px;height:16px;"></i> Chat WA</a>` : `<div style="display:flex; flex-direction:column; gap:0.5rem; margin-top:0.5rem;"><span style="font-size:0.75rem; color:var(--text-muted); font-style:italic;">Tidak ada data WA</span><button class="btn-modal-outline" style="padding:0.25rem 0.5rem; font-size:0.75rem; width:fit-content;" onclick="adminPromptAddWA('${b.id}')">Tambah WA</button></div>`}
+              <td data-label="ID / Waktu" style="padding: 1rem;"><strong>${b.id || '-'}</strong><br><span style="font-size:0.75rem; color:var(--text-muted);">${b.date || '-'}<br>${b.start_time || '-'} - ${b.end_time || '-'}</span></td>
+              <td data-label="Pemesan" style="padding: 1rem;"><strong>${b.student_name || '-'}</strong><br><span style="font-size:0.75rem; color:var(--text-muted);">${b.user_category || '-'} - ${b.organization || '-'}</span><br><span style="font-size:0.75rem; color:var(--text-muted);">ID: ${b.student_id || '-'}</span></td>
+              <td data-label="Kontak & Fasilitas" style="padding: 1rem; font-size:0.875rem;">
+                <strong style="color:var(--accent);">Studio: ${b.studio_id || '-'}</strong><br>
+                ${b.email || '-'}<br>
+                ${waClean ? `<a href="https://wa.me/${waClean}" target="_blank" class="btn-modal-fill" style="background:#25D366; color:#fff; text-decoration:none; display:inline-flex; align-items:center; gap:0.5rem; padding: 0.5rem 1rem; border-radius:999px; font-weight:800; font-size:0.875rem; margin-top:0.5rem; transition: transform 0.2s; box-shadow: 0 4px 6px rgba(37, 211, 102, 0.3);"><i data-lucide="message-circle" style="width:16px;height:16px;"></i> +${waClean}</a>` : `<div style="display:flex; flex-direction:column; gap:0.5rem; margin-top:0.5rem;"><span style="font-size:0.75rem; color:var(--text-muted); font-style:italic;">Tidak ada data WA</span><button class="btn-modal-outline" style="padding:0.25rem 0.5rem; font-size:0.75rem; width:fit-content;" onclick="adminPromptAddWA('${b.id}')">+ WA</button></div>`}
               </td>
-              <td data-label="Fasilitas" style="padding: 1rem; font-weight:700;">${b.studio_id}</td>
-              <td data-label="Surat" style="padding: 1rem;">
-                ${b.file_url && b.file_url !== 'Tidak ada file' ? `<a href="${b.file_url}" target="_blank" style="color:var(--accent); font-weight:700; font-size:0.875rem;">Lihat</a>` : '-'}
+              <td data-label="Surat / Tujuan" style="padding: 1rem;">
+                <div style="font-size:0.875rem; margin-bottom:0.5rem;">${b.purpose || '-'}</div>
+                ${b.file_url && b.file_url !== 'Tidak ada file' ? `<a href="${b.file_url}" target="_blank" style="color:var(--accent); font-weight:700; font-size:0.875rem; display:inline-flex; align-items:center; gap:0.25rem;"><i data-lucide="file-check-2" style="width:16px;height:16px;"></i> Lihat File</a>` : '-'}
               </td>
-              <td data-label="Status" style="padding: 1rem;">
-                <span style="padding: 0.25rem 0.75rem; border-radius: 1rem; font-size: 0.75rem; font-weight: 800; background: ${statusColor}22; color: ${statusColor}; text-transform:uppercase;">${b.status}</span>
-              </td>
-              <td data-label="Aksi" style="padding: 1rem;">
-                ${b.status === 'pending' ? `
-                  <button class="btn-modal-fill" style="padding:0.35rem 0.75rem; font-size:0.75rem; margin-right:0.25rem;" onclick="adminUpdateBooking('${b.id}', 'approved')">Approve</button>
-                  <button class="btn-modal-danger btn-modal-fill" style="padding:0.35rem 0.75rem; font-size:0.75rem;" onclick="adminUpdateBooking('${b.id}', 'rejected')">Reject</button>
-                ` : '-'}
+              <td data-label="Status & Aksi" style="padding: 1rem;" class="action-buttons">
+                <div style="margin-bottom: 0.75rem;">
+                  <span style="padding: 0.25rem 0.75rem; border-radius: 1rem; font-size: 0.75rem; font-weight: 800; background: ${statusColor}22; color: ${statusColor}; text-transform:uppercase;">${b.status || '-'}</span>
+                </div>
+                ${(!b.status || b.status === 'pending') ? `
+                  <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:0.5rem;">
+                    <button class="btn-modal-fill" style="padding:0.35rem 0.75rem; font-size:0.75rem;" onclick="adminUpdateBooking('${b.id}', 'approved')">Approve</button>
+                    <button class="btn-modal-danger btn-modal-fill" style="padding:0.35rem 0.75rem; font-size:0.75rem;" onclick="adminUpdateBooking('${b.id}', 'rejected')">Reject</button>
+                  </div>
+                  <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                    <button class="btn-modal-outline" style="padding:0.35rem 0.75rem; font-size:0.75rem; border-color:var(--accent); color:var(--accent);" onclick="adminPromptEditBooking('${b.id}')">Ubah Jadwal</button>
+                    <button class="btn-modal-outline" style="padding:0.35rem 0.75rem; font-size:0.75rem; color:var(--error); border-color:var(--error-dim);" onclick="adminPromptDeleteBooking('${b.id}')">Hapus</button>
+                  </div>
+                ` : `
+                  <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                    <button class="btn-modal-outline" style="padding:0.35rem 0.75rem; font-size:0.75rem; border-color:var(--accent); color:var(--accent);" onclick="adminPromptEditBooking('${b.id}')">Ubah Jadwal</button>
+                    <button class="btn-modal-outline" style="padding:0.35rem 0.75rem; font-size:0.75rem; color:var(--error); border-color:var(--error-dim);" onclick="adminPromptDeleteBooking('${b.id}')">Hapus</button>
+                  </div>
+                `}
               </td>
             </tr>
           `;
@@ -3076,10 +3413,10 @@
           showToast("Nomor WA tidak boleh kosong", "error");
           return;
         }
-        
+
         const bookingId = currentWaBookingId;
         closeWAPromptModal();
-        
+
         try {
           showToast("Menyimpan nomor WA...");
           const payload = { action: 'updateBookingWA', id: bookingId, phone_number: wa };
