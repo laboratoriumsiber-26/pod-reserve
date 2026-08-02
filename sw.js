@@ -1,4 +1,4 @@
-const CACHE_NAME = 'podreserve-v1.0.15';
+const CACHE_NAME = 'podreserve-v1.0.31';
 const ASSETS = [
   './index.html',
   './icon.svg',
@@ -8,30 +8,39 @@ const ASSETS = [
 ];
 
 self.addEventListener('install', (e) => {
+  self.skipWaiting();
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
   );
 });
 
 self.addEventListener('fetch', (e) => {
-  // Only cache GET requests
   if (e.request.method !== 'GET') return;
   
+  // Network-First Strategy for HTML files
+  if (e.request.mode === 'navigate' || e.request.url.includes('index.html') || e.request.url === self.registration.scope) {
+    e.respondWith(
+      fetch(e.request)
+        .then((response) => {
+          const resClone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(e.request, resClone));
+          return response;
+        })
+        .catch(() => {
+          return caches.match(e.request);
+        })
+    );
+    return;
+  }
+  
+  // Cache-First Strategy for static assets (fonts, icons)
   e.respondWith(
     caches.match(e.request).then((res) => {
-      // If we have a cached version, return it. Otherwise fetch from network.
-      return res || fetch(e.request).then((fetchRes) => {
-        // Optionally cache new dynamic assets here if needed
-        return fetchRes;
-      });
-    }).catch(() => {
-      // Fallback for offline if something isn't in cache
-      // We could return a custom offline page here if we had one
+      return res || fetch(e.request);
     })
   );
 });
 
-// Clean up old caches when a new service worker takes over
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     caches.keys().then((keyList) => {
@@ -40,6 +49,6 @@ self.addEventListener('activate', (e) => {
           return caches.delete(key);
         }
       }));
-    })
+    }).then(() => self.clients.claim())
   );
 });
