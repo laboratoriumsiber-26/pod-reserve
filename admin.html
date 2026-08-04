@@ -1,0 +1,4333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>PodReserve - PIPD UIN Siber Syekh Nurjati Cirebon</title>
+
+  <!-- Open Graph / WhatsApp Meta Tags -->
+  <meta property="og:title" content="PodReserve - PIPD SiberStudio Booking">
+  <meta property="og:description"
+    content="Platform pemesanan studio podcast dan fasilitas digital UIN Siber Syekh Nurjati Cirebon.">
+  <meta property="og:image" content="https://placehold.co/1200x630/0f766e/ffffff.png?text=PodReserve">
+  <meta property="og:url" content="https://script.google.com/">
+  <meta property="og:type" content="website">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#0f766e">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="PodReserve">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --bg-main: #f8fafc;
+      --bg-panel: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --font-family: 'Raleway', sans-serif;
+      --radius: 1rem;
+      --accent: #0f766e;
+      /* More professional teal/green */
+      --accent-hover: #115e59;
+      --accent-dim: #ccfbf1;
+      --error: #ef4444;
+      --error-dim: #fee2e2;
+      --warning: #f59e0b;
+      --warning-dim: #fef3c7;
+
+      --nav-height: 72px;
+      --header-height: 72px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    @media (max-width: 767px) {
+      ::-webkit-scrollbar {
+        display: none;
+      }
+
+      * {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      html {
+        font-size: 93.75%;
+        /* 15px base on mobile to slightly reduce all rem-based sizes */
+      }
+    }
+
+    @media (min-width: 768px) {
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: var(--bg-main);
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+    }
+
+    html {
+      height: -webkit-fill-available;
+      overscroll-behavior: none;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      padding-top: calc(var(--header-height) + env(safe-area-inset-top));
+      padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom) + 16px);
+      min-height: 100dvh;
+      min-height: -webkit-fill-available;
+      overscroll-behavior: none;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      font-weight: 800;
+      letter-spacing: -0.025em;
+    }
+
+    .app-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--header-height);
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.25rem;
+      padding-top: env(safe-area-inset-top);
+      z-index: 40;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .fasilitas-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: var(--accent-dim);
+      color: var(--accent-hover);
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .brand-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      background: var(--accent);
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      box-shadow: 0 4px 10px 0 var(--accent-dim);
+    }
+
+    .brand-text h1 {
+      font-size: 1.25rem;
+      color: var(--text-main);
+      line-height: 1;
+    }
+
+    .brand-text p {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    /* PC Navigation (Top) */
+    .pc-nav {
+      display: none;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .pc-nav-btn {
+      background: transparent;
+      border: none;
+      font-family: var(--font-family);
+      font-weight: 700;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      padding: 0.5rem 1.25rem;
+      cursor: pointer;
+      border-radius: 0.5rem;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .pc-nav-btn:hover {
+      background: var(--bg-main);
+      color: var(--text-main);
+    }
+
+    .pc-nav-btn.active {
+      background: var(--accent);
+      color: white;
+    }
+
+    /* Main Content */
+    main {
+      padding: 0;
+      flex-grow: 1;
+      width: 100%;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .content-wrapper {
+      padding: 2rem 1.25rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 1.75rem;
+      margin-bottom: 0.25rem;
+      color: var(--text-main);
+    }
+
+    .section-subtitle {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+
+    /* PROFESSIONAL HERO SECTION */
+    .hero-section {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background-color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-slider-track {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+      z-index: 0;
+    }
+
+    .hero-slide {
+      min-width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.8));
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 700px;
+      margin-bottom: 2.5rem;
+      color: white;
+      text-align: center;
+      padding: 0 1.25rem;
+    }
+
+    .hero-title {
+      font-size: clamp(1.75rem, 5vw, 2.25rem);
+      margin-bottom: 1rem;
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+    }
+
+    .hero-subtitle {
+      font-size: 1rem;
+      color: #cbd5e1;
+      font-weight: 500;
+      line-height: 1.6;
+    }
+
+    .hero-slider-dots {
+      position: absolute;
+      bottom: 1.5rem;
+      display: flex;
+      gap: 0.5rem;
+      z-index: 10;
+    }
+
+    .hero-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .hero-dot.active {
+      width: 24px;
+      border-radius: 4px;
+      background: #fff;
+    }
+
+    /* Professional Search Bar */
+    .search-bar {
+      background: var(--bg-panel);
+      border-radius: 1.25rem;
+      padding: 0.75rem;
+      margin: -2.5rem 1.25rem 2.5rem 1.25rem;
+      box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.15);
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      border: 1px solid var(--border-color);
+    }
+
+    .search-input {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.5rem 0.5rem;
+      border-bottom: 1px solid var(--border-color);
+      transition: all 0.2s;
+    }
+
+    .search-input:last-of-type {
+      border-bottom: none;
+    }
+
+    .search-input i {
+      color: var(--accent);
+    }
+
+    .search-input>div {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .search-input label {
+      font-size: 0.65rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .search-input input,
+    .search-input select {
+      border: none;
+      background: transparent;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+      font-family: var(--font-family);
+      outline: none;
+      width: 100%;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .btn-search {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 1rem;
+      border-radius: 0.75rem;
+      font-weight: 800;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(15, 118, 110, 0.3);
+      transition: transform 0.2s;
+      width: 100%;
+    }
+
+    .btn-search:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+    }
+
+    @media (min-width: 768px) {
+      .hero-section {
+        padding: 4rem 2rem 5rem 2rem;
+        border-radius: 0 0 2rem 2rem;
+        aspect-ratio: auto;
+        height: 400px;
+      }
+
+      #tab-studios .content-wrapper {
+        max-width: 100%;
+        padding-left: 3rem;
+        padding-right: 3rem;
+      }
+
+      .hero-title {
+        font-size: 3.5rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1.125rem;
+      }
+
+      .search-bar {
+        flex-direction: row;
+        align-items: center;
+        margin: -3.5rem 2rem 3rem 2rem;
+        border-radius: 999px;
+        padding: 0.75rem 1rem 0.75rem 2rem;
+        max-width: none;
+      }
+
+      .search-input {
+        border-bottom: none;
+        border-right: 1px solid var(--border-color);
+        padding: 0 1.5rem;
+        flex: 1;
+      }
+
+      .search-input:last-of-type {
+        border-right: none;
+      }
+
+      .btn-search {
+        border-radius: 999px;
+        padding: 1rem 2.5rem;
+        margin-left: 0.5rem;
+        width: auto;
+        font-size: 0.875rem;
+      }
+
+      .app-header {
+        padding: 0 2.5rem;
+      }
+    }
+
+    /* Studios Grid */
+    .studios-carousel {
+      display: flex;
+      gap: 1.25rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding-bottom: 1.5rem;
+      margin: 0 -1.25rem;
+      padding-left: 1.25rem;
+      padding-right: 1.25rem;
+    }
+
+    .studio-card {
+      flex: 0 0 85%;
+      scroll-snap-align: center;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-color);
+      border-radius: 1.25rem;
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .studio-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    @media (min-width: 768px) {
+      .studios-carousel {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        overflow-x: visible;
+        margin: 0;
+        padding: 0;
+      }
+
+      .studio-card {
+        flex: none;
+        scroll-snap-align: none;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .studios-carousel {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+      }
+    }
+
+    .studio-img-wrap {
+      position: relative;
+      height: 16rem;
+      overflow: hidden;
+    }
+
+    .studio-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+
+    .studio-card:hover .studio-img {
+      transform: scale(1.05);
+    }
+
+    .studio-capacity {
+      position: absolute;
+      bottom: 1rem;
+      left: 1rem;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      padding: 0.375rem 0.875rem;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--text-main);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .studio-info {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .studio-info h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .studio-info p {
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      margin-bottom: 1.5rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      flex-grow: 1;
+      line-height: 1.6;
+    }
+
+    .btn-book {
+      width: 100%;
+      background: var(--bg-main);
+      color: var(--text-main);
+      font-weight: 800;
+      height: 48px;
+      border-radius: 0.75rem;
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-book:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    /* ================= FULL-WIDTH CALENDAR UI ================= */
+    .calendar-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-color);
+      border-radius: 1.5rem;
+      overflow: hidden;
+      margin-bottom: 2rem;
+      box-shadow: 0 12px 40px -4px rgba(0, 0, 0, 0.05);
+      width: 100%;
+    }
+
+    /* Studio Selector (PC version) */
+    .cal-studio-selector-pc {
+      display: none;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.75rem;
+      padding: 1.5rem;
+    }
+
+    /* Studio Selector (Mobile version) */
+    .cal-studio-selector-mob {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+      gap: 1.5rem 0.5rem;
+      padding: 1.5rem 1rem;
+      justify-items: center;
+      align-items: start;
+    }
+
+    @media (min-width: 768px) {
+      .cal-studio-selector-pc {
+        display: flex;
+      }
+
+      .cal-studio-selector-mob {
+        display: none;
+      }
+    }
+
+    .cal-studio-pill {
+      display: flex;
+      padding: 0.6rem 1.25rem;
+      border-radius: 999px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-main);
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: normal;
+      text-align: center;
+      line-height: 1.2;
+      transition: all 0.2s;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .cal-studio-pill:hover {
+      background: #e2e8f0;
+      color: var(--text-main);
+    }
+
+    .cal-studio-pill.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+      box-shadow: 0 4px 12px rgba(15, 118, 110, 0.3);
+    }
+
+    .cal-header {
+      padding: 1.5rem 1.5rem 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: transparent;
+    }
+
+    .btn-icon {
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      width: 36px;
+      height: 36px;
+      border-radius: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-icon:hover {
+      background: var(--border-color);
+      transform: translateY(-2px);
+    }
+
+    .cal-days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      padding: 0 1.5rem;
+      background: transparent;
+    }
+
+    .cal-day-name {
+      text-align: center;
+      font-weight: 800;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    @media (min-width: 480px) {
+      .cal-day-name {
+        font-size: 0.75rem;
+      }
+    }
+
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      padding: 0.5rem;
+      gap: 0.25rem;
+    }
+
+    @media (min-width: 480px) {
+      .cal-grid {
+        padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+        gap: 0.5rem;
+      }
+    }
+
+    .cal-cell {
+      min-height: 54px;
+      border-radius: 0.5rem;
+      border: 1px solid transparent;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.8rem;
+      transition: all 0.2s;
+      background: var(--bg-main);
+      position: relative;
+    }
+
+    /* PC larger cells */
+    @media (min-width: 768px) {
+      .cal-cell {
+        min-height: 100px;
+        border-radius: 1rem;
+        font-size: 1.25rem;
+      }
+
+      .cal-cell-status {
+        font-size: 0.75rem !important;
+        padding: 0.1rem 0.35rem !important;
+      }
+    }
+
+    .cal-cell:hover:not(.disabled):not(.weekend-closed) {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .cal-cell.disabled {
+      color: var(--border-color);
+      pointer-events: none;
+      background: transparent;
+    }
+
+    .cal-cell.weekend-closed {
+      background: var(--error-dim);
+      color: var(--error);
+      pointer-events: none;
+      border: 1px dashed rgba(239, 68, 68, 0.2);
+    }
+
+    .cal-cell.selected {
+      border-color: var(--accent);
+      background: rgba(15, 118, 110, 0.05);
+    }
+
+    .cal-cell-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      margin-top: 0.25rem;
+    }
+
+    .cal-cell-status {
+      font-size: 0.6rem;
+      font-weight: 800;
+      padding: 0.1rem 0.25rem;
+      border-radius: 4px;
+      white-space: nowrap;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .status-available {
+      background: rgba(15, 118, 110, 0.1);
+      color: var(--accent);
+    }
+
+    .status-full {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--error);
+    }
+
+    /* SLOTS MODAL */
+    .slots-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .slots-modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .slots-modal-content {
+      background: var(--bg-panel);
+      width: 90%;
+      max-width: 500px;
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      transform: translateY(20px) scale(0.95);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .slots-modal-overlay.active .slots-modal-content {
+      transform: translateY(0) scale(1);
+    }
+
+    .slots-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    @media(min-width: 480px) {
+      .slots-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* GOJEK-STYLE STUDIO SLIDER (MOBILE GRID) */
+    .studio-slider {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.25rem;
+      padding: 0.5rem 0 1.5rem 0;
+      margin: 0;
+    }
+
+    .studio-circle-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      width: 100%;
+      min-width: 0;
+      transition: transform 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .studio-circle-item:active {
+      transform: scale(0.95);
+    }
+
+    .studio-circle-img {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid transparent;
+      padding: 2px;
+      background-clip: content-box;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      transition: all 0.2s;
+    }
+
+    .studio-circle-item.active .studio-circle-img {
+      border-color: var(--accent);
+      box-shadow: 0 6px 16px rgba(15, 118, 110, 0.2);
+    }
+
+    .studio-circle-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-main);
+      text-align: center;
+      line-height: 1.4;
+      white-space: normal;
+      max-width: 100%;
+      transition: color 0.2s;
+      margin-top: 0.25rem;
+    }
+
+    .studio-circle-item.active .studio-circle-label {
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    /* Toggle Switch */
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--border-color);
+      transition: .3s;
+      border-radius: 24px;
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    input:checked+.toggle-slider {
+      background-color: var(--accent);
+    }
+
+    input:checked+.toggle-slider:before {
+      transform: translateX(20px);
+    }
+
+    /* Admin Calendar Grid */
+    .adm-dates-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    @media(min-width: 768px) {
+      .adm-dates-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+      }
+    }
+
+    .adm-date-card {
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: 0.75rem;
+      padding: 0.75rem 0.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s;
+    }
+
+    .adm-date-card:hover {
+      border-color: var(--accent-dim);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .adm-date-day {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .adm-date-num {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    @media(min-width: 768px) {
+      .adm-date-card {
+        padding: 1rem 0.5rem;
+        gap: 0.6rem;
+        border-radius: 1rem;
+      }
+
+      .adm-date-day {
+        font-size: 0.75rem;
+      }
+
+      .adm-date-num {
+        font-size: 1.25rem;
+      }
+    }
+
+    /* Small Toggle for Admin Grid */
+    .toggle-switch-sm {
+      position: relative;
+      display: inline-block;
+      width: 36px;
+      height: 20px;
+    }
+
+    .toggle-switch-sm input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-switch-sm .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--border-color);
+      transition: .3s;
+      border-radius: 20px;
+    }
+
+    .toggle-switch-sm .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 14px;
+      width: 14px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .toggle-switch-sm input:checked+.toggle-slider {
+      background-color: var(--accent);
+    }
+
+    .toggle-switch-sm input:checked+.toggle-slider:before {
+      transform: translateX(16px);
+    }
+
+
+    /* Modal Adjustments */
+    @media(min-width: 480px) {
+      .slots-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media(min-width: 1024px) {
+      .slots-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .slot-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem;
+      border-radius: 0.75rem;
+      border: 1px solid var(--border-color);
+      background: var(--bg-main);
+      font-size: 0.875rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .slot-item:hover:not(.pending):not(.confirmed) {
+      border-color: var(--accent);
+      background: var(--accent-dim);
+      color: var(--accent-hover);
+    }
+
+    .slot-item.available {
+      color: var(--text-main);
+      background: #fff;
+    }
+
+    .slot-item.pending {
+      color: var(--warning);
+      background: var(--warning-dim);
+      border-color: rgba(245, 158, 11, 0.3);
+      pointer-events: none;
+    }
+
+    .slot-item.confirmed {
+      color: var(--error);
+      background: var(--error-dim);
+      border-color: rgba(239, 68, 68, 0.3);
+      pointer-events: none;
+    }
+
+    /* Reservasi List */
+    .res-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-color);
+      padding: 1.5rem;
+      border-radius: 1.25rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+    }
+
+    .res-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+
+    .res-title {
+      font-weight: 800;
+      font-size: 1.125rem;
+    }
+
+    .status-badge {
+      padding: 0.375rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .status-badge.pending {
+      background: var(--warning-dim);
+      color: var(--warning);
+    }
+
+    .status-badge.confirmed {
+      background: var(--accent-dim);
+      color: var(--accent-hover);
+    }
+
+    .res-detail {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    /* Fixed Bottom Sheet Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(4px);
+      display: none;
+      z-index: 100;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      animation: fadeIn 0.2s;
+    }
+
+    .modal-content {
+      background: var(--bg-panel);
+      width: 100%;
+      max-height: 90vh;
+      border-radius: 24px 24px 0 0;
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.1);
+      animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(100%);
+      }
+
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    @media (min-width: 768px) {
+      .modal-overlay {
+        align-items: center;
+      }
+
+      .modal-content {
+        border-radius: 24px;
+        max-width: 500px;
+        max-height: 85vh;
+        animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+    }
+
+    @keyframes scaleIn {
+      from {
+        transform: scale(0.95);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .modal-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      background: var(--bg-panel);
+      z-index: 10;
+      border-radius: 24px 24px 0 0;
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+      overflow-y: auto;
+      flex-grow: 1;
+      padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+    }
+
+    /* Form Styles */
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-input,
+    .form-select {
+      width: 100%;
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: 0.75rem;
+      padding: 0 1rem;
+      height: 48px;
+      color: var(--text-main);
+      font-size: 0.875rem;
+      font-family: var(--font-family);
+      outline: none;
+      font-weight: 500;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus,
+    .form-select:focus {
+      border-color: var(--accent);
+      background: #fff;
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+
+    .file-drop {
+      border: 2px dashed var(--border-color);
+      border-radius: 0.75rem;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: var(--bg-main);
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .file-drop:hover {
+      border-color: var(--text-muted);
+    }
+
+    .file-drop.has-file {
+      border-color: var(--accent);
+      color: var(--accent-hover);
+      background: var(--accent-dim);
+      border-style: solid;
+    }
+
+    .session-selector {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .session-btn {
+      height: 48px;
+      border: 1px solid var(--border-color);
+      border-radius: 0.75rem;
+      background: var(--bg-main);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 1rem;
+      font-size: 0.875rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .session-btn.selected {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .session-btn.disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .btn-submit {
+      width: 100%;
+      height: 56px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 800;
+      border: none;
+      border-radius: 1rem;
+      margin-top: 1rem;
+      box-shadow: 0 4px 14px rgba(15, 118, 110, 0.3);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .btn-submit:hover:not(:disabled) {
+      transform: translateY(-2px);
+      background: var(--accent-hover);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: var(--text-muted);
+      margin-top: auto;
+      border-top: 1px solid var(--border-color);
+      background: var(--bg-panel);
+    }
+
+    .footer-text {
+      font-size: 0.75rem;
+      font-weight: 600;
+      line-height: 1.6;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.25rem;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: calc(var(--nav-height) + env(safe-area-inset-bottom));
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding-bottom: env(safe-area-inset-bottom);
+      z-index: 99;
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.6875rem;
+      font-weight: 800;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .nav-item.active {
+      color: var(--accent);
+    }
+
+    .nav-item i {
+      width: 24px;
+      height: 24px;
+    }
+
+    @media (min-width: 768px) {
+      .bottom-nav {
+        display: none !important;
+      }
+
+      .pc-nav {
+        display: flex;
+      }
+
+      body {
+        padding-bottom: 0;
+      }
+
+      /* Remove bottom nav padding for PC */
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      top: 5rem;
+      right: 1rem;
+      transform: translateX(100%);
+      background: #1e293b;
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 700;
+      font-size: 0.875rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      z-index: 200;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    @media(min-width: 768px) {
+      .toast {
+        top: 6rem;
+        right: 2rem;
+      }
+    }
+
+    .toast.show {
+      transform: translateX(0);
+      opacity: 1;
+    }
+
+    .toast.success i {
+      color: var(--accent);
+    }
+
+    .toast.error i {
+      color: var(--error);
+    }
+
+    /* CUSTOM MODALS */
+    .custom-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: flex-end;
+      /* Mobile Bottom Sheet */
+      justify-content: center;
+      z-index: 9999;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .custom-modal-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .custom-modal-card {
+      background: var(--bg-panel);
+      width: 100%;
+      max-width: 100%;
+      border-radius: 1.5rem 1.5rem 0 0;
+      padding: 2rem;
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.1);
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
+    }
+
+    .custom-modal-overlay.active .custom-modal-card {
+      transform: translateY(0);
+    }
+
+    @media (min-width: 768px) {
+      .custom-modal-overlay {
+        align-items: center;
+      }
+
+      .custom-modal-card {
+        width: 90%;
+        max-width: 400px;
+        border-radius: 1.5rem;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        transform: scale(0.95) translateY(10px);
+      }
+
+      .custom-modal-overlay.active .custom-modal-card {
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .modal-title-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .modal-title-row h3 {
+      font-size: 1.25rem;
+      color: var(--text-main);
+      margin: 0;
+    }
+
+    .modal-desc {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: flex-end;
+      margin-top: 2rem;
+    }
+
+    .btn-modal-outline {
+      padding: 0.75rem 1.25rem;
+      border: 1px solid var(--border-color);
+      background: transparent;
+      border-radius: 0.75rem;
+      font-weight: 700;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+    }
+
+    .btn-modal-outline:hover {
+      background: var(--bg-main);
+      border-color: #cbd5e1;
+    }
+
+    .btn-modal-fill {
+      padding: 0.75rem 1.25rem;
+      border: none;
+      background: var(--accent);
+      color: white;
+      border-radius: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(15, 118, 110, 0.3);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+    }
+
+    .btn-modal-fill:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+    }
+
+    .btn-modal-danger {
+      background: var(--error);
+      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-modal-danger:hover {
+      background: #dc2626;
+    }
+
+    .admin-form-group {
+      margin-bottom: 1rem;
+      text-align: left;
+    }
+
+    .admin-form-group label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 0.5rem;
+    }
+
+    .admin-form-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: 0.75rem;
+      background: var(--bg-main);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      outline: none;
+      font-size: 0.875rem;
+    }
+
+    .admin-form-input:focus {
+      border-color: var(--accent);
+      background: #fff;
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+
+    /* Admin View Sidebar Layout */
+    #mobile-admin-exit {
+      display: none !important;
+    }
+
+    .admin-layout {
+      display: flex;
+      min-height: 100vh;
+      background: var(--bg-main);
+    }
+
+    .admin-sidebar {
+      width: 280px;
+      background: #ffffff;
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      z-index: 60;
+    }
+
+    .admin-main-content {
+      flex: 1;
+      margin-left: 280px;
+      padding: 2rem;
+      min-height: 100dvh;
+    }
+
+    .admin-sidebar-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: var(--accent);
+    }
+
+    .admin-sidebar-nav {
+      flex: 1;
+      padding: 1.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .admin-sidebar-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 1.25rem;
+      background: transparent;
+      border: none;
+      border-radius: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: left;
+      font-size: 0.875rem;
+    }
+
+    .admin-sidebar-btn:hover {
+      background: #f1f5f9;
+      color: var(--text-main);
+    }
+
+    .admin-sidebar-btn.active {
+      background: var(--accent-dim);
+      color: var(--accent);
+    }
+
+    .admin-sidebar-footer {
+      padding: 1.5rem 1rem;
+      border-top: 1px solid var(--border-color);
+    }
+
+    @media (max-width: 767px) {
+      html {
+        font-size: 14px;
+      }
+    }
+
+    @media screen {
+      #print-area {
+        display: none;
+      }
+    }
+
+    @media print {
+      body>*:not(#print-area) {
+        display: none !important;
+      }
+
+      body {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff !important;
+      }
+
+      #print-area {
+        display: block !important;
+        width: 100%;
+      }
+
+      #print-area table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: sans-serif;
+        font-size: 10pt;
+        page-break-inside: auto;
+      }
+
+      #print-area tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+      }
+
+      #print-area th,
+      #print-area td {
+        border: 1px solid #000;
+        padding: 8px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      #print-area th {
+        background-color: #f3f4f6 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      @page {
+        size: landscape;
+        margin: 15mm;
+      }
+    }
+
+    @media (min-width: 1025px) {
+      .mobile-header {
+        display: none !important;
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .admin-sidebar {
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        top: auto;
+        height: auto;
+        border-right: none;
+        border-top: 1px solid var(--border-color);
+        box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05);
+        padding-bottom: env(safe-area-inset-bottom);
+        z-index: 100;
+      }
+
+      .admin-layout {
+        flex-direction: column;
+      }
+
+      .admin-main-content {
+        margin-left: 0;
+        padding: 1.5rem 1rem;
+        padding-bottom: 5.5rem;
+        /* Space for bottom nav */
+      }
+
+      .admin-sidebar-nav {
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 0.5rem;
+      }
+
+      .admin-sidebar-btn {
+        flex-direction: column;
+        gap: 0.25rem;
+        padding: 0.5rem;
+        font-size: 0.65rem;
+        text-align: center;
+        border-radius: 0.5rem;
+        width: 100%;
+      }
+
+      .admin-sidebar-btn i {
+        margin: 0 auto;
+      }
+
+      .admin-sidebar-header {
+        display: flex;
+        justify-content: center;
+        padding: 0.5rem;
+      }
+
+      .admin-sidebar-footer {
+        display: none;
+      }
+
+      #mobile-admin-exit {
+        display: block !important;
+      }
+    }
+
+    .admin-table-container {
+      overflow-x: auto;
+      background: #ffffff;
+      border-radius: 1.25rem;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+      padding: 0.5rem;
+    }
+
+    .admin-table {
+      width: 100%;
+      text-align: left;
+      border-collapse: collapse;
+      min-width: 700px;
+      font-size: 0.875rem;
+    }
+
+    .admin-table thead tr {
+      background: linear-gradient(to right, #f8fafc, #f1f5f9);
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    .admin-table th {
+      padding: 1rem;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+
+    .admin-table tbody tr {
+      transition: background-color 0.2s, transform 0.2s;
+    }
+
+    .admin-table tbody tr:hover {
+      background-color: #f8fafc;
+      transform: translateY(-1px);
+    }
+
+    .admin-table td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .admin-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    @media (max-width: 768px) {
+
+      /* Bottom Sheet Modals */
+      .custom-modal-overlay {
+        align-items: flex-end;
+        padding: 0;
+      }
+
+      .custom-modal-card {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 1.5rem 1.5rem 0 0;
+        transform: translateY(100%) scale(1);
+        padding: 2.5rem 1.5rem calc(2rem + env(safe-area-inset-bottom)) 1.5rem !important;
+        margin: 0;
+        position: relative;
+      }
+
+      .custom-modal-overlay.active .custom-modal-card {
+        transform: translateY(0) scale(1);
+      }
+
+      .custom-modal-card::before {
+        content: '';
+        position: absolute;
+        top: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 5px;
+        background: var(--border-color);
+        border-radius: 10px;
+      }
+
+      /* Admin Responsive Cards */
+      .admin-table {
+        min-width: auto;
+      }
+
+      .admin-table,
+      .admin-table tbody,
+      .admin-table tr,
+      .admin-table td {
+        display: block;
+        width: 100%;
+      }
+
+      .admin-table thead {
+        display: none;
+      }
+
+      .admin-table tr {
+        margin-bottom: 1.5rem;
+        border: 1px solid var(--border-color);
+        border-radius: 1rem;
+        padding: 1.25rem;
+        background: #ffffff;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+      }
+
+      .admin-table td {
+        padding: 0.75rem 0 !important;
+        border-bottom: 1px solid var(--border-color) !important;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left !important;
+      }
+
+      .admin-table td:last-child {
+        border-bottom: none !important;
+      }
+
+      .admin-table td::before {
+        content: attr(data-label);
+        font-weight: 800;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin-bottom: 0.5rem;
+      }
+
+      .admin-table td[data-label="Aksi"] {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        justify-content: flex-start;
+      }
+
+      .admin-table td[data-label="Gambar"] img {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 220px !important;
+        object-fit: cover !important;
+        border-radius: 0.75rem !important;
+        margin-top: 0.5rem;
+      }
+    }
+
+    .skeleton-box {
+      background: linear-gradient(90deg, var(--border-color) 25%, #f1f5f9 50%, var(--border-color) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -200% 0;
+      }
+
+      100% {
+        background-position: 200% 0;
+      }
+    }
+
+    @media print {
+      body>*:not(#print-area) {
+        display: none !important;
+      }
+
+      #print-area {
+        display: block !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="print-area"></div>
+
+  <!-- Removed Public Header and Footer -->
+
+  <!-- Removed User Modals -->
+
+  <!-- STUDIO FORM MODAL (CRUD) -->
+  <div class="custom-modal-overlay" id="studio-form-modal">
+    <div class="custom-modal-card" style="max-width:500px; max-height:90vh; overflow-y:auto; padding: 1.5rem;">
+      <div class="modal-title-row">
+        <div
+          style="width:2.5rem;height:2.5rem;border-radius:0.5rem;background:var(--accent-dim);color:var(--accent);display:flex;align-items:center;justify-content:center;">
+          <i data-lucide="layout-dashboard"></i>
+        </div>
+        <h3 id="studio-form-title">Tambah Studio</h3>
+      </div>
+      <form id="studio-form" onsubmit="handleSaveStudio(event)">
+        <input type="hidden" id="sf_mode" value="add">
+        <div class="admin-form-group">
+          <label>ID Studio (Unik, cth: F-05)</label>
+          <input type="text" id="sf_id" class="admin-form-input" required>
+        </div>
+        <div class="admin-form-group">
+          <label>Nama Studio</label>
+          <input type="text" id="sf_name" class="admin-form-input" required>
+        </div>
+        <div class="admin-form-group">
+          <label>Kapasitas (Orang)</label>
+          <input type="number" id="sf_cap" class="admin-form-input" required>
+        </div>
+        <div class="admin-form-group">
+          <label>Deskripsi Singkat</label>
+          <textarea id="sf_desc" class="admin-form-input" rows="3" required></textarea>
+        </div>
+        <div class="admin-form-group"
+          style="background: var(--bg-main); padding: 1.25rem; border-radius: 0.75rem; margin-bottom: 1.5rem; border: 1px solid var(--border-color);">
+          <label
+            style="font-size: 1rem; color: var(--text-main); margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; display:block; font-weight:800;">Fasilitas
+            Studio Terstruktur</label>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+            <div>
+              <label style="font-size: 0.75rem; color:var(--text-muted); font-weight:700;">Jumlah Mic</label>
+              <input type="number" id="sf_fas_mic" class="admin-form-input" placeholder="Cth: 2">
+            </div>
+            <div>
+              <label style="font-size: 0.75rem; color:var(--text-muted); font-weight:700;">Jumlah Lighting</label>
+              <input type="number" id="sf_fas_lighting" class="admin-form-input" placeholder="Cth: 2">
+            </div>
+            <div>
+              <label style="font-size: 0.75rem; color:var(--text-muted); font-weight:700;">Jumlah Kursi</label>
+              <input type="number" id="sf_fas_kursi" class="admin-form-input" placeholder="Cth: 3">
+            </div>
+            <div>
+              <label style="font-size: 0.75rem; color:var(--text-muted); font-weight:700;">Layar TV (Background)</label>
+              <select id="sf_fas_tv" class="admin-form-input">
+                <option value="Tidak Ada">Tidak Ada</option>
+                <option value="Ada">Ada</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 1rem;">
+            <label style="font-size: 0.75rem; color:var(--text-muted); font-weight:700;">Tema / Vibe Studio</label>
+            <select id="sf_fas_tema" class="admin-form-input">
+              <option value="Fleksibel">Fleksibel</option>
+              <option value="Formal">Formal</option>
+              <option value="Santai">Santai</option>
+            </select>
+          </div>
+
+          <div>
+            <label style="font-size: 0.75rem; color:var(--text-muted); font-weight:700;">Fasilitas Tambahan
+              (Lainnya)</label>
+            <textarea id="sf_fas_lainnya" class="admin-form-input" rows="2"
+              placeholder="Sofa, AC, Papan Tulis, dll (pisahkan dengan koma)"></textarea>
+          </div>
+        </div>
+        <div class="admin-form-group">
+          <label>URL Gambar atau Upload File Foto</label>
+          <input type="url" id="sf_img" class="admin-form-input" placeholder="URL Foto..."
+            style="margin-bottom:0.5rem;">
+          <input type="file" id="sf_img_file" class="admin-form-input" accept="image/*"
+            onchange="handleStudioImage(this)">
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-modal-outline" onclick="closeStudioFormModal()">Batal</button>
+          <button type="submit" class="btn-modal-fill" id="sf_submit_btn">Simpan Data</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SURAT MASUK FORM MODAL (CRUD) -->
+  <div class="custom-modal-overlay" id="surat-form-modal">
+    <div class="custom-modal-card" style="max-width:500px; max-height:90vh; overflow-y:auto; padding: 1.5rem;">
+      <div class="modal-title-row">
+        <div style="width:2.5rem;height:2.5rem;border-radius:0.5rem;background:var(--accent-dim);color:var(--accent);display:flex;align-items:center;justify-content:center;">
+          <i data-lucide="mail"></i>
+        </div>
+        <h3 id="surat-form-title">Tambah Surat Masuk</h3>
+      </div>
+      <form id="surat-form" onsubmit="window.handleSaveSurat(event)">
+        <input type="hidden" id="sm_mode" value="add">
+        <input type="hidden" id="sm_id" value="">
+        <div class="admin-form-group">
+          <label>Judul Surat / Keterangan</label>
+          <input type="text" id="sm_title" class="admin-form-input" required>
+        </div>
+        <div class="admin-form-group">
+          <label>Pengirim (Instansi / Personal)</label>
+          <input type="text" id="sm_sender" class="admin-form-input" required>
+        </div>
+        <div class="admin-form-group">
+          <label>Tanggal Surat</label>
+          <input type="date" id="sm_date" class="admin-form-input" required>
+        </div>
+        <div class="admin-form-group">
+          <label>Link PDF Surat (Google Drive)</label>
+          <input type="url" id="sm_link" class="admin-form-input" placeholder="https://drive.google.com/..." required>
+        </div>
+        <div class="modal-actions" style="margin-top:2rem;">
+          <button type="button" class="btn-modal-outline" onclick="window.closeSuratFormModal()">Batal</button>
+          <button type="submit" class="btn-modal-fill" id="sm_submit_btn">Simpan Data</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- LOGIN VIEW -->
+  <div id="login-view" style="display:flex; width:100%; min-height:100dvh; background:var(--bg-main); align-items:center; justify-content:center; padding:1rem;">
+    <div class="custom-modal-card" style="width:100%; max-width:400px; box-shadow:0 10px 25px rgba(0,0,0,0.1);">
+      <div class="modal-title-row" style="justify-content:center; flex-direction:column; gap:1rem; margin-bottom:2rem;">
+        <div style="width:4rem;height:4rem;border-radius:1rem;background:var(--accent-dim);color:var(--accent);display:flex;align-items:center;justify-content:center;">
+          <i data-lucide="shield-check" style="width:2rem;height:2rem;"></i>
+        </div>
+        <h3 style="text-align:center; font-size:1.5rem;">Admin Login</h3>
+      </div>
+      <div class="admin-form-group">
+        <label class="admin-form-label">Email</label>
+        <input type="email" id="login-email" class="admin-form-input" placeholder="admin@example.com">
+      </div>
+      <div class="admin-form-group">
+        <label class="admin-form-label">Password</label>
+        <input type="password" id="login-password" class="admin-form-input" placeholder="••••••••" onkeypress="if(event.key==='Enter') window.submitLogin()">
+      </div>
+      <button class="btn-modal-fill" id="btn-login-submit" onclick="window.submitLogin()" style="width:100%; padding:1rem; margin-top:1rem; font-size:1rem;">Login ke Dasbor</button>
+      <div style="text-align:center; margin-top:1.5rem;">
+        <a href="index.html" style="color:var(--text-muted); font-size:0.875rem; text-decoration:none;">&larr; Kembali ke Halaman Utama</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN VIEW (HIDDEN) -->
+  <div id="admin-view" style="display:none; width:100%; background:var(--bg-main); min-height:100dvh; z-index:50; position:relative;">
+    
+    <!-- MOBILE HEADER -->
+    <header class="app-header mobile-header" style="display: flex;">
+      <div class="brand">
+        <div class="brand-icon">
+          <i data-lucide="shield-check" style="width:24px; height:24px;"></i>
+        </div>
+        <div class="brand-text">
+          <h1>PodAdmin</h1>
+          <p>Dashboard Manajemen</p>
+        </div>
+      </div>
+    </header>
+    
+    <div class="admin-layout">
+      <!-- Sidebar -->
+      <aside class="admin-sidebar">
+        <div class="admin-sidebar-header">
+          <div style="display:flex; align-items:center; gap:0.5rem;"><i data-lucide="shield-check"
+              style="width:24px; height:24px;"></i> PodAdmin</div>
+        </div>
+        <nav class="admin-sidebar-nav">
+          <button class="admin-sidebar-btn active" id="btn-adm-book" onclick="switchAdminTab('book')">
+            <i data-lucide="book-open"></i>
+            <span style="display:inline-flex; align-items:center; gap:0.25rem;">
+              Kelola Reservasi
+              <span id="pending-badge"
+                style="display:none; background:var(--error); color:white; font-size:10px; font-weight:800; border-radius:999px; padding:2px 6px; box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);"></span>
+            </span>
+          </button>
+          <button class="admin-sidebar-btn" id="btn-adm-std" onclick="switchAdminTab('std')">
+            <i data-lucide="mic"></i> Kelola Studio (Fasilitas)
+          </button>
+
+          <button class="admin-sidebar-btn" id="btn-adm-hol" onclick="switchAdminTab('hol')">
+            <i data-lucide="calendar"></i> Manajemen Jadwal
+          </button>
+          <button class="admin-sidebar-btn" id="btn-adm-set" onclick="switchAdminTab('set')">
+            <i data-lucide="settings"></i> Pengaturan
+          </button>
+        </nav>
+        <div class="admin-sidebar-footer">
+          <button class="btn-modal-danger btn-modal-fill" style="width:100%; padding:1rem; border-radius:0.75rem;"
+            onclick="exitAdminMode()">
+            <i data-lucide="log-out"></i> Keluar Admin
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="admin-main-content">
+        <div
+          style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 2rem; padding: 0 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+          <h2 class="section-title" style="margin-bottom:0;" id="admin-page-title">Kelola Reservasi</h2>
+          <div style="display:flex; gap: 0.5rem;">
+            <button class="btn-modal-outline"
+              style="padding:0.5rem 1rem; color:var(--accent); font-size:0.75rem; display:flex; align-items:center; gap:0.25rem;"
+              onclick="adminRefreshData()" id="admin-refresh-btn"><i data-lucide="refresh-cw"
+                style="width:14px;height:14px;"></i> Refresh</button>
+            <button class="btn-modal-outline"
+              style="padding:0.5rem 1rem; border-color:var(--error-dim); color:var(--error); font-size:0.75rem;"
+              onclick="exitAdminMode()" id="mobile-admin-exit">Keluar</button>
+          </div>
+        </div>
+
+        <div id="adm-book" style="display:block;">
+          <div style="margin-bottom: 1rem; display:flex; justify-content:flex-end;">
+            <button class="btn-modal-fill" style="background:var(--accent); color:#fff;" onclick="printAdminReport()">
+              <i data-lucide="printer" style="width:16px;height:16px;margin-right:0.5rem;"></i> Download Laporan (PDF)
+            </button>
+          </div>
+          <div class="admin-table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID / Waktu</th>
+                  <th>Pemesan</th>
+                  <th>Kontak & Fasilitas</th>
+                  <th>Surat / Tujuan</th>
+                  <th>Status & Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="admin-bookings-table">
+                <!-- Data here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="adm-std" style="display:none;">
+          <div style="margin-bottom: 1.5rem; display:flex; justify-content:flex-end;">
+            <button class="btn-modal-fill" onclick="openStudioFormModal('add')">
+              <i data-lucide="plus" style="width:16px;height:16px;margin-right:0.5rem;"></i> Tambah Studio
+            </button>
+          </div>
+          <div class="admin-table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nama Studio</th>
+                  <th>Kapasitas</th>
+                  <th>Gambar</th>
+                  <th style="padding: 1rem; text-align:right;">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="admin-studios-table"></tbody>
+            </table>
+          </div>
+        </div>
+
+
+        <div id="adm-hol" style="display:none;">
+          <div
+            style="background: #fff; border-radius: 1rem; border: 1px solid var(--border-color); padding: 1.5rem; margin-bottom: 2rem;">
+            <h3 style="margin-bottom: 1rem; font-weight:800; font-size:1.125rem;">Manajemen Jadwal Buka</h3>
+            <p style="margin-bottom: 1.5rem; color:var(--text-muted); font-size:0.875rem;">Sistem menggunakan mode
+              <strong>Whitelist</strong>. Semua tanggal otomatis tutup. Klik pada kalender di bawah ini untuk
+              <strong>membuka jadwal</strong> atau menutupnya kembali.
+            </p>
+
+            <div class="calendar-card"
+              style="margin:0 auto 2rem auto; box-shadow:none; border:1px solid var(--border-color); max-width:100%; width:100%;">
+              <div class="cal-header">
+                <h3 id="adm-cal-month-year" style="font-size: 1.125rem;">...</h3>
+                <div style="display:flex; gap:0.5rem;">
+                  <button class="btn-icon" onclick="changeAdminMonth(-1)"><i data-lucide="chevron-left"
+                      style="width:20px;height:20px;"></i></button>
+                  <button class="btn-icon" onclick="changeAdminMonth(1)"><i data-lucide="chevron-right"
+                      style="width:20px;height:20px;"></i></button>
+                </div>
+              </div>
+              <div class="adm-dates-grid" id="adm-cal-grid"></div>
+            </div>
+
+            <h4
+              style="font-weight:700; margin-bottom:1rem; border-bottom:1px solid var(--border-color); padding-bottom:0.5rem;">
+              Tanggal yang Sedang Dibuka:</h4>
+            <div id="admin-opened-list"></div>
+          </div>
+        </div>
+
+        <div id="adm-set" style="display:none;">
+          <div class="admin-table-container" style="padding: 2.5rem 2rem; max-width: 600px; margin: 0 auto;">
+
+            <div style="text-align:center; margin-bottom: 2rem;">
+              <div
+                style="width: 4rem; height: 4rem; background: var(--accent-dim); color: var(--accent); border-radius: 1.25rem; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                <i data-lucide="image" style="width: 2rem; height: 2rem;"></i>
+              </div>
+              <h3 style="font-weight: 800; font-size: 1.25rem;">Pengaturan Banner</h3>
+              <p style="color: var(--text-muted); font-size: 0.875rem; margin-top:0.25rem;">Kelola gambar
+                <i>slideshow</i>
+                yang tampil pada halaman pencarian Studio.
+              </p>
+            </div>
+
+            <div class="admin-form-group">
+              <label style="display:flex; justify-content:space-between; align-items:center;">
+                <span>Daftar Banner Saat Ini</span>
+              </label>
+              <div id="adm-banner-list" style="display:flex; flex-direction:column; gap:1rem; margin-bottom: 1.5rem;">
+                <!-- Populated dynamically -->
+              </div>
+            </div>
+
+            <div style="height:1px; background:var(--border-color); margin: 2rem 0;"></div>
+            <h4 style="font-weight:800; font-size:1rem; margin-bottom:1rem;">Tambah Banner Baru</h4>
+
+            <div class="admin-form-group">
+              <label>Tautan Langsung / Google Drive URL</label>
+              <input type="text" id="adm-hero-link" class="admin-form-input" placeholder="https://...">
+            </div>
+
+            <div style="display:flex; align-items:center; margin: 1.5rem 0;">
+              <div style="flex-grow:1; height:1px; background:var(--border-color);"></div>
+              <span
+                style="padding: 0 1rem; font-size: 0.75rem; color: var(--text-muted); font-weight:800; letter-spacing:0.05em;">ATAU
+                UPLOAD FOTO</span>
+              <div style="flex-grow:1; height:1px; background:var(--border-color);"></div>
+            </div>
+
+            <div class="admin-form-group">
+              <label>Pilih File dari Perangkat</label>
+              <input type="file" id="adm-hero-file" class="admin-form-input" accept="image/*"
+                onchange="convertFileToBase64(this)" style="background: #fff; padding: 0.5rem 1rem;">
+            </div>
+
+            <button class="btn-modal-fill"
+              style="width: 100%; margin-top: 1rem; padding: 1rem; font-size: 1rem; border-radius: 1rem;"
+              onclick="adminAddHeroImage(this)">
+              Tambah Banner
+            </button>
+          </div>
+      </main>
+    </div>
+  </div>
+
+    <!-- CONFIRM MODAL -->
+    <div class="custom-modal-overlay" id="confirm-modal">
+      <div class="custom-modal-card">
+        <div class="modal-title-row">
+          <div
+            style="width:2.5rem;height:2.5rem;border-radius:0.5rem;background:var(--warning-dim);color:var(--warning);display:flex;align-items:center;justify-content:center;">
+            <i data-lucide="alert-triangle"></i>
+          </div>
+          <h3 id="confirm-title">Konfirmasi</h3>
+        </div>
+        <p class="modal-desc" id="confirm-desc">Apakah Anda yakin?</p>
+        <div class="modal-actions">
+          <button class="btn-modal-outline" onclick="window.closeConfirmModal()">Batal</button>
+          <button class="btn-modal-fill" id="confirm-btn-yes">Ya, Lanjutkan</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div class="toast" id="toast">
+      <i data-lucide="check-circle-2" id="toast-icon"></i>
+      <span id="toast-msg">Success</span>
+    </div>
+
+  <script>
+    // Config
+    const GAS_URL = ""; // Deprecated
+
+    const sessions = [
+      { id: 1, name: 'Sesi Pagi', start: '09:00', end: '11:00' },
+      { id: 2, name: 'Sesi Siang', start: '13:00', end: '15:00' },
+      { id: 3, name: 'Sesi Sore', start: '15:30', end: '17:30' }
+    ];
+
+    var studios = [];
+    var currentMonth = new Date();
+    var selectedDate = new Date();
+    var selectedStudio = null;
+    var selectedSession = null;
+    var bookings = [];
+    var openedDates = [];
+    var suratMasuk = [];
+    var appSettings = {};
+    var fileBase64 = null;
+    var fileName = null;
+    var heroFileBase64 = null;
+    var heroFileName = null;
+    var isAdmin = false;
+    var secretKnocks = 0;
+    var knockTimeout;
+    var heroSliderInterval = null;
+    var pendingWaPayload = null;
+
+    function getISODateStr(d) {
+      if (!d) return '';
+      const z = n => ('0' + n).slice(-2);
+      return d.getFullYear() + '-' + z(d.getMonth() + 1) + '-' + z(d.getDate());
+    }
+    var pendingWaPromise = null;
+    var pendingWaStudio = null;
+    var currentHeroIndex = 0;
+    var currentWaBookingId = null;
+
+    // MODAL STATE & HELPERS
+    var confirmCallback = null;
+    var promptCallback = null;
+
+    function openConfirmModal(title, desc, onConfirm, isDanger = false) {
+      document.getElementById('confirm-title').innerText = title;
+      document.getElementById('confirm-desc').innerText = desc;
+      const btn = document.getElementById('confirm-btn-yes');
+      btn.className = isDanger ? 'btn-modal-fill btn-modal-danger' : 'btn-modal-fill';
+      confirmCallback = onConfirm;
+      document.getElementById('confirm-modal').classList.add('active');
+    }
+    function closeConfirmModal() {
+      document.getElementById('confirm-modal').classList.remove('active');
+      confirmCallback = null;
+    }
+    document.getElementById('confirm-btn-yes').addEventListener('click', () => {
+      if (confirmCallback) confirmCallback();
+      closeConfirmModal();
+    });
+
+    function handleSecretKnock() {
+      secretKnocks++;
+      clearTimeout(knockTimeout);
+      knockTimeout = setTimeout(() => { secretKnocks = 0; }, 1500);
+
+      if (secretKnocks >= 5) {
+        secretKnocks = 0;
+        if (window.openLoginModal) window.openLoginModal();
+      }
+    }
+
+    window.exitAdminMode = function() {
+      if (window.signOutAdmin) window.signOutAdmin();
+      window.location.href = 'index.html';
+    };
+
+    function closeModal() {
+      // Intentionally left blank (no index modals here)
+    }
+
+    window.continueToWhatsApp = async function () {
+      document.getElementById('ticket-intercept-modal').classList.remove('active');
+
+      const payload = pendingWaPayload;
+      const studio = pendingWaStudio;
+      if (!payload) return;
+
+      const waWindow = window.open('', '_blank');
+      if (waWindow) {
+        waWindow.document.write(`
+          <html><head><title>Memproses Reservasi...</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+          <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;800&display=swap" rel="stylesheet">
+          <style>
+            body { font-family: 'Raleway', sans-serif; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; margin:0; background:#f0f2f5; color:#111b21; }
+            .card { background: #fff; padding: 2.5rem 2rem; border-radius: 1.5rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); text-align: center; max-width: 90%; width: 320px; }
+            .icon-container { width: 80px; height: 80px; background: #25D36615; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem auto; position: relative; }
+            .icon-container svg { width: 40px; height: 40px; color: #25D366; }
+            .spinner-ring { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 3px solid transparent; border-top-color: #25D366; border-right-color: #25D366; border-radius: 50%; animation: spin 1s linear infinite; }
+            @keyframes spin { to { transform: rotate(360deg); } }
+            h2 { font-size: 1.25rem; font-weight: 800; margin: 0 0 10px 0; color: #111b21; }
+            p { color: #667781; font-size: 0.875rem; line-height: 1.5; margin: 0 0 1.5rem 0; }
+            .skeleton-bar { height: 8px; background: #e9edef; border-radius: 4px; margin-bottom: 8px; overflow: hidden; position: relative; }
+            .skeleton-bar::after { content: ""; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent); animation: shimmer 1.5s infinite ease-in-out; }
+            @keyframes shimmer { 100% { left: 200%; } }
+          </` + `style>
+          </` + `head><body>
+            <div class="card">
+              <div class="icon-container">
+                <div class="spinner-ring"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+              </div>
+              <h2>Membuka WhatsApp...</h2>
+              <p>Mengamankan dokumen permohonan Anda dan menyiapkan pesan.</p>
+              <div style="text-align: left;">
+                <div class="skeleton-bar" style="width: 100%;"></div>
+                <div class="skeleton-bar" style="width: 80%;"></div>
+                <div class="skeleton-bar" style="width: 90%;"></div>
+              </div>
+            </div>
+          </` + `body></` + `html>
+        `);
+      }
+
+      try {
+        const data = await pendingWaPromise;
+        let finalFileUrl = 'Dilampirkan di sistem';
+        if (data && data.result === 'success' && data.fileUrl) {
+          finalFileUrl = data.fileUrl;
+          const idx = bookings.findIndex(b => b.id === payload.id);
+          if (idx !== -1) {
+            bookings[idx].file_url = data.fileUrl;
+            localStorage.setItem('podreserve_v2_bookings', JSON.stringify(bookings));
+            if (isAdmin) renderAdminData();
+          }
+        }
+
+        const waText = `Yth. Kepala Pusat Laboratorium Siber,%0A%0ASehubungan dengan keperluan penggunaan fasilitas studio, saya bermaksud untuk mengajukan permohonan reservasi dengan rincian sebagai berikut:%0A%0A*ID Reservasi:* ${payload.id}%0A*Nama:* ${payload.student_name}%0A*Identitas (NIM/NIP):* ${payload.student_id}%0A*Kategori:* ${payload.user_category}%0A*Instansi/Unit:* ${payload.organization}%0A*Kontak WA:* ${payload.phone_number}%0A%0A*Fasilitas Studio:* ${studio.name}%0A*Tanggal:* ${payload.date}%0A*Waktu (Sesi):* ${payload.start_time} - ${payload.end_time}%0A*Tujuan Penggunaan:* ${payload.purpose}%0A%0A*Tautan Dokumen Surat:* ${finalFileUrl}%0A%0ABesar harapan saya agar permohonan ini dapat ditindaklanjuti. Atas perhatian dan kebijaksanaan Bapak/Ibu, saya ucapkan terima kasih.`;
+        const waUrl = `https://wa.me/6282170735157?text=${waText}`;
+
+        if (waWindow) waWindow.location.href = waUrl;
+        else window.location.href = waUrl;
+
+      } catch (e) {
+        // Fallback
+        const waText = `Yth. Kepala Pusat Laboratorium Siber,%0A%0ASehubungan dengan keperluan penggunaan fasilitas studio, saya bermaksud untuk mengajukan permohonan reservasi dengan rincian sebagai berikut:%0A%0A*ID Reservasi:* ${payload.id}%0A*Nama:* ${payload.student_name}%0A*Identitas (NIM/NIP):* ${payload.student_id}%0A*Kategori:* ${payload.user_category}%0A*Instansi/Unit:* ${payload.organization}%0A*Kontak WA:* ${payload.phone_number}%0A%0A*Fasilitas Studio:* ${studio.name}%0A*Tanggal:* ${payload.date}%0A*Waktu (Sesi):* ${payload.start_time} - ${payload.end_time}%0A*Tujuan Penggunaan:* ${payload.purpose}%0A%0A*Tautan Dokumen Surat:* [Gagal Terlampir Otomatis]%0A%0ABesar harapan saya agar permohonan ini dapat ditindaklanjuti. Atas perhatian dan kebijaksanaan Bapak/Ibu, saya ucapkan terima kasih.`;
+        const waUrl = `https://wa.me/6282170735157?text=${waText}`;
+        if (waWindow) waWindow.location.href = waUrl;
+        else window.location.href = waUrl;
+      }
+
+      showToast("Permohonan Berhasil Dikirim!");
+    };
+
+    window.copyInterceptTicket = function () {
+      const code = document.getElementById('intercept-ticket-code').innerText;
+      navigator.clipboard.writeText(code);
+      showToast("Kode Tiket disalin!");
+    };
+
+    window.closeWelcomeModal = function () {
+      document.getElementById('welcome-modal').classList.remove('active');
+    };
+
+    window.openCheckTicketModal = function () {
+      closeWelcomeModal();
+      document.getElementById('check-ticket-input').value = '';
+      document.getElementById('check-ticket-result').style.display = 'none';
+      document.getElementById('check-ticket-modal').classList.add('active');
+      setTimeout(() => document.getElementById('check-ticket-input').focus(), 100);
+    };
+
+    window.closeCheckTicketModal = function () {
+      document.getElementById('check-ticket-modal').classList.remove('active');
+    };
+
+    window.printAdminReport = function () {
+      let html = `
+        <h2 style="text-align:center; font-family:sans-serif;">Rekap Reservasi Studio</h2>
+        <p style="text-align:center; font-family:sans-serif; margin-bottom:20px;">Waktu Cetak: ${new Date().toLocaleString('id-ID')}</p>
+        <table>
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>ID Booking</th>
+              <th>Waktu Sewa</th>
+              <th>Nama / Instansi</th>
+              <th>Kontak</th>
+              <th>Fasilitas</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      bookings.forEach((b, idx) => {
+        const statusText = b.status === 'approved' ? 'DISETUJUI' : b.status === 'rejected' ? 'DITOLAK' : 'PENDING';
+        html += `
+          <tr>
+            <td>${idx + 1}</td>
+            <td><strong>${b.id}</strong></td>
+            <td>${b.date}<br>${b.start_time} - ${b.end_time}</td>
+            <td>${b.student_name}<br><em>${b.nim_nip}</em></td>
+            <td>${b.phone_number}</td>
+            <td>${b.studio_id}</td>
+            <td>${statusText}</td>
+          </tr>
+        `;
+      });
+
+      html += `</tbody></table>`;
+      document.getElementById('print-area').innerHTML = html;
+      window.print();
+    };
+
+    window.adminPromptEditBooking = function (id) {
+      const b = bookings.find(x => x.id === id);
+      if (!b) return;
+      currentWaBookingId = id; // reuse var
+
+      const stSelect = document.getElementById('edit-b-studio');
+      stSelect.innerHTML = studios.map(s => `<option value="${s.id}" ${s.id === b.studio_id ? 'selected' : ''}>${s.name}</option>`).join('');
+
+      const seSelect = document.getElementById('edit-b-session');
+      seSelect.innerHTML = sessions.map(s => `<option value="${s.id}" ${s.start === b.start_time ? 'selected' : ''}>${s.name} (${s.start} - ${s.end})</option>`).join('');
+
+      document.getElementById('edit-b-date').value = b.date;
+      document.getElementById('edit-booking-modal').classList.add('active');
+    };
+
+    window.closeEditBookingModal = function () {
+      document.getElementById('edit-booking-modal').classList.remove('active');
+      currentWaBookingId = null;
+    };
+
+    window.submitEditBooking = async function () {
+      const studioId = document.getElementById('edit-b-studio').value;
+      const date = document.getElementById('edit-b-date').value;
+      const sessionId = document.getElementById('edit-b-session').value;
+
+      if (!studioId || !date || !sessionId) { showToast("Lengkapi semua data jadwal", "error"); return; }
+
+      const sess = sessions.find(s => s.id == sessionId);
+      const bookingId = currentWaBookingId;
+      closeEditBookingModal();
+
+      try {
+        showToast("Menyimpan jadwal baru...");
+        const payload = {
+          action: 'editBookingSchedule',
+          id: bookingId,
+          studio_id: studioId,
+          date: date,
+          start_time: sess.start,
+          end_time: sess.end
+        };
+        const res = await fetch(GAS_URL, { method: "POST", body: JSON.stringify(payload) });
+        const data = await res.json();
+        if (data.result === 'success') {
+          const bIndex = bookings.findIndex(b => b.id === bookingId);
+          if (bIndex > -1) {
+            bookings[bIndex].studio_id = studioId;
+            bookings[bIndex].date = date;
+            bookings[bIndex].start_time = sess.start;
+            bookings[bIndex].end_time = sess.end;
+            localStorage.setItem('podreserve_v2_bookings', JSON.stringify(bookings));
+          }
+          renderAdminData();
+          showToast("Jadwal berhasil diubah!");
+        } else throw new Error(data.message || "Gagal update");
+      } catch (e) { showToast(e.message || "Gagal menyimpan jadwal", "error"); }
+    };
+
+    window.adminPromptDeleteBooking = async function (id) {
+      if (!confirm("Yakin ingin menghapus riwayat reservasi ini secara permanen?")) return;
+
+      try {
+        showToast("Menghapus reservasi...");
+        const payload = { action: 'deleteBooking', id: id };
+        const res = await fetch(GAS_URL, { method: "POST", body: JSON.stringify(payload) });
+        const data = await res.json();
+        if (data.result === 'success') {
+          bookings = bookings.filter(b => b.id !== id);
+          localStorage.setItem('podreserve_v2_bookings', JSON.stringify(bookings));
+          renderAdminData();
+          showToast("Reservasi berhasil dihapus!");
+        } else throw new Error(data.message || "Gagal menghapus");
+      } catch (e) { showToast(e.message || "Gagal menghapus", "error"); }
+    };
+
+    window.checkFrontTicket = function () {
+      const code = document.getElementById('front-ticket-input').value.trim();
+      if (!code) {
+        showToast("Masukkan kode tiket terlebih dahulu", "error");
+        return;
+      }
+      document.getElementById('check-ticket-input').value = code;
+      window.submitCheckTicket();
+      document.getElementById('check-ticket-modal').classList.add('active');
+    };
+
+    window.submitCheckTicket = function () {
+      const val = document.getElementById('check-ticket-input').value.trim();
+      if (!val) return;
+      const resBox = document.getElementById('check-ticket-result');
+      const b = bookings.find(x => x.id.toLowerCase() === val.toLowerCase());
+
+      if (b) {
+        const statusColor = b.status === 'approved' ? '#10b981' : b.status === 'rejected' ? '#ef4444' : '#f59e0b';
+        const statusText = b.status === 'approved' ? 'DISETUJUI' : b.status === 'rejected' ? 'DITOLAK' : 'MENUNGGU';
+
+        resBox.innerHTML = `
+          <div style="display:flex; flex-direction:column; gap:0.5rem; text-align:left;">
+            <strong>Tiket Ditemukan</strong>
+            <div><strong>Pemesan:</strong> ${b.student_name}</div>
+            <div><strong>Jadwal:</strong> ${b.date} (${b.start_time} - ${b.end_time})</div>
+            <div><strong>Fasilitas:</strong> ${b.studio_id}</div>
+            <hr style="border:none; border-top:1px dashed var(--border-color); margin: 0.5rem 0;">
+            <strong>Status:</strong>
+            <span style="padding: 0.25rem 0.75rem; border-radius: 1rem; font-size: 0.75rem; font-weight: 800; background: ${statusColor}22; color: ${statusColor};">${statusText}</span>
+          </div>
+        `;
+        resBox.style.display = 'block';
+      } else {
+        resBox.innerHTML = `<div style="text-align:center; color:var(--error);">Tiket dengan kode <strong>${val}</strong> tidak ditemukan. Pastikan Anda mengetik dengan benar (cth: B-1234).</div>`;
+        resBox.style.display = 'block';
+      }
+    };
+
+    window.playNotificationSound = function () {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const ctx = new AudioContext();
+        const osc = ctx.createOscillator();
+        const gainNode = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.1);
+        gainNode.gain.setValueAtTime(0, ctx.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0.5, ctx.currentTime + 0.05);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+        osc.connect(gainNode);
+        gainNode.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.5);
+      } catch (e) {
+        console.log("Audio play failed:", e);
+      }
+    };
+
+    async function init() {
+      lucide.createIcons();
+      document.getElementById('filter-date').value = getISODateStr(new Date());
+
+      const savedB = localStorage.getItem('podreserve_v2_bookings');
+      if (savedB) bookings = JSON.parse(savedB);
+
+      const savedS = localStorage.getItem('podreserve_v2_studios');
+      if (savedS) {
+        studios = JSON.parse(savedS);
+        // renderStudios(); // removed
+      } else {
+        document.getElementById('studios-container').innerHTML = [1, 2, 3].map(() => `
+          <div class="studio-card">
+            <div class="skeleton-box" style="height:200px; width:100%; border-radius:1rem 1rem 0 0;"></div>
+            <div class="studio-info">
+              <div class="skeleton-box" style="height:1.5rem; width:60%; margin-bottom:0.5rem; border-radius:0.5rem;"></div>
+              <div class="skeleton-box" style="height:1rem; width:100%; margin-bottom:0.25rem; border-radius:0.5rem;"></div>
+              <div class="skeleton-box" style="height:1rem; width:80%; margin-bottom:1rem; border-radius:0.5rem;"></div>
+              <div class="skeleton-box" style="height:3rem; width:100%; border-radius:1rem;"></div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      const savedO = localStorage.getItem('podreserve_v2_opened_dates');
+      if (savedO) openedDates = JSON.parse(savedO);
+
+      const savedSettings = localStorage.getItem('podreserve_v2_settings');
+      if (savedSettings) {
+        appSettings = JSON.parse(savedSettings);
+        applySettings();
+      }
+
+      // renderCalendar();
+      // renderSchedule();
+
+      if (!savedB || bookings.length === 0) {
+        document.getElementById('reservasi-list').innerHTML = [1, 2, 3].map(() => `
+          <div class="res-card" style="padding:1.5rem; border-radius:1rem; border:1px solid var(--border-color); margin-bottom:1rem;">
+             <div class="skeleton-box" style="height:1.25rem; width:50%; margin-bottom:0.75rem; border-radius:0.5rem;"></div>
+             <div class="skeleton-box" style="height:1rem; width:80%; margin-bottom:0.5rem; border-radius:0.5rem;"></div>
+             <div class="skeleton-box" style="height:1rem; width:60%; margin-bottom:0.5rem; border-radius:0.5rem;"></div>
+             <div class="skeleton-box" style="height:1rem; width:40%; border-radius:0.5rem;"></div>
+          </div>
+        `).join('');
+      } else {
+        // renderReservasi();
+      }
+
+      fetchSyncData();
+
+      // Fallback Admin Access via URL Parameter (?admin=true)
+      if (window.location.search.includes('admin=true')) {
+        setTimeout(() => {
+          openPromptModal(() => {
+            isAdmin = true;
+            document.body.style.overflow = "auto";
+            document.querySelector("main").style.display = "none";
+            document.getElementById("pc-nav").style.display = "none";
+            document.getElementById("mobile-nav").style.display = "none";
+            document.getElementById("admin-view").style.display = "block";
+            renderAdminData();
+            showToast("Berhasil masuk mode Admin");
+
+            if (!window.adminAutoRefreshInterval) {
+              window.adminAutoRefreshInterval = setInterval(() => {
+                if (isAdmin) fetchSyncData(true);
+              }, 60000);
+            }
+          });
+        }, 500); // Small delay to let UI render first
+      }
+    }
+
+    function onCategoryChange() {
+      const cat = document.getElementById('b_category').value;
+      const idLabel = document.getElementById('label_id');
+      const orgLabel = document.getElementById('label_org');
+
+      if (cat === 'Mahasiswa') { idLabel.innerText = 'NIM'; orgLabel.innerText = 'Fakultas / Jurusan'; }
+      else if (cat === 'Dosen') { idLabel.innerText = 'NIP / NIDN'; orgLabel.innerText = 'Fakultas / Unit'; }
+      else if (cat === 'Tendik') { idLabel.innerText = 'NIP / NIK'; orgLabel.innerText = 'Unit Kerja'; }
+      else if (cat === 'Mitra') { idLabel.innerText = 'NIK KTP Penanggung Jawab'; orgLabel.innerText = 'Nama Instansi / Perusahaan'; }
+      else { idLabel.innerText = 'NIK KTP'; orgLabel.innerText = 'Alamat Lengkap'; }
+    }
+
+    async function fetchSyncData(isSilent = false) {
+      const icon = document.getElementById('sync-icon');
+      if (icon && !isSilent) icon.classList.add('lucide-spin');
+
+      if (!isSilent) {
+        // Tampilkan Loading Skeleton
+        const studiosBox = document.getElementById('studios-container');
+        if (studiosBox) {
+          studiosBox.innerHTML = Array(3).fill(`
+            <div class="studio-card" style="width: 320px; flex-shrink: 0; min-height: 380px;">
+              <div class="skeleton-box" style="width: 100%; height: 220px; border-radius: 1rem;"></div>
+              <div style="padding: 1.25rem;">
+                <div class="skeleton-box" style="width: 60%; height: 1.5rem; margin-bottom: 0.5rem; border-radius: 0.25rem;"></div>
+                <div class="skeleton-box" style="width: 90%; height: 1rem; margin-bottom: 0.25rem; border-radius: 0.25rem;"></div>
+                <div class="skeleton-box" style="width: 80%; height: 1rem; margin-bottom: 1.5rem; border-radius: 0.25rem;"></div>
+                <div class="skeleton-box" style="width: 100%; height: 3rem; border-radius: 999px;"></div>
+              </div>
+            </div>
+          `).join('');
+        }
+
+        const adminTable = document.getElementById('admin-bookings-table');
+        if (adminTable) {
+          adminTable.innerHTML = Array(4).fill(`
+            <tr>
+              <td colspan="15" style="padding:1rem;">
+                <div class="skeleton-box" style="width: 100%; height: 2.5rem; border-radius: 0.5rem;"></div>
+              </td>
+            </tr>
+          `).join('');
+        }
+
+        const suratTable = document.getElementById('admin-surat-table');
+        if (suratTable) {
+          suratTable.innerHTML = Array(4).fill(`
+            <tr>
+              <td colspan="6" style="padding:1rem;">
+                <div class="skeleton-box" style="width: 100%; height: 2.5rem; border-radius: 0.5rem;"></div>
+              </td>
+            </tr>
+          `).join('');
+        }
+
+        const scheduleBody = document.getElementById('availability-body');
+        if (scheduleBody) {
+          scheduleBody.innerHTML = Array(3).fill(`
+            <tr>
+              <td colspan="4" style="padding:1rem;">
+                <div class="skeleton-box" style="width: 100%; height: 2.5rem; border-radius: 0.5rem;"></div>
+              </td>
+            </tr>
+          `).join('');
+        }
+
+        const resList = document.getElementById('reservasi-list');
+        if (resList) {
+          resList.innerHTML = Array(3).fill(`
+            <div class="res-card" style="padding:1.5rem; border-radius:1rem; border:1px solid var(--border-color); margin-bottom:1rem;">
+               <div class="skeleton-box" style="height:1.25rem; width:50%; margin-bottom:0.75rem; border-radius:0.5rem;"></div>
+               <div class="skeleton-box" style="height:1rem; width:80%; margin-bottom:0.5rem; border-radius:0.5rem;"></div>
+               <div class="skeleton-box" style="height:1rem; width:60%; margin-bottom:0.5rem; border-radius:0.5rem;"></div>
+               <div class="skeleton-box" style="height:1rem; width:40%; border-radius:0.5rem;"></div>
+            </div>
+          `).join('');
+        }
+      }
+      if (!isSilent) {
+        setTimeout(() => { if (icon) icon.classList.remove('lucide-spin'); }, 500);
+      }
+    }
+
+    window.adminRefreshData = async function() {
+      const btn = document.getElementById('admin-refresh-btn');
+      if (!btn) return;
+      btn.disabled = true;
+      btn.innerHTML = `<i data-lucide="refresh-cw" class="lucide-spin" style="width:14px;height:14px;"></i> Memperbarui...`;
+      lucide.createIcons();
+
+      await fetchSyncData();
+
+      btn.innerHTML = `<i data-lucide="refresh-cw" style="width:14px;height:14px;"></i> Refresh`;
+      btn.disabled = false;
+      lucide.createIcons();
+      showToast("Data berhasil diperbarui!");
+    }
+
+    // Navigation Switch Logic
+    function switchTab(tabId, source = null) {
+      // Update Mobile Nav
+      document.querySelectorAll('#mobile-nav .nav-item').forEach(b => b.classList.remove('active'));
+      const mobileBtn = document.querySelector(`#mobile-nav .nav-item[onclick*="${tabId}"]`);
+      if (mobileBtn) mobileBtn.classList.add('active');
+
+      // Update PC Nav
+      document.querySelectorAll('#pc-nav .pc-nav-btn').forEach(b => b.classList.remove('active'));
+      const pcBtn = document.querySelector(`#pc-nav .pc-nav-btn[onclick*="${tabId}"]`);
+      if (pcBtn) pcBtn.classList.add('active');
+
+      // Update Content
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      document.getElementById('tab-' + tabId).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.setHeroSlide = function (idx) {
+      currentHeroIndex = idx;
+      let images = [];
+      try { images = JSON.parse(appSettings['hero_images']); } catch (e) { }
+      if (images.length === 0 && appSettings['hero_image']) images = [appSettings['hero_image']];
+      if (images.length === 0) images = ['https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=2070&auto=format&fit=crop'];
+
+      const track = document.getElementById('hero-slider-track');
+      if (track) {
+        track.style.transform = `translateX(-${idx * 100}%)`;
+      }
+      const dotsContainer = document.getElementById('hero-dots');
+      if (dotsContainer) {
+        Array.from(dotsContainer.children).forEach((dot, i) => {
+          if (i === idx) dot.classList.add('active');
+          else dot.classList.remove('active');
+        });
+      }
+
+      if (heroSliderInterval) {
+        clearInterval(heroSliderInterval);
+      }
+      if (images.length > 1) {
+        heroSliderInterval = setInterval(() => {
+          currentHeroIndex = (currentHeroIndex + 1) % images.length;
+          window.setHeroSlide(currentHeroIndex);
+        }, 5000);
+      }
+    };
+
+    function applySettings() {
+      let images = [];
+      if (appSettings['hero_images']) {
+        try { images = JSON.parse(appSettings['hero_images']); }
+        catch (e) { images = [appSettings['hero_images']]; }
+      } else if (appSettings['hero_image']) {
+        images = [appSettings['hero_image']];
+      }
+
+      if (images.length === 0) {
+        images = ['https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=2070&auto=format&fit=crop'];
+      }
+
+      const heroSection = document.querySelector('.hero-section');
+      const track = document.getElementById('hero-slider-track');
+      const dotsContainer = document.getElementById('hero-dots');
+
+      if (heroSection) {
+        if (heroSliderInterval) clearInterval(heroSliderInterval);
+
+        if (track) {
+          track.innerHTML = images.map(img => `<div class="hero-slide" style="background-image: url('${getDirectImageUrl(img)}');"></div>`).join('');
+        }
+
+        if (dotsContainer) {
+          if (images.length > 1) {
+            dotsContainer.innerHTML = images.map((_, i) => `<div class="hero-dot" onclick="window.setHeroSlide(${i})"></div>`).join('');
+          } else {
+            dotsContainer.innerHTML = '';
+          }
+        }
+
+        window.setHeroSlide(0);
+      }
+
+      renderAdminBanners(images);
+    }
+
+    function renderAdminBanners(images) {
+      const list = document.getElementById('adm-banner-list');
+      if (!list) return;
+
+      const defaultImg = 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=2070&auto=format&fit=crop';
+      let isDefault = false;
+      if (images.length === 0) isDefault = true;
+      if (images.length === 1 && images[0] === defaultImg) isDefault = true;
+
+      if (isDefault) {
+        list.innerHTML = `<div style="text-align:center; padding:1rem; color:var(--text-muted); font-size: 0.875rem;">Belum ada banner. Gambar default sedang digunakan.</div>`;
+        return;
+      }
+      list.innerHTML = images.map((img, idx) => `
+        <div style="display:flex; align-items:center; gap:1rem; background:var(--bg-main); padding:0.5rem; border-radius:1rem; border:1px solid var(--border-color);">
+          <div style="width:80px; height:50px; background-image:url('${getDirectImageUrl(img)}'); background-size:cover; background-position:center; border-radius:0.5rem; flex-shrink:0;"></div>
+          <div style="flex-grow:1; font-size:0.75rem; color:var(--text-muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width: 200px;">${img}</div>
+          <button class="btn-modal-danger btn-modal-fill" style="padding:0.5rem; border-radius:0.5rem;" onclick="adminDeleteBanner(${idx})">
+            <i data-lucide="trash-2" style="width:16px; height:16px;"></i>
+          </button>
+        </div>
+      `).join('');
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    function getDirectImageUrl(url) {
+      if (!url) return '';
+      if (url.includes("lh3.googleusercontent.com")) return url;
+      if (url.includes("drive.google.com")) {
+        const match = url.match(/id=([a-zA-Z0-9_-]+)/) || url.match(/\/d\/([a-zA-Z0-9_-]{25,})/);
+        if (match && match[1]) {
+          return "https://drive.google.com/thumbnail?id=" + match[1] + "&sz=w1000";
+        }
+      }
+      return url;
+    }
+
+    function renderStudios() {
+      const container = document.getElementById('studios-container');
+      if (studios.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding: 3rem 1.25rem; width: 100%; color: var(--text-muted); font-style: italic;">Belum ada studio yang terdaftar saat ini.</div>`;
+        return;
+      }
+      container.innerHTML = studios.map(s => `
+        <div class="studio-card">
+          <div class="studio-img-wrap">
+            <img src="${getDirectImageUrl(s.img)}" alt="${s.name}" class="studio-img skeleton-box" onload="this.classList.remove('skeleton-box')" onerror="this.classList.remove('skeleton-box')">
+            <div class="studio-capacity"><i data-lucide="users" style="width:14px;height:14px;color:var(--text-main)"></i> ${s.cap} Orang</div>
+          </div>
+          <div class="studio-info">
+            <h3>${s.name}</h3>
+            <p>${s.desc}</p>
+            <button class="btn-book" onclick="openStudioDetailModal('${s.id}')">
+              Lihat Detail & Pesan
+            </button>
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    let selectedScheduleStudioId = null;
+
+    function renderStudioSelector() {
+      const container = document.getElementById('cal-studio-selector');
+      if (!container) return;
+      if (studios.length === 0) {
+        container.innerHTML = '';
+        return;
+      }
+      if (selectedScheduleStudioId === null || selectedScheduleStudioId === undefined || !studios.some(s => s.id == selectedScheduleStudioId)) {
+        selectedScheduleStudioId = studios[0].id;
+      }
+
+      const pcHtml = studios.map(s => `
+        <button class="cal-studio-pill ${s.id == selectedScheduleStudioId ? 'active' : ''}" onclick="selectScheduleStudio('${s.id}')">
+          <i data-lucide="mic-2" style="width:16px;height:16px;"></i> ${s.name}
+        </button>
+      `).join('');
+
+      const mobHtml = studios.map(s => `
+        <div class="studio-circle-item ${s.id == selectedScheduleStudioId ? 'active' : ''}" onclick="selectScheduleStudio('${s.id}')" style="cursor:pointer;">
+          <div class="studio-circle-img" style="background:var(--bg-main); display:flex; align-items:center; justify-content:center;">
+             <i data-lucide="mic-2" style="color:var(--text-main); width:24px; height:24px;"></i>
+          </div>
+          <span class="studio-circle-label">${s.name}</span>
+        </div>
+      `).join('');
+
+      container.innerHTML = `
+        <div class="cal-studio-selector-pc">${pcHtml}</div>
+        <div class="cal-studio-selector-mob">${mobHtml}</div>
+      `;
+      lucide.createIcons();
+    }
+
+    window.selectScheduleStudio = function (studioId) {
+      selectedScheduleStudioId = studioId;
+      renderStudioSelector();
+      // renderCalendar();
+    };
+
+    function renderCalendar() {
+      // Ensure studio is selected if none is set
+      if (selectedScheduleStudioId === null || selectedScheduleStudioId === undefined) {
+        renderStudioSelector();
+      }
+
+      document.getElementById('cal-month-year').innerText = currentMonth.toLocaleString('id-ID', { month: 'long', year: 'numeric' });
+      const firstDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
+      const lastDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0);
+
+      let html = '';
+      for (let i = 0; i < firstDay.getDay(); i++) { html += `<div class="cal-cell disabled"></div>`; }
+      for (let d = 1; d <= lastDay.getDate(); d++) {
+        const dateObj = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), d);
+        const isSelected = dateObj.toDateString() === selectedDate.toDateString();
+
+        const dateStr = getISODateStr(dateObj);
+        const isOpened = openedDates.some(o => o.date === dateStr);
+        const isClosed = !isOpened;
+
+        let availableSlots = 0;
+        let totalSlots = sessions.length;
+        if (!isClosed && selectedScheduleStudioId != null) {
+          let bookedCount = bookings.filter(b => b.studio_id == selectedScheduleStudioId && b.date == dateStr).length;
+          availableSlots = totalSlots - bookedCount;
+        }
+
+        let cellClass = 'cal-cell';
+        if (isSelected) cellClass += ' selected';
+        if (isClosed) cellClass += ' weekend-closed';
+
+        const clickEvent = isClosed ? '' : `onclick="selectDate(${currentMonth.getFullYear()}, ${currentMonth.getMonth()}, ${d})"`;
+
+        let statusHtml = '';
+        if (isClosed) {
+          statusHtml = `<span class="cal-cell-status status-closed">Tutup</span>`;
+        } else {
+          if (availableSlots > 0) {
+            statusHtml = `<span class="cal-cell-status status-available">${availableSlots} Sesi</span>`;
+          } else {
+            statusHtml = `<span class="cal-cell-status status-full">Penuh</span>`;
+          }
+        }
+
+        html += `
+          <div class="${cellClass}" ${clickEvent}>
+            <span>${d}</span>
+            <div class="cal-cell-content">
+              ${statusHtml}
+            </div>
+          </div>`;
+      }
+      document.getElementById('cal-grid').innerHTML = html;
+    }
+
+    function renderSchedule() {
+      const dateStr = getISODateStr(selectedDate);
+      const activeStudio = studios.find(s => s.id == selectedScheduleStudioId);
+      const container = document.getElementById('schedule-container');
+
+      if (!container) return;
+      if (!activeStudio) {
+        container.innerHTML = '';
+        return;
+      }
+
+      const isOpened = openedDates.some(o => o.date === dateStr);
+      if (!isOpened) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i data-lucide="calendar-x" style="width:48px;height:48px;margin-bottom:1rem;color:var(--text-muted);opacity:0.5;"></i>
+            <h3>Tanggal Tidak Tersedia</h3>
+            <p>Mohon maaf, jadwal pemesanan pada tanggal ini belum tersedia. Silakan pilih tanggal dengan indikator hijau pada kalender.</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      let slotsHtml = sessions.map(slot => {
+        const booking = bookings.find(b => b.studio_id == activeStudio.id && b.date == dateStr && b.start_time == slot.start);
+        if (booking) {
+          const isConfirmed = booking.status === 'approved';
+          return `
+          <div class="slot-item ${isConfirmed ? 'confirmed' : 'pending'}" style="opacity:0.6; cursor:not-allowed;">
+            <div style="display:flex; flex-direction:column; gap:0.25rem;">
+              <span style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--text-muted);">${slot.name}</span>
+              <span style="display:flex;align-items:center;gap:0.5rem; font-size:1rem;"><i data-lucide="clock" style="width:16px;height:16px;"></i> ${slot.start} - ${slot.end}</span>
+            </div>
+            <span style="font-size:0.75rem; background:var(--bg-main); padding:0.25rem 0.75rem; border-radius:999px; font-weight:800;">${isConfirmed ? 'Sudah Dipesan' : 'Menunggu'}</span>
+          </div>`;
+        }
+        return `
+        <div class="slot-item available" onclick="openBookingModal('${activeStudio.id}', '${slot.start}')" style="background:#f0fdf4; border:1px solid #bbf7d0; cursor:pointer; transition:all 0.2s;">
+          <div style="display:flex; flex-direction:column; gap:0.25rem;">
+            <span style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:#166534;">${slot.name}</span>
+            <span style="display:flex;align-items:center;gap:0.5rem; font-size:1rem; color:#15803d;"><i data-lucide="clock" style="width:16px;height:16px;color:#16a34a"></i> ${slot.start} - ${slot.end}</span>
+          </div>
+          <button style="background:#16a34a; color:white; border:none; padding:0.5rem 1rem; border-radius:999px; font-weight:800; font-size:0.75rem; cursor:pointer; display:flex; align-items:center; gap:0.25rem;">
+             Pesan <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+          </button>
+        </div>`;
+      }).join('');
+
+      container.innerHTML = `
+        <!-- Langkah 3 -->
+        <div style="background:var(--bg-panel); border-radius:1.5rem; padding:1.5rem; border:1px solid var(--border-color); margin-top:1.5rem; margin-bottom:2rem; box-shadow:0 8px 30px rgba(0,0,0,0.04);">
+          <div style="text-align:center; margin-bottom:1.5rem;">
+             <span style="display:inline-block; background:var(--accent); color:white; padding:0.25rem 0.75rem; border-radius:999px; font-weight:800; font-size:0.75rem; margin-bottom:0.75rem;">Langkah 3</span>
+             <h3 style="font-size:1.25rem; font-weight:800; color:var(--text-main);">Pilih Jam Sesi</h3>
+             <p style="font-size:0.875rem; color:var(--text-muted); margin-top:0.25rem;">
+               Studio: <strong style="color:var(--text-main);">${activeStudio.name}</strong> &bull; Tanggal: <strong style="color:var(--text-main);">${selectedDate.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</strong>
+             </p>
+          </div>
+          <div class="slots-grid">${slotsHtml}</div>
+        </div>
+      `;
+      lucide.createIcons();
+    }
+
+    function changeMonth(offset) { currentMonth.setMonth(currentMonth.getMonth() + offset); }
+
+    function selectDate(y, m, d) {
+      selectedDate = new Date(y, m, d);
+      document.getElementById('filter-date').value = getISODateStr(selectedDate);
+      // renderCalendar();
+      // renderSchedule();
+
+      if (window.innerWidth < 768) {
+        const fab = document.getElementById('fab-scroll-schedule');
+        if (fab) {
+          fab.style.transform = 'translateX(-50%) translateY(0)';
+          fab.style.opacity = '1';
+          fab.style.pointerEvents = 'auto';
+
+          clearTimeout(window.fabTimeout);
+          window.fabTimeout = setTimeout(() => {
+            fab.style.transform = 'translateX(-50%) translateY(100px)';
+            fab.style.opacity = '0';
+            fab.style.pointerEvents = 'none';
+          }, 4000);
+        }
+      }
+    }
+
+    function renderReservasi() {
+      const container = document.getElementById('reservasi-list');
+      if (bookings.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding: 4rem 1rem; color: var(--text-muted); font-size:0.875rem; background:var(--bg-panel); border-radius:1rem; border:1px solid var(--border-color);">Belum ada riwayat reservasi.</div>`;
+        return;
+      }
+      const sorted = [...bookings].sort((a, b) => new Date(b.date) - new Date(a.date));
+      container.innerHTML = sorted.map(b => {
+        const isConfirmed = b.status === 'approved';
+        const isRejected = b.status === 'rejected';
+        const sName = studios.find(s => s.id == b.studio_id)?.name || b.studio_id;
+
+        let badgeCls = 'pending'; let badgeText = 'Menunggu';
+        if (isConfirmed) { badgeCls = 'confirmed'; badgeText = 'Disetujui'; }
+        if (isRejected) { badgeCls = 'rejected'; badgeText = 'Ditolak'; } // You can style rejected if you want
+
+        return `
+        <div class="res-card">
+          <div class="res-header">
+            <div>
+              <div class="res-title" style="display:flex; align-items:center; gap:0.5rem;">
+                ${sName}
+                <span style="font-size:0.75rem; background:var(--bg-main); padding:0.15rem 0.5rem; border-radius:1rem; border:1px solid var(--border-color); color:var(--text-muted); font-weight:600;">${b.id}</span>
+              </div>
+              <div class="res-detail"><i data-lucide="user" style="width:14px;height:14px;"></i> ${b.student_name} (${b.organization})</div>
+              <div class="res-detail"><i data-lucide="calendar" style="width:14px;height:14px;"></i> ${b.date}</div>
+              <div class="res-detail"><i data-lucide="clock" style="width:14px;height:14px;"></i> ${b.start_time} - ${b.end_time}</div>
+            </div>
+            <div class="status-badge ${badgeCls}" ${isRejected ? 'style="background:#fee2e2; color:#ef4444;"' : ''}>${badgeText}</div>
+          </div>
+        </div>
+      `}).join('');
+      lucide.createIcons();
+    }
+
+    function openBookingModal(studioId, start_time = null) {
+      selectedStudio = studios.find(s => s.id == studioId);
+      document.getElementById('modal-studio-name').innerText = selectedStudio.name;
+
+      const categoryFromSearch = document.getElementById('filter-category').value;
+
+      document.getElementById('booking-form').reset();
+
+      if (categoryFromSearch) {
+        document.getElementById('b_category').value = categoryFromSearch;
+        onCategoryChange();
+      }
+
+      const inputDate = document.getElementById('filter-date').value;
+      document.getElementById('b_date').min = getISODateStr(new Date());
+      document.getElementById('b_date').value = inputDate || getISODateStr(selectedDate);
+
+      fileBase64 = null; fileName = null;
+      const fileLabel = document.getElementById('b_file_label');
+      fileLabel.innerHTML = `<i data-lucide="upload-cloud" style="width:24px;height:24px;"></i> <span>Upload Surat (Wajib PDF)</span>`;
+      fileLabel.classList.remove('has-file');
+
+      selectedSession = start_time ? sessions.find(s => s.start === start_time) : null;
+      renderModalSlots();
+      document.getElementById('booking-modal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+      lucide.createIcons();
+    }
+
+    function closeModal() { document.getElementById('booking-modal').classList.remove('active'); document.body.style.overflow = ''; }
+
+    function renderModalSlots() {
+      const dateStr = document.getElementById('b_date').value;
+      if (!dateStr) return;
+      const dateObj = new Date(dateStr);
+      const isWeekend = dateObj.getDay() === 0 || dateObj.getDay() === 6;
+      const select = document.getElementById('modal-slots-select');
+
+      let html = '<option value="" disabled selected>Pilih Sesi</option>';
+      sessions.forEach(slot => {
+        if (isWeekend) {
+          html += `<option value="${slot.id}" disabled>${slot.name}: ${slot.start} - ${slot.end} (Tutup)</option>`;
+          return;
+        }
+        const isBooked = bookings.some(b => b.studio_id == selectedStudio.id && b.date == dateStr && b.start_time == slot.start);
+        if (isBooked) {
+          html += `<option value="${slot.id}" disabled>${slot.name}: ${slot.start} - ${slot.end} (Booked)</option>`;
+        } else {
+          const isSelected = selectedSession && selectedSession.id === slot.id;
+          html += `<option value="${slot.id}" ${isSelected ? 'selected' : ''}>${slot.name}: ${slot.start} - ${slot.end}</option>`;
+        }
+      });
+      select.innerHTML = html;
+    }
+
+    window.selectModalSlot = function (id) {
+      selectedSession = sessions.find(s => s.id == id);
+    };
+
+    function handleFileSelect(input) {
+      const file = input.files[0];
+      if (!file) return;
+      if (file.type !== 'application/pdf') { showToast("Wajib format PDF!", "error"); input.value = ""; return; }
+
+      fileName = file.name;
+      const label = document.getElementById('b_file_label');
+      label.innerHTML = `<i data-lucide="file-check-2" style="width:24px;height:24px;"></i> <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px;">${fileName}</span>`;
+      label.classList.add('has-file');
+      lucide.createIcons();
+
+      const reader = new FileReader();
+      reader.onload = (e) => { fileBase64 = e.target.result.split(',')[1]; };
+      reader.readAsDataURL(file);
+    }
+
+    function showToast(msg, type = "success") {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-msg').innerText = msg;
+      document.getElementById('toast-icon').setAttribute('data-lucide', type === 'success' ? 'check-circle-2' : 'alert-circle');
+      toast.className = `toast show ${type}`;
+      lucide.createIcons();
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // --- ADMIN LOGIC ---
+    window.switchAdminTab = function(tab) {
+      document.getElementById('btn-adm-book').classList.remove('active');
+      document.getElementById('btn-adm-std').classList.remove('active');
+      document.getElementById('btn-adm-hol').classList.remove('active');
+      document.getElementById('btn-adm-set').classList.remove('active');
+      
+      const activeBtn = document.getElementById('btn-adm-' + tab);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      document.getElementById('adm-book').style.display = tab === 'book' ? 'block' : 'none';
+      document.getElementById('adm-std').style.display = tab === 'std' ? 'block' : 'none';
+      document.getElementById('adm-hol').style.display = tab === 'hol' ? 'block' : 'none';
+      document.getElementById('adm-set').style.display = tab === 'set' ? 'block' : 'none';
+
+      const titles = {
+        'book': 'Kelola Reservasi',
+        'std': 'Kelola Studio (Fasilitas)',
+        'surat': 'Manajemen Surat Masuk',
+        'hol': 'Manajemen Jadwal',
+        'set': 'Pengaturan Banner'
+      };
+      const titleEl = document.getElementById('admin-page-title');
+      if (titleEl) titleEl.innerText = titles[tab] || 'Admin Dashboard';
+    }
+
+    window.renderAdminData = function () {
+      const bTable = document.getElementById('admin-bookings-table');
+      if (!bTable) return;
+
+      const pendingCount = bookings.filter(b => !b.status || b.status === 'pending').length;
+      const badge = document.getElementById('pending-badge');
+      if (badge) {
+        if (pendingCount > 0) {
+          badge.textContent = pendingCount;
+          badge.style.display = 'inline-block';
+        } else {
+          badge.style.display = 'none';
+        }
+      }
+
+      if (bookings.length === 0) {
+        bTable.innerHTML = `<tr><td colspan="15" style="padding:1rem;text-align:center;">Tidak ada data pemesanan</td></tr>`;
+      } else {
+        const sorted = [...bookings].sort((a, b) => new Date(b.date) - new Date(a.date));
+        bTable.innerHTML = sorted.map(b => {
+          const statusColor = b.status === 'approved' ? '#10b981' : b.status === 'rejected' ? '#ef4444' : '#f59e0b';
+          const waClean = b.phone_number ? b.phone_number.toString().replace(/\\D/g, '').replace(/^0/, '62') : '';
+
+          return `
+            <tr>
+              <td data-label="ID / Waktu" style="padding: 1rem;"><strong>${b.id || '-'}</strong><br><span style="font-size:0.75rem; color:var(--text-muted);">${b.date || '-'}<br>${b.start_time || '-'} - ${b.end_time || '-'}</span></td>
+              <td data-label="Pemesan" style="padding: 1rem;"><strong>${b.student_name || '-'}</strong><br><span style="font-size:0.75rem; color:var(--text-muted);">${b.user_category || '-'} - ${b.organization || '-'}</span><br><span style="font-size:0.75rem; color:var(--text-muted);">ID: ${b.student_id || '-'}</span></td>
+              <td data-label="Kontak & Fasilitas" style="padding: 1rem; font-size:0.875rem;">
+                <strong style="color:var(--accent);">Studio: ${b.studio_id || '-'}</strong><br>
+                ${b.email || '-'}<br>
+                ${waClean ? `<a href="https://wa.me/${waClean}" target="_blank" class="btn-modal-fill" style="background:#25D366; color:#fff; text-decoration:none; display:inline-flex; align-items:center; gap:0.5rem; padding: 0.5rem 1rem; border-radius:999px; font-weight:800; font-size:0.875rem; margin-top:0.5rem; transition: transform 0.2s; box-shadow: 0 4px 6px rgba(37, 211, 102, 0.3);"><i data-lucide="message-circle" style="width:16px;height:16px;"></i> +${waClean}</a>` : `<div style="display:flex; flex-direction:column; gap:0.5rem; margin-top:0.5rem;"><span style="font-size:0.75rem; color:var(--text-muted); font-style:italic;">Tidak ada data WA</span><button class="btn-modal-outline" style="padding:0.25rem 0.5rem; font-size:0.75rem; width:fit-content;" onclick="adminPromptAddWA('${b.id}')">+ WA</button></div>`}
+              </td>
+              <td data-label="Surat / Tujuan" style="padding: 1rem;">
+                <div style="font-size:0.875rem; margin-bottom:0.5rem;">${b.purpose || '-'}</div>
+                ${b.file_url && b.file_url !== 'Tidak ada file' ? `<a href="${b.file_url}" target="_blank" style="color:var(--accent); font-weight:700; font-size:0.875rem; display:inline-flex; align-items:center; gap:0.25rem;"><i data-lucide="file-check-2" style="width:16px;height:16px;"></i> Lihat File</a>` : '-'}
+              </td>
+              <td data-label="Status & Aksi" style="padding: 1rem;" class="action-buttons">
+                <div style="margin-bottom: 0.75rem;">
+                  <span style="padding: 0.25rem 0.75rem; border-radius: 1rem; font-size: 0.75rem; font-weight: 800; background: ${statusColor}22; color: ${statusColor}; text-transform:uppercase;">${b.status || '-'}</span>
+                </div>
+                ${(!b.status || b.status === 'pending') ? `
+                  <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:0.5rem;">
+                    <button class="btn-modal-fill" style="padding:0.35rem 0.75rem; font-size:0.75rem;" onclick="adminUpdateBooking('${b.id}', 'approved')">Approve</button>
+                    <button class="btn-modal-danger btn-modal-fill" style="padding:0.35rem 0.75rem; font-size:0.75rem;" onclick="adminUpdateBooking('${b.id}', 'rejected')">Reject</button>
+                  </div>
+                  <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                    <button class="btn-modal-outline" style="padding:0.35rem 0.75rem; font-size:0.75rem; border-color:var(--accent); color:var(--accent);" onclick="adminPromptEditBooking('${b.id}')">Ubah Jadwal</button>
+                    <button class="btn-modal-outline" style="padding:0.35rem 0.75rem; font-size:0.75rem; color:var(--error); border-color:var(--error-dim);" onclick="adminPromptDeleteBooking('${b.id}')">Hapus</button>
+                  </div>
+                ` : `
+                  <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                    <button class="btn-modal-outline" style="padding:0.35rem 0.75rem; font-size:0.75rem; border-color:var(--accent); color:var(--accent);" onclick="adminPromptEditBooking('${b.id}')">Ubah Jadwal</button>
+                    <button class="btn-modal-outline" style="padding:0.35rem 0.75rem; font-size:0.75rem; color:var(--error); border-color:var(--error-dim);" onclick="adminPromptDeleteBooking('${b.id}')">Hapus</button>
+                  </div>
+                `}
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      let currentWaBookingId = null;
+
+      window.adminPromptAddWA = function (bookingId) {
+        currentWaBookingId = bookingId;
+        document.getElementById('wa-prompt-input').value = '';
+        document.getElementById('wa-prompt-modal').classList.add('active');
+        setTimeout(() => document.getElementById('wa-prompt-input').focus(), 100);
+      };
+
+      window.closeWAPromptModal = function () {
+        document.getElementById('wa-prompt-modal').classList.remove('active');
+        currentWaBookingId = null;
+      };
+
+      window.submitWAPromptModal = async function () {
+        const wa = document.getElementById('wa-prompt-input').value.trim();
+        if (!wa) {
+          showToast("Nomor WA tidak boleh kosong", "error");
+          return;
+        }
+
+        const bookingId = currentWaBookingId;
+        closeWAPromptModal();
+
+        try {
+          showToast("Menyimpan nomor WA...");
+          await window.updateDoc(window.doc(window.db, "bookings", bookingId), { phone_number: wa });
+          
+          const bIndex = bookings.findIndex(b => b.id === bookingId);
+          if (bIndex > -1) {
+            bookings[bIndex].phone_number = wa;
+            localStorage.setItem('podreserve_v2_bookings', JSON.stringify(bookings));
+          }
+          renderAdminData();
+          showToast("Nomor WA berhasil ditambahkan!");
+        } catch (e) { showToast(e.message || "Gagal menyimpan WA", "error"); }
+      };
+
+      // Render Studios
+      const sTable = document.getElementById('admin-studios-table');
+      if (sTable) {
+        if (studios.length === 0) {
+          sTable.innerHTML = `<tr><td colspan="5" style="padding:1rem;text-align:center;">Tidak ada data studio</td></tr>`;
+        } else {
+          sTable.innerHTML = studios.map(s => `
+            <tr>
+              <td data-label="ID" style="padding: 1rem; font-weight:800;">${s.id}</td>
+              <td data-label="Nama Studio" style="padding: 1rem;"><strong>${s.name}</strong><br><span style="font-size:0.75rem; color:var(--text-muted);">${s.desc}</span></td>
+              <td data-label="Kapasitas" style="padding: 1rem; font-weight:700;">${s.cap} Orang</td>
+              <td data-label="Gambar" style="padding: 1rem;"><img src="${getDirectImageUrl(s.img)}" style="width: 140px; height: 80px; object-fit:cover; border-radius:0.5rem; border:1px solid var(--border-color); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);" class="skeleton-box" onload="this.classList.remove('skeleton-box')" onerror="this.classList.remove('skeleton-box')"></td>
+              <td data-label="Aksi" style="padding: 1rem; text-align:right;">
+                <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-bottom:0.75rem;">
+                  <button class="btn-icon" style="width:32px;height:32px;background:var(--bg-main);" onclick="adminMoveStudio('${s.id}', 'up')" title="Pindah ke Atas"><i data-lucide="arrow-up" style="width:16px;height:16px;"></i></button>
+                  <button class="btn-icon" style="width:32px;height:32px;background:var(--bg-main);" onclick="adminMoveStudio('${s.id}', 'down')" title="Pindah ke Bawah"><i data-lucide="arrow-down" style="width:16px;height:16px;"></i></button>
+                </div>
+                <button class="btn-modal-outline" style="padding:0.35rem 0.75rem; font-size:0.75rem; margin-right:0.25rem;" onclick="openStudioFormModal('edit', '${s.id}')">Edit</button>
+                <button class="btn-modal-outline" style="padding:0.35rem 0.75rem; font-size:0.75rem; color:var(--error); border-color:var(--error-dim);" onclick="adminDeleteStudio('${s.id}')">Hapus</button>
+              </td>
+            </tr>
+          `).join('');
+        }
+      }
+
+      // Render Admin Calendar (Opened Dates)
+      window.renderAdminCalendar();
+    }
+
+    window.adminUpdateBooking = function(bookingId, status) {
+      const isDanger = status === 'rejected';
+      openConfirmModal(
+        "Ubah Status",
+        `Yakin ingin mengubah status reservasi ini menjadi ${status.toUpperCase()}?`,
+        async () => {
+          showToast("Memproses persetujuan...");
+          // Optimistic update
+          const bIndex = bookings.findIndex(b => b.id === bookingId);
+          if (bIndex !== -1) {
+            bookings[bIndex].status = status;
+            renderAdminData();
+            // renderSchedule(); renderReservasi();
+            localStorage.setItem('podreserve_v2_bookings', JSON.stringify(bookings));
+          }
+
+          try {
+            await window.updateDoc(window.doc(window.db, "bookings", bookingId), { status: status });
+            showToast("Status berhasil disimpan ke server");
+          } catch (err) {
+            showToast("Gagal menghubungi server", "error");
+          }
+        },
+        isDanger
+      );
+    }
+
+    // STUDIO CRUD LOGIC
+    let studioFileBase64 = null;
+    let studioFileName = null;
+
+    window.handleStudioImage = function(input) {
+      const file = input.files[0];
+      if (!file) return;
+      studioFileName = file.name;
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        studioFileBase64 = e.target.result.split(',')[1];
+      };
+      reader.readAsDataURL(file);
+    }
+
+    window.openStudioFormModal = function(mode, studioId = null) {
+      const form = document.getElementById('studio-form');
+      form.reset();
+      document.getElementById('sf_mode').value = mode;
+      studioFileBase64 = null;
+      studioFileName = null;
+      document.getElementById('sf_img_file').value = "";
+
+      const idInput = document.getElementById('sf_id');
+
+      if (mode === 'edit') {
+        document.getElementById('studio-form-title').innerText = 'Edit Studio';
+        idInput.readOnly = true;
+        idInput.style.background = 'var(--border-color)';
+
+        const s = studios.find(x => x.id === studioId);
+        if (s) {
+          idInput.value = s.id;
+          document.getElementById('sf_name').value = s.name;
+          document.getElementById('sf_cap').value = s.cap;
+          document.getElementById('sf_desc').value = s.desc;
+          document.getElementById('sf_img').value = s.img;
+
+          let fas = {};
+          if (s.fasilitas) {
+            try { fas = JSON.parse(s.fasilitas); }
+            catch (e) { fas.lainnya = s.fasilitas; }
+          }
+          document.getElementById('sf_fas_mic').value = fas.mic || "";
+          document.getElementById('sf_fas_lighting').value = fas.lighting || "";
+          document.getElementById('sf_fas_kursi').value = fas.kursi || "";
+          document.getElementById('sf_fas_tv').value = fas.tv || "Tidak Ada";
+          document.getElementById('sf_fas_tema').value = fas.tema || "Fleksibel";
+          document.getElementById('sf_fas_lainnya').value = fas.lainnya || "";
+        }
+      } else {
+        document.getElementById('studio-form-title').innerText = 'Tambah Studio Baru';
+        idInput.readOnly = false;
+        idInput.style.background = 'var(--bg-main)';
+      }
+
+      document.getElementById('studio-form-modal').classList.add('active');
+    }
+
+    window.closeStudioFormModal = function() {
+      document.getElementById('studio-form-modal').classList.remove('active');
+    };
+
+    window.formatURLFoto = function(url) {
+      if (!url) return '';
+      const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      if (match && match[1]) {
+        return `https://lh3.googleusercontent.com/d/${match[1]}`;
+      }
+      return url;
+    };
+
+    window.handleSaveStudio = async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('sf_submit_btn');
+      btn.disabled = true; btn.innerText = 'Menyimpan...';
+
+      const mode = document.getElementById('sf_mode').value;
+
+      const fasObj = {
+        mic: document.getElementById('sf_fas_mic').value,
+        lighting: document.getElementById('sf_fas_lighting').value,
+        kursi: document.getElementById('sf_fas_kursi').value,
+        tv: document.getElementById('sf_fas_tv').value,
+        tema: document.getElementById('sf_fas_tema').value,
+        lainnya: document.getElementById('sf_fas_lainnya').value
+      };
+
+      const payload = {
+        action: mode === 'edit' ? 'editStudio' : 'addStudio',
+        studio: {
+          id: document.getElementById('sf_id').value,
+          name: document.getElementById('sf_name').value,
+          cap: parseInt(document.getElementById('sf_cap').value),
+          desc: document.getElementById('sf_desc').value,
+          fasilitas: JSON.stringify(fasObj),
+          img: document.getElementById('sf_img').value // fallback to url if file upload fails
+        }
+      };
+
+      if (studioFileBase64 && studioFileName) {
+        payload.fileData = studioFileBase64;
+        payload.fileName = studioFileName;
+        // Temporary optimistic image
+        payload.studio.img = "https://placehold.co/800x500?text=Uploading...";
+      } else if (!payload.studio.img) {
+        payload.studio.img = "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800&auto=format&fit=crop";
+      }
+
+      // Optimistic Update
+      if (mode === 'add') {
+        studios.push(payload.studio);
+      } else {
+        const idx = studios.findIndex(s => s.id === payload.studio.id);
+        if (idx !== -1) studios[idx] = payload.studio;
+      }
+
+      localStorage.setItem('podreserve_v2_studios', JSON.stringify(studios));
+      renderAdminData();
+      closeStudioFormModal();
+      showToast("Data studio sedang diproses...");
+
+      try {
+        if (payload.fileData) {
+          const formData = new FormData();
+          formData.append('image', payload.fileData);
+          const imgbbRes = await fetch("https://api.imgbb.com/1/upload?key=b58352a6d8d5cd72479b9d0c1e8692d6", {
+            method: "POST",
+            body: formData
+          });
+          const imgbbData = await imgbbRes.json();
+          if (imgbbData.success) {
+            payload.studio.img = imgbbData.data.url;
+            const idx = studios.findIndex(s => s.id === payload.studio.id);
+            if (idx !== -1) {
+               studios[idx].img = imgbbData.data.url;
+               localStorage.setItem('podreserve_v2_studios', JSON.stringify(studios));
+               renderAdminData();
+            }
+          } else {
+            throw new Error("Gagal upload gambar ke ImgBB");
+          }
+        } else if (payload.studio.img && payload.studio.img.includes('drive.google.com')) {
+          payload.studio.img = window.formatURLFoto(payload.studio.img);
+        }
+        await window.setDoc(window.doc(window.db, "studios", payload.studio.id), payload.studio);
+        showToast("Data studio berhasil disimpan ke server");
+      } catch (err) {
+        showToast("Sinkronisasi gagal: " + err.message, "error");
+      }
+
+      btn.disabled = false; btn.innerText = 'Simpan Data';
+    }
+
+    window.adminDeleteStudio = function(studioId) {
+      openConfirmModal(
+        "Hapus Studio",
+        "Yakin ingin menghapus studio ini permanen? Data tidak dapat dikembalikan.",
+        async () => {
+          showToast("Menghapus studio...");
+          const idx = studios.findIndex(s => s.id === studioId);
+          if (idx !== -1) {
+            studios.splice(idx, 1);
+            localStorage.setItem('podreserve_v2_studios', JSON.stringify(studios));
+            renderAdminData();
+          }
+
+          try {
+            await window.deleteDoc(window.doc(window.db, "studios", studioId));
+            showToast("Studio berhasil dihapus dari server");
+          } catch (err) {
+            showToast("Gagal menghubungi server", "error");
+          }
+        },
+        true
+      );
+    }
+
+    window.adminMoveStudio = async function(studioId, dir) {
+      const idx = studios.findIndex(s => s.id === studioId);
+      if (idx === -1) return;
+
+      if (dir === 'up' && idx > 0) {
+        const temp = studios[idx];
+        studios[idx] = studios[idx - 1];
+        studios[idx - 1] = temp;
+      } else if (dir === 'down' && idx < studios.length - 1) {
+        const temp = studios[idx];
+        studios[idx] = studios[idx + 1];
+        studios[idx + 1] = temp;
+      } else {
+        return; // Cannot move further
+      }
+
+      // Optimistic update
+      renderAdminData();
+      // renderStudios();
+      localStorage.setItem('podreserve_v2_studios', JSON.stringify(studios));
+
+      try {
+        await fetch(GAS_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'moveStudio', id: studioId, dir: dir })
+        });
+      } catch (e) {
+        console.warn("Gagal sinkronisasi urutan", e);
+      }
+    }
+
+    window.openStudioDetailModal = function (id) {
+      const s = studios.find(x => x.id === id);
+      if (!s) return;
+      document.getElementById('detail-modal-img').src = getDirectImageUrl(s.img);
+      document.getElementById('detail-modal-title').innerText = s.name;
+      document.getElementById('detail-modal-desc').innerText = s.desc;
+      document.getElementById('detail-modal-cap').innerText = s.cap + ' Orang';
+
+      let fasHtml = '';
+      if (s.fasilitas) {
+        try {
+          const fas = JSON.parse(s.fasilitas);
+          if (fas.mic) fasHtml += `<span class="fasilitas-badge"><i data-lucide="mic" style="width:14px;height:14px;"></i> ${fas.mic} Mic</span>`;
+          if (fas.lighting) fasHtml += `<span class="fasilitas-badge"><i data-lucide="lightbulb" style="width:14px;height:14px;"></i> ${fas.lighting} Lighting</span>`;
+          if (fas.kursi) fasHtml += `<span class="fasilitas-badge"><i data-lucide="check-circle-2" style="width:14px;height:14px;"></i> ${fas.kursi} Tempat Duduk</span>`;
+          if (fas.tv && fas.tv === "Ada") fasHtml += `<span class="fasilitas-badge"><i data-lucide="tv" style="width:14px;height:14px;"></i> Layar TV</span>`;
+          if (fas.tema) fasHtml += `<span class="fasilitas-badge"><i data-lucide="palette" style="width:14px;height:14px;"></i> Vibe: ${fas.tema}</span>`;
+
+          if (fas.lainnya) {
+            const items = fas.lainnya.split(',').map(x => x.trim()).filter(x => x);
+            fasHtml += items.map(x => `<span class="fasilitas-badge"><i data-lucide="check-circle-2" style="width:14px;height:14px;"></i> ${x}</span>`).join('');
+          }
+        } catch (e) {
+          // Fallback if not JSON
+          const items = s.fasilitas.split(',').map(x => x.trim()).filter(x => x);
+          fasHtml = items.map(x => `<span class="fasilitas-badge"><i data-lucide="check-circle-2" style="width:14px;height:14px;"></i> ${x}</span>`).join('');
+        }
+      }
+      if (!fasHtml) {
+        fasHtml = '<span style="color:var(--text-muted);font-size:0.875rem;font-style:italic;">Belum ada data fasilitas tambahan.</span>';
+      }
+      document.getElementById('detail-modal-fasilitas').innerHTML = fasHtml;
+
+      document.getElementById('detail-modal-book-btn').onclick = function () {
+        closeStudioDetailModal();
+        switchTab('availability');
+        setTimeout(() => {
+          const scheduleSec = document.getElementById('schedule-section');
+          if (scheduleSec) {
+            scheduleSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 100);
+      };
+
+      document.getElementById('studio-detail-modal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+      lucide.createIcons();
+    }
+
+    window.closeStudioDetailModal = function () {
+      document.getElementById('studio-detail-modal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // --- OPENED DATES (WHITELIST) LOGIC ---
+    let currentAdminMonth = new Date();
+
+    window.renderAdminCalendar = function() {
+      document.getElementById('adm-cal-month-year').innerText = currentAdminMonth.toLocaleString('id-ID', { month: 'long', year: 'numeric' });
+      const lastDay = new Date(currentAdminMonth.getFullYear(), currentAdminMonth.getMonth() + 1, 0);
+
+      let html = '';
+      for (let d = 1; d <= lastDay.getDate(); d++) {
+        const dateObj = new Date(currentAdminMonth.getFullYear(), currentAdminMonth.getMonth(), d);
+        const dateStr = getISODateStr(dateObj);
+        const isOpened = openedDates.some(o => o.date === dateStr);
+        const dayName = dateObj.toLocaleDateString('id-ID', { weekday: 'short' });
+
+        html += `
+          <div class="adm-date-card">
+            <span class="adm-date-day">${dayName}</span>
+            <span class="adm-date-num">${d}</span>
+            <label class="toggle-switch-sm">
+              <input type="checkbox" id="toggle-${dateStr}" ${isOpened ? 'checked' : ''} onchange="adminToggleDate('${dateStr}')">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        `;
+      }
+      document.getElementById('adm-cal-grid').innerHTML = html;
+
+      const listDiv = document.getElementById('admin-opened-list');
+      if (listDiv) {
+        if (openedDates.length === 0) {
+          listDiv.innerHTML = `<div style="padding:1rem; text-align:center; color:var(--text-muted);">Belum ada jadwal yang dibuka.</div>`;
+        } else {
+          const sorted = [...openedDates].sort((a, b) => new Date(a.date) - new Date(b.date));
+          listDiv.innerHTML = sorted.map(o => `
+            <div style="display:flex; justify-content:space-between; padding:0.5rem 0; border-bottom:1px solid var(--border-color);">
+              <span style="font-weight:700;">${o.date}</span>
+              <span style="color:var(--text-muted); font-size:0.875rem;">${o.desc}</span>
+            </div>
+          `).join('');
+        }
+      }
+    }
+
+    window.changeAdminMonth = function(offset) {
+      currentAdminMonth.setMonth(currentAdminMonth.getMonth() + offset);
+      window.renderAdminCalendar();
+    }
+
+    window.adminToggleDate = async function(dateStr) {
+      const checkbox = document.getElementById('toggle-' + dateStr);
+      const targetState = checkbox.checked; // true if we want to open, false to close
+
+      showToast("Menyimpan jadwal...");
+
+      try {
+        if (targetState) {
+          await window.setDoc(window.doc(window.db, "openedDates", dateStr), { isOpened: true, desc: 'Buka' });
+          openedDates.push({ date: dateStr, desc: 'Buka' });
+        } else {
+          await window.deleteDoc(window.doc(window.db, "openedDates", dateStr));
+          openedDates = openedDates.filter(o => o.date !== dateStr);
+        }
+        localStorage.setItem('podreserve_v2_opened_dates', JSON.stringify(openedDates));
+        window.renderAdminCalendar(); // re-render to update the list below
+        showToast(`Jadwal berhasil di${targetState ? 'buka' : 'tutup'}!`, "success");
+      } catch (e) {
+        showToast("Gagal menghubungi server", "error");
+        checkbox.checked = !targetState; // revert toggle
+      }
+    }
+
+    window.convertFileToBase64 = function(input) {
+      const file = input.files[0];
+      if (!file) return;
+      heroFileName = file.name;
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        heroFileBase64 = e.target.result.split(',')[1];
+      };
+      reader.readAsDataURL(file);
+    }
+
+    window.adminDeleteBanner = async function(idx) {
+      let images = [];
+      if (appSettings['hero_images']) {
+        try { images = JSON.parse(appSettings['hero_images']); }
+        catch (e) { images = [appSettings['hero_images']]; }
+      } else if (appSettings['hero_image']) {
+        images = [appSettings['hero_image']];
+      }
+
+      images.splice(idx, 1);
+
+      try {
+        const val = JSON.stringify(images);
+        await window.setDoc(window.doc(window.db, "settings", "hero_images"), { value: val });
+        appSettings['hero_images'] = val;
+        localStorage.setItem('podreserve_v2_settings', JSON.stringify(appSettings));
+        applySettings();
+        showToast("Banner dihapus");
+      } catch (e) { showToast("Gagal menghapus banner", "error"); }
+    }
+
+    window.adminAddHeroImage = async function(btn) {
+      const link = document.getElementById('adm-hero-link').value;
+      if (!link && !heroFileBase64) return showToast("Masukkan link atau pilih gambar", "error");
+
+      let images = [];
+      if (appSettings['hero_images']) {
+        try { images = JSON.parse(appSettings['hero_images']); }
+        catch (e) { images = [appSettings['hero_images']]; }
+      } else if (appSettings['hero_image']) {
+        images = [appSettings['hero_image']];
+      }
+
+      try {
+        const oldText = btn.innerText;
+        btn.innerText = "Mengunggah...";
+        btn.disabled = true;
+
+        let finalUrl = link;
+
+        if (heroFileBase64) {
+          const formData = new FormData();
+          formData.append('image', heroFileBase64);
+          const imgbbRes = await fetch("https://api.imgbb.com/1/upload?key=b58352a6d8d5cd72479b9d0c1e8692d6", {
+            method: "POST",
+            body: formData
+          });
+          const imgbbData = await imgbbRes.json();
+          if (imgbbData.success) {
+            finalUrl = imgbbData.data.url;
+          } else {
+            throw new Error("Gagal upload ke ImgBB");
+          }
+        }
+
+        images.push(finalUrl);
+        const val = JSON.stringify(images);
+
+        await window.setDoc(window.doc(window.db, "settings", "hero_images"), { value: val });
+
+        appSettings['hero_images'] = val;
+        localStorage.setItem('podreserve_v2_settings', JSON.stringify(appSettings));
+        applySettings();
+        showToast("Banner berhasil ditambahkan!");
+        document.getElementById('adm-hero-link').value = '';
+        document.getElementById('adm-hero-file').value = '';
+        heroFileBase64 = null;
+        heroFileName = null;
+
+        btn.innerText = oldText;
+        btn.disabled = false;
+      } catch (e) {
+        showToast(e.message || "Gagal menambah banner", "error");
+        btn.innerText = "Tambah Banner";
+        btn.disabled = false;
+      }
+    }
+
+    // SURAT MASUK CRUD
+    window.renderSuratMasuk = function() {
+      const table = document.getElementById('admin-surat-table');
+      if (!table) return;
+
+      if (suratMasuk.length === 0) {
+        table.innerHTML = `<tr><td colspan="6" style="padding:1rem;text-align:center;">Tidak ada data surat masuk</td></tr>`;
+      } else {
+        table.innerHTML = suratMasuk.map(s => `
+          <tr>
+            <td data-label="ID Surat" style="padding: 1rem; font-weight:800;">${s.id}</td>
+            <td data-label="Judul Surat" style="padding: 1rem;"><strong>${s.title}</strong></td>
+            <td data-label="Pengirim" style="padding: 1rem;">${s.sender}</td>
+            <td data-label="Tanggal" style="padding: 1rem;">${s.date}</td>
+            <td data-label="Berkas" style="padding: 1rem;">
+              <a href="${s.link}" target="_blank" class="btn-modal-outline" style="padding:0.35rem 0.75rem; font-size:0.75rem; display:inline-flex; align-items:center; gap:0.25rem; text-decoration:none;">
+                <i data-lucide="external-link" style="width:14px;height:14px;"></i> Lihat Surat
+              </a>
+            </td>
+            <td data-label="Aksi" style="padding: 1rem; text-align:right;">
+              <button class="btn-modal-outline" style="padding:0.35rem 0.75rem; font-size:0.75rem; margin-right:0.25rem;" onclick="window.openSuratFormModal('edit', '${s.id}')">Edit</button>
+              <button class="btn-modal-outline" style="padding:0.35rem 0.75rem; font-size:0.75rem; color:var(--error); border-color:var(--error-dim);" onclick="window.adminDeleteSurat('${s.id}')">Hapus</button>
+            </td>
+          </tr>
+        `).join('');
+        lucide.createIcons();
+      }
+    };
+
+    window.openSuratFormModal = function(mode, id = null) {
+      document.getElementById('sm_mode').value = mode;
+      document.getElementById('sm_id').value = id || `SM-${Math.floor(Math.random() * 10000)}`;
+
+      if (mode === 'edit') {
+        document.getElementById('surat-form-title').innerText = 'Edit Surat Masuk';
+        const s = suratMasuk.find(x => x.id === id);
+        if (s) {
+          document.getElementById('sm_title').value = s.title;
+          document.getElementById('sm_sender').value = s.sender;
+          document.getElementById('sm_date').value = s.date;
+          document.getElementById('sm_link').value = s.link;
+        }
+      } else {
+        document.getElementById('surat-form-title').innerText = 'Tambah Surat Masuk';
+        document.getElementById('sm_title').value = '';
+        document.getElementById('sm_sender').value = '';
+        document.getElementById('sm_date').value = '';
+        document.getElementById('sm_link').value = '';
+      }
+      document.getElementById('surat-form-modal').classList.add('active');
+    };
+
+    window.closeSuratFormModal = function() {
+      document.getElementById('surat-form-modal').classList.remove('active');
+    };
+
+    window.handleSaveSurat = async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('sm_submit_btn');
+      btn.disabled = true; btn.innerText = 'Menyimpan...';
+
+      const payload = {
+        id: document.getElementById('sm_id').value,
+        title: document.getElementById('sm_title').value,
+        sender: document.getElementById('sm_sender').value,
+        date: document.getElementById('sm_date').value,
+        link: document.getElementById('sm_link').value
+      };
+
+      try {
+        await window.setDoc(window.doc(window.db, "surat_masuk", payload.id), payload);
+        showToast("Surat masuk berhasil disimpan!");
+        window.closeSuratFormModal();
+      } catch (err) {
+        showToast("Gagal menyimpan data: " + err.message, "error");
+      }
+      btn.disabled = false; btn.innerText = 'Simpan Data';
+    };
+
+    window.adminDeleteSurat = function(id) {
+      openConfirmModal(
+        "Hapus Surat Masuk",
+        "Yakin ingin menghapus data surat masuk ini permanen?",
+        async () => {
+          showToast("Menghapus surat...");
+          try {
+            await window.deleteDoc(window.doc(window.db, "surat_masuk", id));
+            showToast("Surat berhasil dihapus!");
+          } catch (err) {
+            showToast("Gagal menghubungi server", "error");
+          }
+        },
+        true
+      );
+    };
+
+    init();
+
+    // Show Welcome Modal once per session
+    if (!sessionStorage.getItem('podreserve_welcomed')) {
+      sessionStorage.setItem('podreserve_welcomed', 'true');
+      document.getElementById('welcome-modal').classList.add('active');
+    }
+
+    // Register PWA Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => {
+            console.log('PWA ServiceWorker registered', reg.scope);
+            reg.update(); // Force check for new service worker on load
+          })
+          .catch(err => console.warn('PWA ServiceWorker registration failed: ', err));
+      });
+
+      // Handle seamless auto-reloads when a new service worker takes over
+      let refreshing = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!refreshing) {
+          refreshing = true;
+          showToast("Pembaruan sistem tersedia! Menyegarkan...", "info");
+          setTimeout(() => window.location.reload(), 1500);
+        }
+      });
+    }
+  </script>
+  
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, onSnapshot, doc, setDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getStorage, ref as storageRef, uploadString, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBjv-yDTnY0abE7Zmfb0cSME4hwnjknw6g",
+      authDomain: "podreserve-cc46b.firebaseapp.com",
+      projectId: "podreserve-cc46b",
+      storageBucket: "podreserve-cc46b.firebasestorage.app",
+      messagingSenderId: "300314609509",
+      appId: "1:300314609509:web:d83470a99eae392b70c38c"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+    const auth = getAuth(app);
+
+    // Export to window for access from inline onclick handlers and legacy scripts
+    window.db = db;
+    window.doc = doc;
+    window.setDoc = setDoc;
+    window.updateDoc = updateDoc;
+    window.deleteDoc = deleteDoc;
+    window.collection = collection;
+    window.getStorage = () => storage;
+    window.storageRef = storageRef;
+    window.uploadString = uploadString;
+    window.getDownloadURL = getDownloadURL;
+
+    // Firebase Auth Logic
+    window.openLoginModal = function() {
+      document.getElementById('login-email').value = '';
+      document.getElementById('login-password').value = '';
+      document.getElementById('login-modal').classList.add('active');
+      setTimeout(() => document.getElementById('login-email').focus(), 100);
+    };
+
+    window.submitLogin = async function() {
+      const email = document.getElementById('login-email').value.trim();
+      const pass = document.getElementById('login-password').value;
+      const btn = document.getElementById('btn-login-submit');
+      
+      if (!email || !pass) return window.showToast("Email dan Password wajib diisi", "error");
+      
+      btn.disabled = true; btn.innerText = "Login...";
+      try {
+        await signInWithEmailAndPassword(auth, email, pass);
+        window.showToast("Berhasil login!");
+        // State is handled by onAuthStateChanged
+      } catch (err) {
+        window.showToast("Login gagal. Periksa kredensial Anda.", "error");
+      }
+      btn.disabled = false; btn.innerText = "Login ke Dasbor";
+    };
+
+    window.signOutAdmin = async function() {
+      try { await signOut(auth); } catch (e) { console.error(e); }
+    };
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        window.isAdmin = true;
+        document.body.style.overflow = "auto";
+        document.getElementById("login-view").style.display = "none";
+        document.getElementById("admin-view").style.display = "block";
+        if (typeof window.renderAdminData === "function") window.renderAdminData();
+      } else {
+        window.isAdmin = false;
+        document.getElementById("login-view").style.display = "flex";
+        document.getElementById("admin-view").style.display = "none";
+      }
+    });
+
+    // Real-time Listeners
+    onSnapshot(collection(db, "bookings"), (snapshot) => {
+      let newBookings = [];
+      let newCount = 0;
+      const currentBookings = window.bookings || bookings || [];
+      const oldIds = new Set(currentBookings.map(b => b.id));
+      
+      snapshot.forEach(docSnap => {
+        const data = docSnap.data();
+        newBookings.push(data);
+        if (window.isAdmin && !oldIds.has(data.id)) newCount++;
+      });
+      
+      bookings = newBookings;
+      window.bookings = newBookings;
+      localStorage.setItem('podreserve_v2_bookings', JSON.stringify(newBookings));
+      
+      if (window.isAdmin && typeof window.renderAdminData === "function") {
+        window.renderAdminData();
+        if (newCount > 0) {
+          window.playNotificationSound();
+          window.showToast(`Ada ${newCount} permohonan reservasi baru!`);
+        }
+      }
+    });
+
+    onSnapshot(collection(db, "studios"), (snapshot) => {
+      let newStudios = [];
+      snapshot.forEach(docSnap => newStudios.push(docSnap.data()));
+      studios = newStudios;
+      window.studios = newStudios;
+      localStorage.setItem('podreserve_v2_studios', JSON.stringify(newStudios));
+      
+      if (window.isAdmin && typeof window.renderAdminData === "function") {
+        window.renderAdminData();
+      }
+    });
+
+    onSnapshot(collection(db, "surat_masuk"), (snapshot) => {
+      let newSurat = [];
+      snapshot.forEach(docSnap => newSurat.push(docSnap.data()));
+      suratMasuk = newSurat;
+      window.suratMasuk = newSurat;
+      
+      if (typeof window.renderSuratMasuk === "function") {
+         window.renderSuratMasuk();
+      }
+    });
+
+    onSnapshot(collection(db, "openedDates"), (snapshot) => {
+      let newDates = [];
+      snapshot.forEach(docSnap => {
+        if (docSnap.data().isOpened) {
+          newDates.push({ date: docSnap.id, desc: docSnap.data().desc || 'Buka' });
+        }
+      });
+      openedDates = newDates;
+      window.openedDates = newDates;
+      localStorage.setItem('podreserve_v2_opened_dates', JSON.stringify(newDates));
+      
+      if (window.isAdmin && typeof window.renderAdminCalendar === "function") {
+        window.renderAdminCalendar();
+      }
+    });
+
+    onSnapshot(collection(db, "settings"), (snapshot) => {
+      let newSettings = {};
+      snapshot.forEach(docSnap => {
+        newSettings[docSnap.id] = docSnap.data().value;
+      });
+      appSettings = newSettings;
+      window.appSettings = newSettings;
+      localStorage.setItem('podreserve_v2_settings', JSON.stringify(newSettings));
+      
+      if (typeof window.applySettings === "function") {
+         window.applySettings();
+      }
+    });
+
+    // Initialize Admin UI elements
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+      window.switchAdminTab('book');
+      if (typeof window.renderAdminCalendar === "function") {
+        window.renderAdminCalendar();
+      }
+    });
+
+  </script>
+</body>
+
+</html>
