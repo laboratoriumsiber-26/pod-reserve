@@ -279,7 +279,7 @@
       justify-content: center;
       overflow: hidden;
     }
-    
+
     .hero-slider-track {
       position: absolute;
       top: 0;
@@ -290,7 +290,7 @@
       transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
       z-index: 0;
     }
-    
+
     .hero-slide {
       min-width: 100%;
       height: 100%;
@@ -642,6 +642,7 @@
       gap: 0.75rem;
       padding: 1.5rem;
     }
+
     /* Studio Selector (Mobile version) */
     .cal-studio-selector-mob {
       display: grid;
@@ -656,6 +657,7 @@
       .cal-studio-selector-pc {
         display: flex;
       }
+
       .cal-studio-selector-mob {
         display: none;
       }
@@ -732,8 +734,11 @@
       text-transform: uppercase;
       color: var(--text-muted);
     }
+
     @media (min-width: 480px) {
-      .cal-day-name { font-size: 0.75rem; }
+      .cal-day-name {
+        font-size: 0.75rem;
+      }
     }
 
     .cal-grid {
@@ -742,6 +747,7 @@
       padding: 0.5rem;
       gap: 0.25rem;
     }
+
     @media (min-width: 480px) {
       .cal-grid {
         padding: 0.5rem 1.5rem 1.5rem 1.5rem;
@@ -772,6 +778,7 @@
         border-radius: 1rem;
         font-size: 1.25rem;
       }
+
       .cal-cell-status {
         font-size: 0.75rem !important;
         padding: 0.1rem 0.35rem !important;
@@ -791,10 +798,11 @@
     }
 
     .cal-cell.weekend-closed {
-      background: var(--error-dim);
-      color: var(--error);
+      background: #f1f5f9;
+      color: #94a3b8;
       pointer-events: none;
-      border: 1px dashed rgba(239, 68, 68, 0.2);
+      border: 1px dashed #cbd5e1;
+      opacity: 0.6;
     }
 
     .cal-cell.selected {
@@ -828,6 +836,11 @@
     .status-full {
       background: rgba(239, 68, 68, 0.1);
       color: var(--error);
+    }
+
+    .status-closed {
+      background: #e2e8f0;
+      color: #64748b;
     }
 
     /* SLOTS MODAL */
@@ -947,19 +960,25 @@
       width: 44px;
       height: 24px;
     }
+
     .toggle-switch input {
       opacity: 0;
       width: 0;
       height: 0;
     }
+
     .toggle-slider {
       position: absolute;
       cursor: pointer;
-      top: 0; left: 0; right: 0; bottom: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       background-color: var(--border-color);
       transition: .3s;
       border-radius: 24px;
     }
+
     .toggle-slider:before {
       position: absolute;
       content: "";
@@ -970,12 +989,14 @@
       background-color: white;
       transition: .3s;
       border-radius: 50%;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
-    input:checked + .toggle-slider {
+
+    input:checked+.toggle-slider {
       background-color: var(--accent);
     }
-    input:checked + .toggle-slider:before {
+
+    input:checked+.toggle-slider:before {
       transform: translateX(20px);
     }
 
@@ -986,6 +1007,7 @@
       gap: 0.5rem;
       margin-top: 1rem;
     }
+
     @media(min-width: 768px) {
       .adm-dates-grid {
         grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -993,6 +1015,7 @@
         margin-top: 1.5rem;
       }
     }
+
     .adm-date-card {
       background: var(--bg-main);
       border: 1px solid var(--border-color);
@@ -1004,30 +1027,39 @@
       gap: 0.4rem;
       transition: all 0.2s;
     }
+
     .adm-date-card:hover {
       border-color: var(--accent-dim);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
+
     .adm-date-day {
       font-size: 0.65rem;
       color: var(--text-muted);
       font-weight: 700;
       text-transform: uppercase;
     }
+
     .adm-date-num {
       font-size: 1.1rem;
       font-weight: 800;
       color: var(--text-main);
     }
-    
+
     @media(min-width: 768px) {
       .adm-date-card {
         padding: 1rem 0.5rem;
         gap: 0.6rem;
         border-radius: 1rem;
       }
-      .adm-date-day { font-size: 0.75rem; }
-      .adm-date-num { font-size: 1.25rem; }
+
+      .adm-date-day {
+        font-size: 0.75rem;
+      }
+
+      .adm-date-num {
+        font-size: 1.25rem;
+      }
     }
 
     /* Small Toggle for Admin Grid */
@@ -1037,17 +1069,45 @@
       width: 36px;
       height: 20px;
     }
-    .toggle-switch-sm input { opacity: 0; width: 0; height: 0; }
+
+    .toggle-switch-sm input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
     .toggle-switch-sm .toggle-slider {
-      position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-      background-color: var(--border-color); transition: .3s; border-radius: 20px;
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--border-color);
+      transition: .3s;
+      border-radius: 20px;
     }
+
     .toggle-switch-sm .toggle-slider:before {
-      position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px;
-      background-color: white; transition: .3s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: absolute;
+      content: "";
+      height: 14px;
+      width: 14px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
-    .toggle-switch-sm input:checked + .toggle-slider { background-color: var(--accent); }
-    .toggle-switch-sm input:checked + .toggle-slider:before { transform: translateX(16px); }
+
+    .toggle-switch-sm input:checked+.toggle-slider {
+      background-color: var(--accent);
+    }
+
+    .toggle-switch-sm input:checked+.toggle-slider:before {
+      transform: translateX(16px);
+    }
 
     @media(min-width: 480px) {
       .slots-grid {
@@ -2069,12 +2129,13 @@
 
       <div class="hero-section">
         <div class="hero-slider-track" id="hero-slider-track">
-           <!-- Populated by JS -->
+          <!-- Populated by JS -->
         </div>
         <div class="hero-overlay"></div>
         <div class="hero-content">
           <h1 class="hero-title">Eksplorasi & Reservasi Studio Podcast</h1>
-          <p class="hero-subtitle">Fasilitas podcast dan rekaman profesional di lingkungan UIN Siber Syekh Nurjati Cirebon.</p>
+          <p class="hero-subtitle">Fasilitas podcast dan rekaman profesional di lingkungan UIN Siber Syekh Nurjati
+            Cirebon.</p>
         </div>
         <div class="hero-slider-dots" id="hero-dots"></div>
       </div>
@@ -2087,7 +2148,7 @@
           <div style="flex-grow: 1; width: 100%;">
             <label>Cek Status Tiket</label>
             <div style="display:flex; gap:0.5rem; align-items:center;">
-              <input type="text" id="front-ticket-input" placeholder="Kode (Misal: B-1234)"
+              <input type="text" id="front-ticket-input" placeholder="Kode (Misal: B-1234)" autocomplete="off"
                 style="width: 100%; border: 1px solid var(--border-color); border-radius: 0.5rem; padding: 0.4rem 0.75rem; outline: none; font-family: var(--font-family); font-size: 0.875rem; background: var(--bg-main); color: var(--text-main); transition: border-color 0.2s;"
                 onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border-color)'"
                 onkeydown="if(event.key === 'Enter') checkFrontTicket()">
@@ -2139,14 +2200,18 @@
         <p class="section-subtitle">Ikuti langkah mudah di bawah ini untuk memesan studio podcast kami.</p>
       </div>
 
-      <div class="calendar-card" style="margin-top: 0; max-width: 1200px; margin-left: auto; margin-right: auto; background: transparent; border: none; box-shadow: none;">
-        
+      <div class="calendar-card"
+        style="margin-top: 0; max-width: 1200px; margin-left: auto; margin-right: auto; background: transparent; border: none; box-shadow: none;">
+
         <!-- Langkah 1 -->
-        <div style="background:var(--bg-panel); border:1px solid var(--border-color); border-radius:1.5rem; padding-bottom:0.5rem; margin-bottom:1.5rem; overflow:hidden; box-shadow:0 8px 30px rgba(0,0,0,0.04);">
+        <div
+          style="background:var(--bg-panel); border:1px solid var(--border-color); border-radius:1.5rem; padding-bottom:0.5rem; margin-bottom:1.5rem; overflow:hidden; box-shadow:0 8px 30px rgba(0,0,0,0.04);">
           <div style="padding: 1.5rem 1.5rem 0 1.5rem; text-align:center;">
-             <span style="display:inline-block; background:var(--accent); color:white; padding:0.25rem 0.75rem; border-radius:999px; font-weight:800; font-size:0.75rem; margin-bottom:0.75rem;">Langkah 1</span>
-             <h3 style="font-weight:800; font-size:1.125rem;">Pilih Studio</h3>
-             <p style="color:var(--text-muted); font-size:0.875rem;">Silakan pilih studio yang ingin Anda pesan.</p>
+            <span
+              style="display:inline-block; background:var(--accent); color:white; padding:0.25rem 0.75rem; border-radius:999px; font-weight:800; font-size:0.75rem; margin-bottom:0.75rem;">Langkah
+              1</span>
+            <h3 style="font-weight:800; font-size:1.125rem;">Pilih Studio</h3>
+            <p style="color:var(--text-muted); font-size:0.875rem;">Silakan pilih studio yang ingin Anda pesan.</p>
           </div>
           <!-- Studio Selector -->
           <div class="cal-studio-selector" id="cal-studio-selector" style="padding-top: 1rem;">
@@ -2155,45 +2220,59 @@
         </div>
 
         <!-- Langkah 2 -->
-        <div style="background:var(--bg-panel); border:1px solid var(--border-color); border-radius:1.5rem; overflow:hidden; box-shadow:0 8px 30px rgba(0,0,0,0.04);">
+        <div
+          style="background:var(--bg-panel); border:1px solid var(--border-color); border-radius:1.5rem; overflow:hidden; box-shadow:0 8px 30px rgba(0,0,0,0.04);">
           <div style="padding: 1.5rem 1.5rem 0 1.5rem; text-align:center;">
-             <span style="display:inline-block; background:var(--accent); color:white; padding:0.25rem 0.75rem; border-radius:999px; font-weight:800; font-size:0.75rem; margin-bottom:0.75rem;">Langkah 2</span>
-             <h3 style="font-weight:800; font-size:1.125rem;">Pilih Tanggal</h3>
-             <p style="color:var(--text-muted); font-size:0.875rem;">Pilih tanggal dengan indikator <span style="color:#22c55e; font-weight:bold;">hijau (Tersedia)</span>.</p>
+            <span
+              style="display:inline-block; background:var(--accent); color:white; padding:0.25rem 0.75rem; border-radius:999px; font-weight:800; font-size:0.75rem; margin-bottom:0.75rem;">Langkah
+              2</span>
+            <h3 style="font-weight:800; font-size:1.125rem;">Pilih Tanggal</h3>
+            <p style="color:var(--text-muted); font-size:0.875rem;">Pilih tanggal dengan indikator <span
+                style="color:#22c55e; font-weight:bold;">hijau (Tersedia)</span>.</p>
           </div>
 
           <div class="cal-header" style="border-top:1px solid var(--border-color); margin-top:1.5rem;">
             <h3 id="cal-month-year" style="font-size: 1.25rem;">...</h3>
-          <div style="display:flex; gap:0.5rem;">
-            <button class="btn-icon" onclick="changeMonth(-1)"><i data-lucide="chevron-left"
-                style="width:20px;height:20px;"></i></button>
-            <button class="btn-icon" onclick="changeMonth(1)"><i data-lucide="chevron-right"
-                style="width:20px;height:20px;"></i></button>
+            <div style="display:flex; gap:0.5rem;">
+              <button class="btn-icon" onclick="changeMonth(-1)"><i data-lucide="chevron-left"
+                  style="width:20px;height:20px;"></i></button>
+              <button class="btn-icon" onclick="changeMonth(1)"><i data-lucide="chevron-right"
+                  style="width:20px;height:20px;"></i></button>
+            </div>
           </div>
-        </div>
-        <div class="cal-days">
-          <div class="cal-day-name">Min</div>
-          <div class="cal-day-name">Sen</div>
-          <div class="cal-day-name">Sel</div>
-          <div class="cal-day-name">Rab</div>
-          <div class="cal-day-name">Kam</div>
-          <div class="cal-day-name">Jum</div>
-          <div class="cal-day-name">Sab</div>
-        </div>
-        <div class="cal-grid" id="cal-grid"></div>
-        
-        <!-- Legend -->
-        <div style="display:flex; justify-content:center; gap:1.5rem; padding: 1rem; border-top:1px solid var(--border-color); flex-wrap:wrap; background:#f8fafc;">
-           <div style="display:flex; align-items:center; gap:0.5rem; font-size:0.75rem; font-weight:700; color:var(--text-muted);">
-             <span style="width:12px; height:12px; border-radius:3px; background:#dcfce7; border:1px solid #22c55e;"></span> Tersedia
-           </div>
-           <div style="display:flex; align-items:center; gap:0.5rem; font-size:0.75rem; font-weight:700; color:var(--text-muted);">
-             <span style="width:12px; height:12px; border-radius:3px; background:#fee2e2; border:1px solid #ef4444;"></span> Penuh
-           </div>
-           <div style="display:flex; align-items:center; gap:0.5rem; font-size:0.75rem; font-weight:700; color:var(--text-muted);">
-             <span style="width:12px; height:12px; border-radius:3px; background:repeating-linear-gradient(45deg, #f1f5f9, #f1f5f9 10px, #e2e8f0 10px, #e2e8f0 20px); border:1px solid #cbd5e1;"></span> Tutup
-           </div>
-        </div>
+          <div class="cal-days">
+            <div class="cal-day-name">Min</div>
+            <div class="cal-day-name">Sen</div>
+            <div class="cal-day-name">Sel</div>
+            <div class="cal-day-name">Rab</div>
+            <div class="cal-day-name">Kam</div>
+            <div class="cal-day-name">Jum</div>
+            <div class="cal-day-name">Sab</div>
+          </div>
+          <div class="cal-grid" id="cal-grid"></div>
+
+          <!-- Legend -->
+          <div
+            style="display:flex; justify-content:center; gap:1.5rem; padding: 1rem; border-top:1px solid var(--border-color); flex-wrap:wrap; background:#f8fafc;">
+            <div
+              style="display:flex; align-items:center; gap:0.5rem; font-size:0.75rem; font-weight:700; color:var(--text-muted);">
+              <span
+                style="width:12px; height:12px; border-radius:3px; background:#dcfce7; border:1px solid #22c55e;"></span>
+              Tersedia
+            </div>
+            <div
+              style="display:flex; align-items:center; gap:0.5rem; font-size:0.75rem; font-weight:700; color:var(--text-muted);">
+              <span
+                style="width:12px; height:12px; border-radius:3px; background:#fee2e2; border:1px solid #ef4444;"></span>
+              Penuh
+            </div>
+            <div
+              style="display:flex; align-items:center; gap:0.5rem; font-size:0.75rem; font-weight:700; color:var(--text-muted);">
+              <span
+                style="width:12px; height:12px; border-radius:3px; background:repeating-linear-gradient(45deg, #f1f5f9, #f1f5f9 10px, #e2e8f0 10px, #e2e8f0 20px); border:1px solid #cbd5e1;"></span>
+              Tutup
+            </div>
+          </div>
         </div> <!-- End Langkah 2 -->
       </div> <!-- End Calendar Card Group -->
 
@@ -2489,7 +2568,7 @@
       </div>
       <p class="modal-desc">Masukkan ID Reservasi / Kode Tiket Anda (contoh: B-1234).</p>
       <div class="admin-form-group">
-        <input type="text" id="check-ticket-input" class="admin-form-input" placeholder="B-..."
+        <input type="text" id="check-ticket-input" class="admin-form-input" placeholder="B-1234..." autocomplete="off"
           onkeypress="if(event.key==='Enter') submitCheckTicket()">
       </div>
       <div id="check-ticket-result"
@@ -2540,319 +2619,50 @@
     </div>
   </div>
 
-  <!-- STUDIO FORM MODAL (CRUD) -->
-  <div class="custom-modal-overlay" id="studio-form-modal">
-    <div class="custom-modal-card" style="max-width:500px; max-height:90vh; overflow-y:auto; padding: 1.5rem;">
-      <div class="modal-title-row">
-        <div
-          style="width:2.5rem;height:2.5rem;border-radius:0.5rem;background:var(--accent-dim);color:var(--accent);display:flex;align-items:center;justify-content:center;">
-          <i data-lucide="layout-dashboard"></i>
-        </div>
-        <h3 id="studio-form-title">Tambah Studio</h3>
-      </div>
-      <form id="studio-form" onsubmit="handleSaveStudio(event)">
-        <input type="hidden" id="sf_mode" value="add">
-        <div class="admin-form-group">
-          <label>ID Studio (Unik, cth: F-05)</label>
-          <input type="text" id="sf_id" class="admin-form-input" required>
-        </div>
-        <div class="admin-form-group">
-          <label>Nama Studio</label>
-          <input type="text" id="sf_name" class="admin-form-input" required>
-        </div>
-        <div class="admin-form-group">
-          <label>Kapasitas (Orang)</label>
-          <input type="number" id="sf_cap" class="admin-form-input" required>
-        </div>
-        <div class="admin-form-group">
-          <label>Deskripsi Singkat</label>
-          <textarea id="sf_desc" class="admin-form-input" rows="3" required></textarea>
-        </div>
-        <div class="admin-form-group"
-          style="background: var(--bg-main); padding: 1.25rem; border-radius: 0.75rem; margin-bottom: 1.5rem; border: 1px solid var(--border-color);">
-          <label
-            style="font-size: 1rem; color: var(--text-main); margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; display:block; font-weight:800;">Fasilitas
-            Studio Terstruktur</label>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-            <div>
-              <label style="font-size: 0.75rem; color:var(--text-muted); font-weight:700;">Jumlah Mic</label>
-              <input type="number" id="sf_fas_mic" class="admin-form-input" placeholder="Cth: 2">
-            </div>
-            <div>
-              <label style="font-size: 0.75rem; color:var(--text-muted); font-weight:700;">Jumlah Lighting</label>
-              <input type="number" id="sf_fas_lighting" class="admin-form-input" placeholder="Cth: 2">
-            </div>
-            <div>
-              <label style="font-size: 0.75rem; color:var(--text-muted); font-weight:700;">Jumlah Kursi</label>
-              <input type="number" id="sf_fas_kursi" class="admin-form-input" placeholder="Cth: 3">
-            </div>
-            <div>
-              <label style="font-size: 0.75rem; color:var(--text-muted); font-weight:700;">Layar TV (Background)</label>
-              <select id="sf_fas_tv" class="admin-form-input">
-                <option value="Tidak Ada">Tidak Ada</option>
-                <option value="Ada">Ada</option>
-              </select>
-            </div>
-          </div>
-
-          <div style="margin-bottom: 1rem;">
-            <label style="font-size: 0.75rem; color:var(--text-muted); font-weight:700;">Tema / Vibe Studio</label>
-            <select id="sf_fas_tema" class="admin-form-input">
-              <option value="Fleksibel">Fleksibel</option>
-              <option value="Formal">Formal</option>
-              <option value="Santai">Santai</option>
-            </select>
-          </div>
-
-          <div>
-            <label style="font-size: 0.75rem; color:var(--text-muted); font-weight:700;">Fasilitas Tambahan
-              (Lainnya)</label>
-            <textarea id="sf_fas_lainnya" class="admin-form-input" rows="2"
-              placeholder="Sofa, AC, Papan Tulis, dll (pisahkan dengan koma)"></textarea>
-          </div>
-        </div>
-        <div class="admin-form-group">
-          <label>URL Gambar atau Upload File Foto</label>
-          <input type="url" id="sf_img" class="admin-form-input" placeholder="URL Foto..."
-            style="margin-bottom:0.5rem;">
-          <input type="file" id="sf_img_file" class="admin-form-input" accept="image/*"
-            onchange="handleStudioImage(this)">
-        </div>
-        <div class="modal-actions">
-          <button type="button" class="btn-modal-outline" onclick="closeStudioFormModal()">Batal</button>
-          <button type="submit" class="btn-modal-fill" id="sf_submit_btn">Simpan Data</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- ADMIN VIEW (HIDDEN) -->
-  <div id="admin-view"
-    style="display:none; width:100%; position:absolute; top:0; left:0; background:var(--bg-main); min-height:100vh; z-index:50;">
-    <div class="admin-layout">
-      <!-- Sidebar -->
-      <aside class="admin-sidebar">
-        <div class="admin-sidebar-header">
-          <div style="display:flex; align-items:center; gap:0.5rem;"><i data-lucide="shield-check"
-              style="width:24px; height:24px;"></i> PodAdmin</div>
-        </div>
-        <nav class="admin-sidebar-nav">
-          <button class="admin-sidebar-btn active" id="btn-adm-book" onclick="switchAdminTab('book')">
-            <i data-lucide="book-open"></i>
-            <span style="display:inline-flex; align-items:center; gap:0.25rem;">
-              Kelola Reservasi
-              <span id="pending-badge"
-                style="display:none; background:var(--error); color:white; font-size:10px; font-weight:800; border-radius:999px; padding:2px 6px; box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);"></span>
-            </span>
-          </button>
-          <button class="admin-sidebar-btn" id="btn-adm-std" onclick="switchAdminTab('std')">
-            <i data-lucide="mic"></i> Kelola Studio
-          </button>
-          <button class="admin-sidebar-btn" id="btn-adm-hol" onclick="switchAdminTab('hol')">
-            <i data-lucide="calendar"></i> Manajemen Jadwal
-          </button>
-          <button class="admin-sidebar-btn" id="btn-adm-set" onclick="switchAdminTab('set')">
-            <i data-lucide="settings"></i> Pengaturan
-          </button>
-        </nav>
-        <div class="admin-sidebar-footer">
-          <button class="btn-modal-danger btn-modal-fill" style="width:100%; padding:1rem; border-radius:0.75rem;"
-            onclick="exitAdminMode()">
-            <i data-lucide="log-out"></i> Keluar Admin
-          </button>
-        </div>
-      </aside>
-
-      <!-- Main Content -->
-      <main class="admin-main-content">
-        <div
-          style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 2rem; padding: 0 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
-          <h2 class="section-title" style="margin-bottom:0;" id="admin-page-title">Kelola Reservasi</h2>
-          <div style="display:flex; gap: 0.5rem;">
-            <button class="btn-modal-outline"
-              style="padding:0.5rem 1rem; color:var(--accent); font-size:0.75rem; display:flex; align-items:center; gap:0.25rem;"
-              onclick="adminRefreshData()" id="admin-refresh-btn"><i data-lucide="refresh-cw"
-                style="width:14px;height:14px;"></i> Refresh</button>
-            <button class="btn-modal-outline"
-              style="padding:0.5rem 1rem; border-color:var(--error-dim); color:var(--error); font-size:0.75rem;"
-              onclick="exitAdminMode()" id="mobile-admin-exit">Keluar</button>
-          </div>
-        </div>
-
-        <div id="adm-book" style="display:block;">
-          <div style="margin-bottom: 1rem; display:flex; justify-content:flex-end;">
-            <button class="btn-modal-fill" style="background:var(--accent); color:#fff;" onclick="printAdminReport()">
-              <i data-lucide="printer" style="width:16px;height:16px;margin-right:0.5rem;"></i> Download Laporan (PDF)
-            </button>
-          </div>
-          <div class="admin-table-container">
-            <table class="admin-table">
-              <thead>
-                <tr>
-                  <th>ID / Waktu</th>
-                  <th>Pemesan</th>
-                  <th>Kontak & Fasilitas</th>
-                  <th>Surat / Tujuan</th>
-                  <th>Status & Aksi</th>
-                </tr>
-              </thead>
-              <tbody id="admin-bookings-table">
-                <!-- Data here -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div id="adm-std" style="display:none;">
-          <div style="margin-bottom: 1.5rem; display:flex; justify-content:flex-end;">
-            <button class="btn-modal-fill" onclick="openStudioFormModal('add')">
-              <i data-lucide="plus" style="width:16px;height:16px;margin-right:0.5rem;"></i> Tambah Studio
-            </button>
-          </div>
-          <div class="admin-table-container">
-            <table class="admin-table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Nama Studio</th>
-                  <th>Kapasitas</th>
-                  <th>Gambar</th>
-                  <th style="padding: 1rem; text-align:right;">Aksi</th>
-                </tr>
-              </thead>
-              <tbody id="admin-studios-table"></tbody>
-            </table>
-          </div>
-        </div>
-
-        <div id="adm-hol" style="display:none;">
-          <div
-            style="background: #fff; border-radius: 1rem; border: 1px solid var(--border-color); padding: 1.5rem; margin-bottom: 2rem;">
-            <h3 style="margin-bottom: 1rem; font-weight:800; font-size:1.125rem;">Manajemen Jadwal Buka</h3>
-            <p style="margin-bottom: 1.5rem; color:var(--text-muted); font-size:0.875rem;">Sistem menggunakan mode
-              <strong>Whitelist</strong>. Semua tanggal otomatis tutup. Klik pada kalender di bawah ini untuk
-              <strong>membuka jadwal</strong> atau menutupnya kembali.
-            </p>
-
-            <div class="calendar-card"
-              style="margin:0 auto 2rem auto; box-shadow:none; border:1px solid var(--border-color); max-width:100%; width:100%;">
-              <div class="cal-header">
-                <h3 id="adm-cal-month-year" style="font-size: 1.125rem;">...</h3>
-                <div style="display:flex; gap:0.5rem;">
-                  <button class="btn-icon" onclick="changeAdminMonth(-1)"><i data-lucide="chevron-left"
-                      style="width:20px;height:20px;"></i></button>
-                  <button class="btn-icon" onclick="changeAdminMonth(1)"><i data-lucide="chevron-right"
-                      style="width:20px;height:20px;"></i></button>
-                </div>
-              </div>
-              <div class="adm-dates-grid" id="adm-cal-grid"></div>
-            </div>
-
-            <h4
-              style="font-weight:700; margin-bottom:1rem; border-bottom:1px solid var(--border-color); padding-bottom:0.5rem;">
-              Tanggal yang Sedang Dibuka:</h4>
-            <div id="admin-opened-list"></div>
-          </div>
-        </div>
-
-        <div id="adm-set" style="display:none;">
-          <div class="admin-table-container" style="padding: 2.5rem 2rem; max-width: 600px; margin: 0 auto;">
-
-            <div style="text-align:center; margin-bottom: 2rem;">
-              <div
-                style="width: 4rem; height: 4rem; background: var(--accent-dim); color: var(--accent); border-radius: 1.25rem; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
-                <i data-lucide="image" style="width: 2rem; height: 2rem;"></i>
-              </div>
-              <h3 style="font-weight: 800; font-size: 1.25rem;">Pengaturan Banner</h3>
-              <p style="color: var(--text-muted); font-size: 0.875rem; margin-top:0.25rem;">Kelola gambar
-                <i>slideshow</i>
-                yang tampil pada halaman pencarian Studio.
-              </p>
-            </div>
-
-            <div class="admin-form-group">
-              <label style="display:flex; justify-content:space-between; align-items:center;">
-                <span>Daftar Banner Saat Ini</span>
-              </label>
-              <div id="adm-banner-list" style="display:flex; flex-direction:column; gap:1rem; margin-bottom: 1.5rem;">
-                <!-- Populated dynamically -->
-              </div>
-            </div>
-
-            <div style="height:1px; background:var(--border-color); margin: 2rem 0;"></div>
-            <h4 style="font-weight:800; font-size:1rem; margin-bottom:1rem;">Tambah Banner Baru</h4>
-
-            <div class="admin-form-group">
-              <label>Tautan Langsung / Google Drive URL</label>
-              <input type="text" id="adm-hero-link" class="admin-form-input" placeholder="https://...">
-            </div>
-
-            <div style="display:flex; align-items:center; margin: 1.5rem 0;">
-              <div style="flex-grow:1; height:1px; background:var(--border-color);"></div>
-              <span
-                style="padding: 0 1rem; font-size: 0.75rem; color: var(--text-muted); font-weight:800; letter-spacing:0.05em;">ATAU
-                UPLOAD FOTO</span>
-              <div style="flex-grow:1; height:1px; background:var(--border-color);"></div>
-            </div>
-
-            <div class="admin-form-group">
-              <label>Pilih File dari Perangkat</label>
-              <input type="file" id="adm-hero-file" class="admin-form-input" accept="image/*"
-                onchange="convertFileToBase64(this)" style="background: #fff; padding: 0.5rem 1rem;">
-            </div>
-
-            <button class="btn-modal-fill"
-              style="width: 100%; margin-top: 1rem; padding: 1rem; font-size: 1rem; border-radius: 1rem;"
-              onclick="adminAddHeroImage(this)">
-              Tambah Banner
-            </button>
-          </div>
-      </main>
-    </div>
-  </div>
 
   <script>
     // Config
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbz-wA9SLIBmLaDVpMuYJi-ui0phoFLbI-K37CwZ3VVYSRah-uoTDNYT5isNO5ICNqm1/exec";
+    const GAS_URL = ""; // Deprecated
 
-    let studios = [];
     const sessions = [
       { id: 1, name: 'Sesi Pagi', start: '09:00', end: '11:00' },
       { id: 2, name: 'Sesi Siang', start: '13:00', end: '15:00' },
       { id: 3, name: 'Sesi Sore', start: '15:30', end: '17:30' }
     ];
 
-    let currentMonth = new Date();
-    let selectedDate = new Date();
-    let selectedStudio = null;
-    let selectedSession = null;
-    let bookings = [];
-    let openedDates = [];
-    let appSettings = {};
-    let fileBase64 = null;
-    let fileName = null;
-    let heroFileBase64 = null;
-    let heroFileName = null;
-    let isAdmin = false;
-    let secretKnocks = 0;
-    let knockTimeout;
-    let heroSliderInterval = null;
-    let pendingWaPayload = null;
+    var studios = [];
+    var currentMonth = new Date();
+    var selectedDate = new Date();
+    var selectedStudio = null;
+    var selectedSession = null;
+    var bookings = [];
+    var openedDates = [];
+    var suratMasuk = [];
+    var appSettings = {};
+    var fileBase64 = null;
+    var fileName = null;
+    var heroFileBase64 = null;
+    var heroFileName = null;
+    var isAdmin = false;
+    var secretKnocks = 0;
+    var knockTimeout;
+    var heroSliderInterval = null;
+    var pendingWaPayload = null;
 
     function getISODateStr(d) {
       if (!d) return '';
       const z = n => ('0' + n).slice(-2);
       return d.getFullYear() + '-' + z(d.getMonth() + 1) + '-' + z(d.getDate());
     }
-    let pendingWaPromise = null;
-    let pendingWaStudio = null;
-    let currentHeroIndex = 0;
-    let currentWaBookingId = null;
+    var pendingWaPromise = null;
+    var pendingWaStudio = null;
+    var currentHeroIndex = 0;
+    var currentWaBookingId = null;
 
     // MODAL STATE & HELPERS
-    let confirmCallback = null;
-    let promptCallback = null;
+    var confirmCallback = null;
+    var promptCallback = null;
 
     function openConfirmModal(title, desc, onConfirm, isDanger = false) {
       document.getElementById('confirm-title').innerText = title;
@@ -2871,40 +2681,6 @@
       closeConfirmModal();
     });
 
-    function openPromptModal(onSuccess) {
-      document.getElementById('prompt-input').value = '';
-      promptCallback = onSuccess;
-      document.getElementById('prompt-modal').classList.add('active');
-      setTimeout(() => document.getElementById('prompt-input').focus(), 100);
-    }
-    function closePromptModal() {
-      document.getElementById('prompt-modal').classList.remove('active');
-      promptCallback = null;
-    }
-    window.submitPromptModal = function () {
-      const p = document.getElementById('prompt-input').value;
-      if (p === 'admin123') {
-        isAdmin = true;
-        closePromptModal();
-        document.body.style.overflow = "auto";
-        document.querySelector("main").style.display = "none";
-        document.getElementById("pc-nav").style.display = "none";
-        document.getElementById("mobile-nav").style.display = "none";
-        document.getElementById("admin-view").style.display = "block";
-        renderAdminData();
-        showToast("Berhasil masuk mode Admin");
-
-        if (!window.adminAutoRefreshInterval) {
-          window.adminAutoRefreshInterval = setInterval(() => {
-            if (isAdmin) fetchSyncData(true);
-          }, 60000);
-        }
-      } else {
-        showToast("Password salah!", "error");
-        document.getElementById('prompt-input').value = '';
-      }
-    };
-
     function handleSecretKnock() {
       secretKnocks++;
       clearTimeout(knockTimeout);
@@ -2912,20 +2688,12 @@
 
       if (secretKnocks >= 5) {
         secretKnocks = 0;
-        openPromptModal(() => {
-          isAdmin = true;
-          document.body.style.overflow = "auto";
-          document.querySelector("main").style.display = "none";
-          document.getElementById("pc-nav").style.display = "none";
-          document.getElementById("mobile-nav").style.display = "none";
-          document.getElementById("admin-view").style.display = "block";
-          renderAdminData();
-          showToast("Berhasil masuk mode Admin");
-        });
+        window.location.href = 'admin.html';
       }
     }
-
     function exitAdminMode() {
+      if (window.signOutAdmin) window.signOutAdmin();
+
       isAdmin = false;
       document.body.style.overflow = "auto";
       document.querySelector("main").style.display = "";
@@ -2991,19 +2759,20 @@
 
       try {
         const data = await pendingWaPromise;
-        let finalFileUrl = 'Dilampirkan di sistem';
+        let finalFileUrl = 'Dilampirkan di sistem (Gagal unggah ke Drive)';
+
         if (data && data.result === 'success' && data.fileUrl) {
           finalFileUrl = data.fileUrl;
           const idx = bookings.findIndex(b => b.id === payload.id);
           if (idx !== -1) {
-            bookings[idx].file_url = data.fileUrl;
+            bookings[idx].file_url = finalFileUrl;
             localStorage.setItem('podreserve_v2_bookings', JSON.stringify(bookings));
             if (isAdmin) renderAdminData();
           }
         }
 
         const waText = `Yth. Kepala Pusat Laboratorium Siber,%0A%0ASehubungan dengan keperluan penggunaan fasilitas studio, saya bermaksud untuk mengajukan permohonan reservasi dengan rincian sebagai berikut:%0A%0A*ID Reservasi:* ${payload.id}%0A*Nama:* ${payload.student_name}%0A*Identitas (NIM/NIP):* ${payload.student_id}%0A*Kategori:* ${payload.user_category}%0A*Instansi/Unit:* ${payload.organization}%0A*Kontak WA:* ${payload.phone_number}%0A%0A*Fasilitas Studio:* ${studio.name}%0A*Tanggal:* ${payload.date}%0A*Waktu (Sesi):* ${payload.start_time} - ${payload.end_time}%0A*Tujuan Penggunaan:* ${payload.purpose}%0A%0A*Tautan Dokumen Surat:* ${finalFileUrl}%0A%0ABesar harapan saya agar permohonan ini dapat ditindaklanjuti. Atas perhatian dan kebijaksanaan Bapak/Ibu, saya ucapkan terima kasih.`;
-        const waUrl = `https://wa.me/6282170735157?text=${waText}`;
+        const waUrl = `whatsapp://send?phone=6282170735157&text=${waText}`;
 
         if (waWindow) waWindow.location.href = waUrl;
         else window.location.href = waUrl;
@@ -3011,7 +2780,7 @@
       } catch (e) {
         // Fallback
         const waText = `Yth. Kepala Pusat Laboratorium Siber,%0A%0ASehubungan dengan keperluan penggunaan fasilitas studio, saya bermaksud untuk mengajukan permohonan reservasi dengan rincian sebagai berikut:%0A%0A*ID Reservasi:* ${payload.id}%0A*Nama:* ${payload.student_name}%0A*Identitas (NIM/NIP):* ${payload.student_id}%0A*Kategori:* ${payload.user_category}%0A*Instansi/Unit:* ${payload.organization}%0A*Kontak WA:* ${payload.phone_number}%0A%0A*Fasilitas Studio:* ${studio.name}%0A*Tanggal:* ${payload.date}%0A*Waktu (Sesi):* ${payload.start_time} - ${payload.end_time}%0A*Tujuan Penggunaan:* ${payload.purpose}%0A%0A*Tautan Dokumen Surat:* [Gagal Terlampir Otomatis]%0A%0ABesar harapan saya agar permohonan ini dapat ditindaklanjuti. Atas perhatian dan kebijaksanaan Bapak/Ibu, saya ucapkan terima kasih.`;
-        const waUrl = `https://wa.me/6282170735157?text=${waText}`;
+        const waUrl = `whatsapp://send?phone=6282170735157&text=${waText}`;
         if (waWindow) waWindow.location.href = waUrl;
         else window.location.href = waUrl;
       }
@@ -3335,6 +3104,17 @@
           `).join('');
         }
 
+        const suratTable = document.getElementById('admin-surat-table');
+        if (suratTable) {
+          suratTable.innerHTML = Array(4).fill(`
+            <tr>
+              <td colspan="6" style="padding:1rem;">
+                <div class="skeleton-box" style="width: 100%; height: 2.5rem; border-radius: 0.5rem;"></div>
+              </td>
+            </tr>
+          `).join('');
+        }
+
         const scheduleBody = document.getElementById('availability-body');
         if (scheduleBody) {
           scheduleBody.innerHTML = Array(3).fill(`
@@ -3358,43 +3138,6 @@
           `).join('');
         }
       }
-      try {
-        const res = await fetch(GAS_URL + "?action=getInit");
-        if (res.ok) {
-          const data = await res.json();
-
-          let newBookingCount = 0;
-          if (isAdmin) {
-            const oldIds = new Set(bookings.map(b => b.id));
-            const incomingBookings = data.bookings || [];
-            incomingBookings.forEach(b => {
-              if (!oldIds.has(b.id)) newBookingCount++;
-            });
-          }
-
-          bookings = data.bookings || [];
-          studios = data.studios || [];
-          openedDates = data.openedDates || [];
-          appSettings = data.settings || {};
-          localStorage.setItem('podreserve_v2_bookings', JSON.stringify(bookings));
-          localStorage.setItem('podreserve_v2_studios', JSON.stringify(studios));
-          localStorage.setItem('podreserve_v2_opened_dates', JSON.stringify(openedDates));
-          localStorage.setItem('podreserve_v2_settings', JSON.stringify(appSettings));
-
-          if (!isSilent) {
-            applySettings();
-            renderStudios(); renderStudioSelector(); renderCalendar(); renderSchedule(); renderReservasi();
-          }
-
-          if (isAdmin) {
-            renderAdminData();
-            if (newBookingCount > 0) {
-              playNotificationSound();
-              showToast(`Ada ${newBookingCount} permohonan reservasi baru!`);
-            }
-          }
-        }
-      } catch (e) { console.warn("GAS Sync failed", e); }
       if (!isSilent) {
         setTimeout(() => { if (icon) icon.classList.remove('lucide-spin'); }, 500);
       }
@@ -3482,9 +3225,9 @@
 
       if (heroSection) {
         if (heroSliderInterval) clearInterval(heroSliderInterval);
-        
+
         if (track) {
-           track.innerHTML = images.map(img => `<div class="hero-slide" style="background-image: url('${getDirectImageUrl(img)}');"></div>`).join('');
+          track.innerHTML = images.map(img => `<div class="hero-slide" style="background-image: url('${getDirectImageUrl(img)}');"></div>`).join('');
         }
 
         if (dotsContainer) {
@@ -3662,13 +3405,13 @@
       const dateStr = getISODateStr(selectedDate);
       const activeStudio = studios.find(s => s.id == selectedScheduleStudioId);
       const container = document.getElementById('schedule-container');
-      
+
       if (!container) return;
       if (!activeStudio) {
-         container.innerHTML = '';
-         return;
+        container.innerHTML = '';
+        return;
       }
-      
+
       const isOpened = openedDates.some(o => o.date === dateStr);
       if (!isOpened) {
         container.innerHTML = `
@@ -3681,7 +3424,7 @@
         lucide.createIcons();
         return;
       }
-      
+
       let slotsHtml = sessions.map(slot => {
         const booking = bookings.find(b => b.studio_id == activeStudio.id && b.date == dateStr && b.start_time == slot.start);
         if (booking) {
@@ -3706,7 +3449,7 @@
           </button>
         </div>`;
       }).join('');
-      
+
       container.innerHTML = `
         <!-- Langkah 3 -->
         <div style="background:var(--bg-panel); border-radius:1.5rem; padding:1.5rem; border:1px solid var(--border-color); margin-top:1.5rem; margin-bottom:2rem; box-shadow:0 8px 30px rgba(0,0,0,0.04);">
@@ -3802,8 +3545,10 @@
 
       fileBase64 = null; fileName = null;
       const fileLabel = document.getElementById('b_file_label');
-      fileLabel.innerHTML = `<i data-lucide="upload-cloud" style="width:24px;height:24px;"></i> <span>Upload Surat (Wajib PDF)</span>`;
-      fileLabel.classList.remove('has-file');
+      if (fileLabel) {
+        fileLabel.innerHTML = `<i data-lucide="upload-cloud" style="width:24px;height:24px;"></i> <span>Upload Surat (Wajib PDF)</span>`;
+        fileLabel.classList.remove('has-file');
+      }
 
       selectedSession = start_time ? sessions.find(s => s.start === start_time) : null;
       renderModalSlots();
@@ -3823,10 +3568,6 @@
 
       let html = '<option value="" disabled selected>Pilih Sesi</option>';
       sessions.forEach(slot => {
-        if (isWeekend) {
-          html += `<option value="${slot.id}" disabled>${slot.name}: ${slot.start} - ${slot.end} (Tutup)</option>`;
-          return;
-        }
         const isBooked = bookings.some(b => b.studio_id == selectedStudio.id && b.date == dateStr && b.start_time == slot.start);
         if (isBooked) {
           html += `<option value="${slot.id}" disabled>${slot.name}: ${slot.start} - ${slot.end} (Booked)</option>`;
@@ -3841,6 +3582,12 @@
     window.selectModalSlot = function (id) {
       selectedSession = sessions.find(s => s.id == id);
     };
+
+
+
+    // --- GOOGLE DRIVE UPLOAD SETTINGS ---
+    // GANTI URL DI BAWAH INI DENGAN URL WEB APP GOOGLE APPS SCRIPT ANDA
+    const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby67aX_bag1A5Cb6Imc8eSjd1DrZgbeqcBnKl2NUJ32Epjbebf_H1kirT9qQzmJWfzk/exec";
 
     function handleFileSelect(input) {
       const file = input.files[0];
@@ -3861,7 +3608,7 @@
     document.getElementById('booking-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       if (!selectedSession) { showToast("Pilih sesi waktu!", "error"); return; }
-      if (!fileBase64) { showToast("Upload file wajib!", "error"); return; }
+      if (!fileBase64) { showToast("File PDF wajib diunggah!", "error"); return; }
 
       const btn = document.getElementById('btn-submit');
       btn.disabled = true; btn.innerText = `Memproses...`;
@@ -3879,12 +3626,10 @@
         date: document.getElementById('b_date').value,
         start_time: selectedSession.start,
         end_time: selectedSession.end,
-        fileData: fileBase64,
         fileName: fileName
       };
 
       pendingWaPayload = null;
-      pendingWaPromise = null;
       pendingWaStudio = null;
 
       try {
@@ -3897,12 +3642,35 @@
         pendingWaPayload = payload;
         pendingWaStudio = selectedStudio;
 
-        // Start fetch in background
-        pendingWaPromise = fetch(GAS_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify(payload)
-        }).then(res => res.json()).catch(e => ({ result: 'error' }));
+        // 1. Save to Firestore (status pending, without fileUrl yet)
+        await window.setDoc(window.doc(window.db, "bookings", payload.id), payload);
+
+        // 2. Upload to Google Drive via Google Apps Script (if configured)
+        if (GOOGLE_APPS_SCRIPT_URL && GOOGLE_APPS_SCRIPT_URL !== "ISI_URL_WEB_APP_GOOGLE_SCRIPT_DI_SINI") {
+          pendingWaPromise = fetch(GOOGLE_APPS_SCRIPT_URL, {
+            method: "POST",
+            body: JSON.stringify({
+              fileName: payload.id + "_" + fileName,
+              fileData: fileBase64
+            })
+          })
+            .then(response => response.json())
+            .then(data => {
+              if (data.status === "success" && data.url) {
+                return window.updateDoc(window.doc(window.db, "bookings", payload.id), { fileUrl: data.url })
+                  .then(() => ({ result: 'success', fileUrl: data.url }));
+              } else {
+                throw new Error("GAS returned error");
+              }
+            })
+            .catch(err => {
+              console.error("Gagal upload ke Google Drive:", err);
+              return { result: 'error' };
+            });
+        } else {
+          // If URL is not set, just resolve to success without a URL so it continues
+          pendingWaPromise = Promise.resolve({ result: 'error' });
+        }
 
         // Show Ticket Intercept Modal
         closeModal();
@@ -3910,7 +3678,8 @@
         document.getElementById('ticket-intercept-modal').classList.add('active');
 
       } catch (err) {
-        showToast("Gagal memproses data!", "error");
+        console.error("Booking Error:", err);
+        showToast("Error: " + (err.message || err.toString()), "error");
       } finally {
         btn.disabled = false; btn.innerText = `Kirim Permohonan Reservasi`;
       }
@@ -3929,18 +3698,23 @@
     function switchAdminTab(tab) {
       document.getElementById('btn-adm-book').classList.remove('active');
       document.getElementById('btn-adm-std').classList.remove('active');
+      if (document.getElementById('btn-adm-surat')) document.getElementById('btn-adm-surat').classList.remove('active');
       document.getElementById('btn-adm-hol').classList.remove('active');
       document.getElementById('btn-adm-set').classList.remove('active');
-      document.getElementById('btn-adm-' + tab).classList.add('active');
+
+      const activeBtn = document.getElementById('btn-adm-' + tab);
+      if (activeBtn) activeBtn.classList.add('active');
 
       document.getElementById('adm-book').style.display = tab === 'book' ? 'block' : 'none';
       document.getElementById('adm-std').style.display = tab === 'std' ? 'block' : 'none';
+      document.getElementById('adm-surat').style.display = tab === 'surat' ? 'block' : 'none';
       document.getElementById('adm-hol').style.display = tab === 'hol' ? 'block' : 'none';
       document.getElementById('adm-set').style.display = tab === 'set' ? 'block' : 'none';
 
       const titles = {
         'book': 'Kelola Reservasi',
-        'std': 'Kelola Studio',
+        'std': 'Kelola Studio (Fasilitas)',
+        'surat': 'Manajemen Surat Masuk',
         'hol': 'Manajemen Jadwal',
         'set': 'Pengaturan Banner'
       };
@@ -4035,18 +3809,15 @@
 
         try {
           showToast("Menyimpan nomor WA...");
-          const payload = { action: 'updateBookingWA', id: bookingId, phone_number: wa };
-          const res = await fetch(GAS_URL, { method: "POST", body: JSON.stringify(payload) });
-          const data = await res.json();
-          if (data.result === 'success') {
-            const bIndex = bookings.findIndex(b => b.id === bookingId);
-            if (bIndex > -1) {
-              bookings[bIndex].phone_number = wa;
-              localStorage.setItem('podreserve_v2_bookings', JSON.stringify(bookings));
-            }
-            renderAdminData();
-            showToast("Nomor WA berhasil ditambahkan!");
-          } else throw new Error(data.message || "Gagal update");
+          await window.updateDoc(window.doc(window.db, "bookings", bookingId), { phone_number: wa });
+
+          const bIndex = bookings.findIndex(b => b.id === bookingId);
+          if (bIndex > -1) {
+            bookings[bIndex].phone_number = wa;
+            localStorage.setItem('podreserve_v2_bookings', JSON.stringify(bookings));
+          }
+          renderAdminData();
+          showToast("Nomor WA berhasil ditambahkan!");
         } catch (e) { showToast(e.message || "Gagal menyimpan WA", "error"); }
       };
 
@@ -4096,11 +3867,7 @@
           }
 
           try {
-            await fetch(GAS_URL, {
-              method: 'POST',
-              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-              body: JSON.stringify({ action: 'updateBookingStatus', booking_id: bookingId, status: status })
-            });
+            await window.updateDoc(window.doc(window.db, "bookings", bookingId), { status: status });
             showToast("Status berhasil disimpan ke server");
           } catch (err) {
             showToast("Gagal menghubungi server", "error");
@@ -4173,6 +3940,15 @@
       document.getElementById('studio-form-modal').classList.remove('active');
     }
 
+    window.formatURLFoto = function (url) {
+      if (!url) return '';
+      const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      if (match && match[1]) {
+        return `https://lh3.googleusercontent.com/d/${match[1]}`;
+      }
+      return url;
+    };
+
     async function handleSaveStudio(e) {
       e.preventDefault();
       const btn = document.getElementById('sf_submit_btn');
@@ -4224,25 +4000,30 @@
       showToast("Data studio sedang diproses...");
 
       try {
-        const res = await fetch(GAS_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify(payload)
-        });
-        const data = await res.json();
-
-        if (data.result === 'success') {
-          // Update optimistic UI with the actual URL from Google Drive (if uploaded)
-          const idx = studios.findIndex(s => s.id === payload.studio.id);
-          if (idx !== -1 && data.imgUrl) {
-            studios[idx].img = data.imgUrl;
-            localStorage.setItem('podreserve_v2_studios', JSON.stringify(studios));
-            renderAdminData(); renderStudios();
+        if (payload.fileData) {
+          const formData = new FormData();
+          formData.append('image', payload.fileData);
+          const imgbbRes = await fetch("https://api.imgbb.com/1/upload?key=b58352a6d8d5cd72479b9d0c1e8692d6", {
+            method: "POST",
+            body: formData
+          });
+          const imgbbData = await imgbbRes.json();
+          if (imgbbData.success) {
+            payload.studio.img = imgbbData.data.url;
+            const idx = studios.findIndex(s => s.id === payload.studio.id);
+            if (idx !== -1) {
+              studios[idx].img = imgbbData.data.url;
+              localStorage.setItem('podreserve_v2_studios', JSON.stringify(studios));
+              renderAdminData(); renderStudios();
+            }
+          } else {
+            throw new Error("Gagal upload gambar ke ImgBB");
           }
-          showToast("Data studio berhasil disimpan ke server");
-        } else {
-          throw new Error(data.message || "Gagal menyimpan");
+        } else if (payload.studio.img && payload.studio.img.includes('drive.google.com')) {
+          payload.studio.img = window.formatURLFoto(payload.studio.img);
         }
+        await window.setDoc(window.doc(window.db, "studios", payload.studio.id), payload.studio);
+        showToast("Data studio berhasil disimpan ke server");
       } catch (err) {
         showToast("Sinkronisasi gagal: " + err.message, "error");
       }
@@ -4264,14 +4045,10 @@
           }
 
           try {
-            await fetch(GAS_URL, {
-              method: 'POST',
-              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-              body: JSON.stringify({ action: 'deleteStudio', id: studioId })
-            });
-            showToast("Studio berhasil dihapus");
+            await window.deleteDoc(window.doc(window.db, "studios", studioId));
+            showToast("Studio berhasil dihapus dari server");
           } catch (err) {
-            showToast("Sinkronisasi gagal", "error");
+            showToast("Gagal menghubungi server", "error");
           }
         },
         true
@@ -4415,27 +4192,20 @@
     async function adminToggleDate(dateStr) {
       const checkbox = document.getElementById('toggle-' + dateStr);
       const targetState = checkbox.checked; // true if we want to open, false to close
-      
+
       showToast("Menyimpan jadwal...");
-      
+
       try {
-        let action = targetState ? 'openDate' : 'closeDate';
-        const res = await fetch(GAS_URL, { method: "POST", body: JSON.stringify({ action: action, date: dateStr }) });
-        const data = await res.json();
-        
-        if (data.result === 'success') {
-          if (targetState) {
-            openedDates.push({ date: dateStr, desc: 'Buka' });
-          } else {
-            openedDates = openedDates.filter(o => o.date !== dateStr);
-          }
-          localStorage.setItem('podreserve_v2_opened_dates', JSON.stringify(openedDates));
-          renderAdminCalendar(); // re-render to update the list below
-          showToast(`Jadwal berhasil di${targetState ? 'buka' : 'tutup'}!`, "success");
+        if (targetState) {
+          await window.setDoc(window.doc(window.db, "openedDates", dateStr), { isOpened: true, desc: 'Buka' });
+          openedDates.push({ date: dateStr, desc: 'Buka' });
         } else {
-          showToast(data.message || "Gagal menyimpan", "error");
-          checkbox.checked = !targetState; // revert toggle
+          await window.deleteDoc(window.doc(window.db, "openedDates", dateStr));
+          openedDates = openedDates.filter(o => o.date !== dateStr);
         }
+        localStorage.setItem('podreserve_v2_opened_dates', JSON.stringify(openedDates));
+        renderAdminCalendar(); // re-render to update the list below
+        showToast(`Jadwal berhasil di${targetState ? 'buka' : 'tutup'}!`, "success");
       } catch (e) {
         showToast("Gagal menghubungi server", "error");
         checkbox.checked = !targetState; // revert toggle
@@ -4464,21 +4234,13 @@
 
       images.splice(idx, 1);
 
-      const payload = {
-        action: 'updateSetting',
-        key: 'hero_images',
-        value: JSON.stringify(images)
-      };
-
       try {
-        const res = await fetch(GAS_URL, { method: "POST", body: JSON.stringify(payload) });
-        const data = await res.json();
-        if (data.result === 'success') {
-          appSettings['hero_images'] = data.value;
-          localStorage.setItem('podreserve_v2_settings', JSON.stringify(appSettings));
-          applySettings();
-          showToast("Banner dihapus");
-        } else throw new Error();
+        const val = JSON.stringify(images);
+        await window.setDoc(window.doc(window.db, "settings", "hero_images"), { value: val });
+        appSettings['hero_images'] = val;
+        localStorage.setItem('podreserve_v2_settings', JSON.stringify(appSettings));
+        applySettings();
+        showToast("Banner dihapus");
       } catch (e) { showToast("Gagal menghapus banner", "error"); }
     }
 
@@ -4502,40 +4264,24 @@
         let finalUrl = link;
 
         if (heroFileBase64) {
-          const uploadPayload = {
-            action: 'updateSetting',
-            key: 'hero_temp',
-            value: '',
-            fileData: heroFileBase64,
-            fileName: heroFileName
-          };
-          const res = await fetch(GAS_URL, { method: "POST", body: JSON.stringify(uploadPayload) });
-          const data = await res.json();
-          if (data.result === 'success') finalUrl = data.value;
-          else throw new Error("Gagal upload file");
+          const fileRef = window.storageRef(window.getStorage(), `banners/banner_${Date.now()}.png`);
+          await window.uploadString(fileRef, heroFileBase64, 'base64');
+          finalUrl = await window.getDownloadURL(fileRef);
         }
 
         images.push(finalUrl);
+        const val = JSON.stringify(images);
 
-        const payload = {
-          action: 'updateSetting',
-          key: 'hero_images',
-          value: JSON.stringify(images)
-        };
+        await window.setDoc(window.doc(window.db, "settings", "hero_images"), { value: val });
 
-        const res2 = await fetch(GAS_URL, { method: "POST", body: JSON.stringify(payload) });
-        const data2 = await res2.json();
-
-        if (data2.result === 'success') {
-          appSettings['hero_images'] = data2.value;
-          localStorage.setItem('podreserve_v2_settings', JSON.stringify(appSettings));
-          applySettings();
-          showToast("Banner berhasil ditambahkan!");
-          document.getElementById('adm-hero-link').value = '';
-          document.getElementById('adm-hero-file').value = '';
-          heroFileBase64 = null;
-          heroFileName = null;
-        } else throw new Error();
+        appSettings['hero_images'] = val;
+        localStorage.setItem('podreserve_v2_settings', JSON.stringify(appSettings));
+        applySettings();
+        showToast("Banner berhasil ditambahkan!");
+        document.getElementById('adm-hero-link').value = '';
+        document.getElementById('adm-hero-file').value = '';
+        heroFileBase64 = null;
+        heroFileName = null;
 
         btn.innerText = oldText;
         btn.disabled = false;
@@ -4546,13 +4292,106 @@
       }
     }
 
+    // SURAT MASUK CRUD
+    window.renderSuratMasuk = function () {
+      const table = document.getElementById('admin-surat-table');
+      if (!table) return;
+
+      if (suratMasuk.length === 0) {
+        table.innerHTML = `<tr><td colspan="6" style="padding:1rem;text-align:center;">Tidak ada data surat masuk</td></tr>`;
+      } else {
+        table.innerHTML = suratMasuk.map(s => `
+          <tr>
+            <td data-label="ID Surat" style="padding: 1rem; font-weight:800;">${s.id}</td>
+            <td data-label="Judul Surat" style="padding: 1rem;"><strong>${s.title}</strong></td>
+            <td data-label="Pengirim" style="padding: 1rem;">${s.sender}</td>
+            <td data-label="Tanggal" style="padding: 1rem;">${s.date}</td>
+            <td data-label="Berkas" style="padding: 1rem;">
+              <a href="${s.link}" target="_blank" class="btn-modal-outline" style="padding:0.35rem 0.75rem; font-size:0.75rem; display:inline-flex; align-items:center; gap:0.25rem; text-decoration:none;">
+                <i data-lucide="external-link" style="width:14px;height:14px;"></i> Lihat Surat
+              </a>
+            </td>
+            <td data-label="Aksi" style="padding: 1rem; text-align:right;">
+              <button class="btn-modal-outline" style="padding:0.35rem 0.75rem; font-size:0.75rem; margin-right:0.25rem;" onclick="window.openSuratFormModal('edit', '${s.id}')">Edit</button>
+              <button class="btn-modal-outline" style="padding:0.35rem 0.75rem; font-size:0.75rem; color:var(--error); border-color:var(--error-dim);" onclick="window.adminDeleteSurat('${s.id}')">Hapus</button>
+            </td>
+          </tr>
+        `).join('');
+        lucide.createIcons();
+      }
+    };
+
+    window.openSuratFormModal = function (mode, id = null) {
+      document.getElementById('sm_mode').value = mode;
+      document.getElementById('sm_id').value = id || `SM-${Math.floor(Math.random() * 10000)}`;
+
+      if (mode === 'edit') {
+        document.getElementById('surat-form-title').innerText = 'Edit Surat Masuk';
+        const s = suratMasuk.find(x => x.id === id);
+        if (s) {
+          document.getElementById('sm_title').value = s.title;
+          document.getElementById('sm_sender').value = s.sender;
+          document.getElementById('sm_date').value = s.date;
+          document.getElementById('sm_link').value = s.link;
+        }
+      } else {
+        document.getElementById('surat-form-title').innerText = 'Tambah Surat Masuk';
+        document.getElementById('sm_title').value = '';
+        document.getElementById('sm_sender').value = '';
+        document.getElementById('sm_date').value = '';
+        document.getElementById('sm_link').value = '';
+      }
+      document.getElementById('surat-form-modal').classList.add('active');
+    };
+
+    window.closeSuratFormModal = function () {
+      document.getElementById('surat-form-modal').classList.remove('active');
+    };
+
+    window.handleSaveSurat = async function (e) {
+      e.preventDefault();
+      const btn = document.getElementById('sm_submit_btn');
+      btn.disabled = true; btn.innerText = 'Menyimpan...';
+
+      const payload = {
+        id: document.getElementById('sm_id').value,
+        title: document.getElementById('sm_title').value,
+        sender: document.getElementById('sm_sender').value,
+        date: document.getElementById('sm_date').value,
+        link: document.getElementById('sm_link').value
+      };
+
+      try {
+        await window.setDoc(window.doc(window.db, "surat_masuk", payload.id), payload);
+        showToast("Surat masuk berhasil disimpan!");
+        window.closeSuratFormModal();
+      } catch (err) {
+        showToast("Gagal menyimpan data: " + err.message, "error");
+      }
+      btn.disabled = false; btn.innerText = 'Simpan Data';
+    };
+
+    window.adminDeleteSurat = function (id) {
+      openConfirmModal(
+        "Hapus Surat Masuk",
+        "Yakin ingin menghapus data surat masuk ini permanen?",
+        async () => {
+          showToast("Menghapus surat...");
+          try {
+            await window.deleteDoc(window.doc(window.db, "surat_masuk", id));
+            showToast("Surat berhasil dihapus!");
+          } catch (err) {
+            showToast("Gagal menghubungi server", "error");
+          }
+        },
+        true
+      );
+    };
+
     init();
 
-    // Show Welcome Modal once per session
-    if (!sessionStorage.getItem('podreserve_welcomed')) {
-      sessionStorage.setItem('podreserve_welcomed', 'true');
-      document.getElementById('welcome-modal').classList.add('active');
-    }
+    // Show Welcome Modal on every page load
+    document.getElementById('welcome-modal').classList.add('active');
 
     // Register PWA Service Worker
     if ('serviceWorker' in navigator) {
@@ -4575,6 +4414,119 @@
         }
       });
     }
+  </script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, onSnapshot, doc, setDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getStorage, ref as storageRef, uploadString, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBjv-yDTnY0abE7Zmfb0cSME4hwnjknw6g",
+      authDomain: "podreserve-cc46b.firebaseapp.com",
+      projectId: "podreserve-cc46b",
+      storageBucket: "podreserve-cc46b.firebasestorage.app",
+      messagingSenderId: "300314609509",
+      appId: "1:300314609509:web:d83470a99eae392b70c38c"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+
+    // Export to window
+    window.db = db;
+    window.getStorage = () => storage;
+    window.storageRef = storageRef;
+    window.uploadString = uploadString;
+    window.getDownloadURL = getDownloadURL;
+    window.setDoc = setDoc;
+    window.doc = doc;
+    window.updateDoc = updateDoc;
+    window.deleteDoc = deleteDoc;
+
+    // Real-time Listeners
+    onSnapshot(collection(db, "bookings"), (snapshot) => {
+      let newBookings = [];
+      let newCount = 0;
+      const currentBookings = window.bookings || bookings || [];
+      const oldIds = new Set(currentBookings.map(b => b.id));
+
+      snapshot.forEach(docSnap => {
+        const data = docSnap.data();
+        newBookings.push(data);
+        if (window.isAdmin && !oldIds.has(data.id)) newCount++;
+      });
+
+      bookings = newBookings;
+      window.bookings = newBookings;
+      localStorage.setItem('podreserve_v2_bookings', JSON.stringify(newBookings));
+
+      if (typeof window.renderSchedule === "function") {
+        window.renderSchedule();
+        window.renderReservasi();
+        if (window.isAdmin) {
+          window.renderAdminData();
+          if (newCount > 0) {
+            window.playNotificationSound();
+            window.showToast(`Ada ${newCount} permohonan reservasi baru!`);
+          }
+        }
+      }
+    });
+
+    onSnapshot(collection(db, "studios"), (snapshot) => {
+      let newStudios = [];
+      snapshot.forEach(docSnap => newStudios.push(docSnap.data()));
+      studios = newStudios;
+      window.studios = newStudios;
+      localStorage.setItem('podreserve_v2_studios', JSON.stringify(newStudios));
+      if (typeof window.renderStudios === "function") {
+        window.renderStudios();
+        window.renderStudioSelector();
+        if (window.isAdmin) window.renderAdminData();
+      }
+    });
+
+    onSnapshot(collection(db, "surat_masuk"), (snapshot) => {
+      let newSurat = [];
+      snapshot.forEach(docSnap => newSurat.push(docSnap.data()));
+      suratMasuk = newSurat;
+      window.suratMasuk = newSurat;
+      if (typeof window.renderSuratMasuk === "function") {
+        window.renderSuratMasuk();
+      }
+    });
+
+    onSnapshot(collection(db, "openedDates"), (snapshot) => {
+      let newDates = [];
+      snapshot.forEach(docSnap => {
+        if (docSnap.data().isOpened) {
+          newDates.push({ date: docSnap.id, desc: docSnap.data().desc || 'Buka' });
+        }
+      });
+      openedDates = newDates;
+      window.openedDates = newDates;
+      localStorage.setItem('podreserve_v2_opened_dates', JSON.stringify(newDates));
+      if (typeof window.renderCalendar === "function") {
+        window.renderCalendar();
+        if (window.isAdmin) window.renderAdminCalendar();
+      }
+    });
+
+    onSnapshot(collection(db, "settings"), (snapshot) => {
+      let newSettings = {};
+      snapshot.forEach(docSnap => {
+        newSettings[docSnap.id] = docSnap.data().value;
+      });
+      appSettings = newSettings;
+      window.appSettings = newSettings;
+      localStorage.setItem('podreserve_v2_settings', JSON.stringify(newSettings));
+      if (typeof window.applySettings === "function") {
+        window.applySettings();
+      }
+    });
+
   </script>
 </body>
 
