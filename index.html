@@ -2055,7 +2055,11 @@
       scrollbar-width: none;
       -ms-overflow-style: none;
     }
-    .fitness-calendar-wrapper::-webkit-scrollbar { display: none; }
+
+    .fitness-calendar-wrapper::-webkit-scrollbar {
+      display: none;
+    }
+
     .fitness-day-card {
       flex: 0 0 calc(20% - 0.75rem);
       min-width: 4rem;
@@ -2072,12 +2076,15 @@
       transition: all 0.2s ease;
       position: relative;
     }
+
     .cal-desktop-headers {
       display: none;
     }
+
     .cal-empty-cell {
       display: none;
     }
+
     @media (min-width: 768px) {
       .fitness-calendar-wrapper {
         display: grid;
@@ -2086,28 +2093,34 @@
         overflow: visible;
         padding: 0;
       }
+
       .fitness-day-card {
         flex: none;
         min-width: auto;
         aspect-ratio: 1;
         border-radius: 0.75rem;
       }
+
       .fitness-day-name {
-        display: none; /* Hide inside card because desktop has headers */
+        display: none;
+        /* Hide inside card because desktop has headers */
       }
+
       .cal-desktop-headers {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
         gap: 0.5rem;
         margin-bottom: 0.5rem;
       }
-      .cal-desktop-headers > div {
+
+      .cal-desktop-headers>div {
         text-align: center;
         font-size: 0.75rem;
         font-weight: 800;
         text-transform: uppercase;
         color: var(--text-muted);
       }
+
       .cal-empty-cell {
         display: block;
         background: transparent;
@@ -2115,17 +2128,20 @@
         pointer-events: none;
       }
     }
+
     .fitness-day-card.selected {
       background: var(--accent);
       border-color: var(--accent);
       color: white;
       box-shadow: 0 4px 12px rgba(15, 118, 110, 0.3);
     }
+
     .fitness-day-card.disabled {
       opacity: 0.5;
       cursor: not-allowed;
       background: #f8fafc;
     }
+
     .fitness-day-name {
       font-size: 0.75rem;
       font-weight: 700;
@@ -2133,23 +2149,35 @@
       margin-bottom: 0.25rem;
       color: var(--text-muted);
     }
+
     .fitness-day-card.selected .fitness-day-name {
       color: rgba(255, 255, 255, 0.9);
     }
+
     .fitness-day-date {
       font-size: 1.25rem;
       font-weight: 800;
     }
+
     .fitness-day-indicator {
       width: 6px;
       height: 6px;
       border-radius: 50%;
       margin-top: 0.25rem;
     }
-    .indicator-available { background: #22c55e; }
-    .indicator-full { background: #ef4444; }
-    .indicator-closed { background: #cbd5e1; }
-    
+
+    .indicator-available {
+      background: #22c55e;
+    }
+
+    .indicator-full {
+      background: #ef4444;
+    }
+
+    .indicator-closed {
+      background: #cbd5e1;
+    }
+
     .step-disabled {
       opacity: 0.3;
       pointer-events: none;
@@ -2260,9 +2288,17 @@
           <div style="flex-grow: 1; width: 100%;">
             <label>Cek Status Tiket</label>
             <div style="display:flex; gap:0.5rem; align-items:center;">
-              <input type="text" id="front-ticket-input" placeholder="Kode (Misal: B-1234)" autocomplete="off"
+              <!-- Fake inputs to absorb Chrome autofill -->
+              <input type="email" style="position:absolute; opacity:0; width:1px; height:1px; z-index:-1;" tabindex="-1"
+                aria-hidden="true">
+              <input type="password" style="position:absolute; opacity:0; width:1px; height:1px; z-index:-1;"
+                tabindex="-1" aria-hidden="true">
+
+              <input type="search" id="front-ticket-input" name="search_ticket_code"
+                placeholder="Misal: A-1234 / B-9876" autocomplete="new-password" spellcheck="false" data-lpignore="true"
+                readonly onfocus="this.removeAttribute('readonly'); this.style.borderColor='var(--accent)'"
+                onblur="this.style.borderColor='var(--border-color)'"
                 style="width: 100%; border: 1px solid var(--border-color); border-radius: 0.5rem; padding: 0.4rem 0.75rem; outline: none; font-family: var(--font-family); font-size: 0.875rem; background: var(--bg-main); color: var(--text-main); transition: border-color 0.2s;"
-                onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border-color)'"
                 onkeydown="if(event.key === 'Enter') checkFrontTicket()">
               <button onclick="checkFrontTicket()"
                 style="padding: 0.35rem 0.75rem; font-size: 0.75rem; font-weight:800; border-radius: 0.5rem; border:none; background: var(--accent); color: white; cursor: pointer; white-space:nowrap; transition: background 0.2s;">Cek</button>
@@ -2339,10 +2375,12 @@
               style="display:inline-block; background:var(--accent); color:white; padding:0.25rem 0.75rem; border-radius:999px; font-weight:800; font-size:0.75rem; margin-bottom:0.75rem;">Langkah
               2</span>
             <h3 style="font-weight:800; font-size:1.125rem;">Pilih Tanggal</h3>
-            <p style="color:var(--text-muted); font-size:0.875rem;">Geser untuk melihat jadwal, pilih tanggal yang tersedia.</p>
+            <p style="color:var(--text-muted); font-size:0.875rem;">Geser untuk melihat jadwal, pilih tanggal yang
+              tersedia.</p>
           </div>
 
-          <div class="cal-header" style="border-top:1px solid var(--border-color); margin-top:1.5rem; padding:1rem 1.5rem 0 1.5rem; display:flex; justify-content:space-between; align-items:center;">
+          <div class="cal-header"
+            style="border-top:1px solid var(--border-color); margin-top:1.5rem; padding:1rem 1.5rem 0 1.5rem; display:flex; justify-content:space-between; align-items:center;">
             <h3 id="cal-month-year" style="font-size: 1.125rem; font-weight:800;">...</h3>
             <div style="display:flex; gap:0.5rem;">
               <button class="btn-icon" onclick="changeMonth(-1)" style="padding:0.25rem;"><i data-lucide="chevron-left"
@@ -2351,11 +2389,17 @@
                   style="width:20px;height:20px;"></i></button>
             </div>
           </div>
-          
+
           <div class="cal-desktop-headers" style="padding: 1rem 1.5rem 0 1.5rem;">
-            <div>Min</div><div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div>
+            <div>Min</div>
+            <div>Sen</div>
+            <div>Sel</div>
+            <div>Rab</div>
+            <div>Kam</div>
+            <div>Jum</div>
+            <div>Sab</div>
           </div>
-          
+
           <div class="fitness-calendar-wrapper" id="cal-grid">
             <!-- Populated via JS -->
           </div>
@@ -2365,20 +2409,17 @@
             style="display:flex; justify-content:center; gap:1.5rem; padding: 1rem; border-top:1px solid var(--border-color); flex-wrap:wrap; background:#f8fafc;">
             <div
               style="display:flex; align-items:center; gap:0.5rem; font-size:0.75rem; font-weight:700; color:var(--text-muted);">
-              <span
-                style="width:10px; height:10px; border-radius:50%; background:#22c55e;"></span>
+              <span style="width:10px; height:10px; border-radius:50%; background:#22c55e;"></span>
               Tersedia
             </div>
             <div
               style="display:flex; align-items:center; gap:0.5rem; font-size:0.75rem; font-weight:700; color:var(--text-muted);">
-              <span
-                style="width:10px; height:10px; border-radius:50%; background:#ef4444;"></span>
+              <span style="width:10px; height:10px; border-radius:50%; background:#ef4444;"></span>
               Penuh
             </div>
             <div
               style="display:flex; align-items:center; gap:0.5rem; font-size:0.75rem; font-weight:700; color:var(--text-muted);">
-              <span
-                style="width:10px; height:10px; border-radius:50%; background:#cbd5e1;"></span>
+              <span style="width:10px; height:10px; border-radius:50%; background:#cbd5e1;"></span>
               Tutup
             </div>
           </div>
@@ -2392,9 +2433,10 @@
               style="display:inline-block; background:var(--accent); color:white; padding:0.25rem 0.75rem; border-radius:999px; font-weight:800; font-size:0.75rem; margin-bottom:0.75rem;">Langkah
               3</span>
             <h3 style="font-weight:800; font-size:1.125rem;">Pilih Sesi Waktu</h3>
-            <p style="color:var(--text-muted); font-size:0.875rem;">Pilih slot waktu yang tersedia pada tanggal tersebut.</p>
+            <p style="color:var(--text-muted); font-size:0.875rem;">Pilih slot waktu yang tersedia pada tanggal
+              tersebut.</p>
           </div>
-          
+
           <div id="schedule-container" style="padding: 1.5rem; max-width: 1200px; margin: 0 auto;">
             <!-- Populated via JS -->
           </div>
@@ -2689,8 +2731,15 @@
       </div>
       <p class="modal-desc">Masukkan ID Reservasi / Kode Tiket Anda (contoh: B-1234).</p>
       <div class="admin-form-group">
-        <input type="text" id="check-ticket-input" class="admin-form-input" placeholder="B-1234..." autocomplete="off"
-          onkeypress="if(event.key==='Enter') submitCheckTicket()">
+        <!-- Fake inputs to absorb Chrome autofill -->
+        <input type="email" style="position:absolute; opacity:0; width:1px; height:1px; z-index:-1;" tabindex="-1"
+          aria-hidden="true">
+        <input type="password" style="position:absolute; opacity:0; width:1px; height:1px; z-index:-1;" tabindex="-1"
+          aria-hidden="true">
+
+        <input type="search" id="check-ticket-input" name="search_ticket_code_2" class="admin-form-input"
+          placeholder="Misal: A-1234 / B-9876" autocomplete="new-password" spellcheck="false" data-lpignore="true"
+          readonly onfocus="this.removeAttribute('readonly');" onkeypress="if(event.key==='Enter') submitCheckTicket()">
       </div>
       <div id="check-ticket-result"
         style="margin-top:1rem; display:none; padding:1rem; border-radius:0.75rem; background:var(--bg-main); font-size:0.875rem;">
@@ -3464,11 +3513,11 @@
     window.selectScheduleStudio = function (studioId) {
       selectedScheduleStudioId = studioId;
       selectedDate = null; // Reset date to force linear flow
-      
+
       const step2 = document.getElementById('step-2-container');
       const step3 = document.getElementById('step-3-container');
-      if(step2) step2.classList.remove('step-disabled');
-      if(step3) step3.classList.add('step-disabled');
+      if (step2) step2.classList.remove('step-disabled');
+      if (step3) step3.classList.add('step-disabled');
 
       renderStudioSelector();
       renderCalendar();
@@ -3488,19 +3537,23 @@
 
       const daysShort = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
       let html = '';
-      
+
       // Pad empty cells for PC grid layout
       for (let i = 0; i < firstDay.getDay(); i++) {
         html += `<div class="cal-empty-cell"></div>`;
       }
-      
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
       for (let d = 1; d <= lastDay.getDate(); d++) {
         const dateObj = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), d);
         const dateStr = getISODateStr(dateObj);
-        
+
         const isSelected = selectedDate && dateObj.toDateString() === selectedDate.toDateString();
         const isOpened = openedDates.some(o => o.date === dateStr);
-        const isClosed = !isOpened;
+        const isPast = dateObj < today;
+        const isClosed = !isOpened || isPast;
 
         let availableSlots = 0;
         let totalSlots = sessions.length;
@@ -3518,7 +3571,7 @@
 
         let indicatorClass = 'indicator-closed';
         if (!isClosed) {
-           indicatorClass = availableSlots > 0 ? 'indicator-available' : 'indicator-full';
+          indicatorClass = availableSlots > 0 ? 'indicator-available' : 'indicator-full';
         }
 
         html += `
@@ -3531,14 +3584,14 @@
       const grid = document.getElementById('cal-grid');
       if (grid) {
         grid.innerHTML = html;
-        
+
         // Auto scroll to selected date or today
         setTimeout(() => {
-           const targetDate = selectedDate ? selectedDate.getDate() : new Date().getDate();
-           const targetEl = document.getElementById('fday-' + targetDate);
-           if(targetEl) {
-              targetEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-           }
+          const targetDate = selectedDate ? selectedDate.getDate() : new Date().getDate();
+          const targetEl = document.getElementById('fday-' + targetDate);
+          if (targetEl) {
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+          }
         }, 100);
       }
     }
@@ -3548,20 +3601,20 @@
       if (!container) return;
 
       if (!selectedDate) {
-         container.innerHTML = `
+        container.innerHTML = `
           <div class="empty-state" style="padding:2rem 1rem;">
             <i data-lucide="mouse-pointer-click" style="width:48px;height:48px;margin-bottom:1rem;color:var(--text-muted);opacity:0.5;"></i>
             <h3>Silakan Pilih Tanggal</h3>
             <p>Sesi waktu akan muncul setelah Anda memilih tanggal pada kalender di atas.</p>
           </div>
          `;
-         lucide.createIcons();
-         return;
+        lucide.createIcons();
+        return;
       }
 
       const dateStr = getISODateStr(selectedDate);
       const activeStudio = studios.find(s => s.id == selectedScheduleStudioId);
-      
+
       if (!activeStudio) {
         container.innerHTML = '';
         return;
@@ -3626,9 +3679,9 @@
     function selectDate(y, m, d) {
       selectedDate = new Date(y, m, d);
       document.getElementById('filter-date').value = getISODateStr(selectedDate);
-      
+
       const step3 = document.getElementById('step-3-container');
-      if(step3) step3.classList.remove('step-disabled');
+      if (step3) step3.classList.remove('step-disabled');
 
       renderCalendar();
       renderSchedule();
@@ -3772,10 +3825,21 @@
       const btn = document.getElementById('btn-submit');
       btn.disabled = true; btn.innerText = `Memproses...`;
 
+      const category = document.getElementById('b_category').value;
+      let prefix = "X";
+      if (category === "Dosen") prefix = "A";
+      else if (category === "Mahasiswa") prefix = "B";
+      else if (category === "Tendik") prefix = "C";
+      else if (category === "Mitra") prefix = "D";
+      else if (category === "Umum") prefix = "E";
+
+      const randomNum = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+      const ticketId = `${prefix}-${randomNum}`;
+
       const payload = {
-        id: "B-" + Math.floor(Math.random() * 10000), // Random ID B-xxxx
+        id: ticketId,
         studio_id: selectedStudio.id,
-        user_category: document.getElementById('b_category').value,
+        user_category: category,
         student_name: document.getElementById('b_name').value,
         student_id: document.getElementById('b_id').value,
         organization: document.getElementById('b_org').value,
