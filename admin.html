@@ -105,7 +105,7 @@
       -webkit-font-smoothing: antialiased;
       padding-top: calc(var(--header-height) + env(safe-area-inset-top));
       padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom) + 16px);
-      min-height: 100vh;
+      min-height: 100dvh;
       min-height: -webkit-fill-available;
       overscroll-behavior: none;
       display: flex;
@@ -798,11 +798,10 @@
     }
 
     .cal-cell.weekend-closed {
-      background: #f1f5f9;
-      color: #94a3b8;
+      background: var(--error-dim);
+      color: var(--error);
       pointer-events: none;
-      border: 1px dashed #cbd5e1;
-      opacity: 0.6;
+      border: 1px dashed rgba(239, 68, 68, 0.2);
     }
 
     .cal-cell.selected {
@@ -836,11 +835,6 @@
     .status-full {
       background: rgba(239, 68, 68, 0.1);
       color: var(--error);
-    }
-
-    .status-closed {
-      background: #e2e8f0;
-      color: #64748b;
     }
 
     /* SLOTS MODAL */
@@ -1109,6 +1103,8 @@
       transform: translateX(16px);
     }
 
+
+    /* Modal Adjustments */
     @media(min-width: 480px) {
       .slots-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -1724,8 +1720,8 @@
     .admin-main-content {
       flex: 1;
       margin-left: 280px;
-      padding: 2.5rem;
-      min-height: 100vh;
+      padding: 2rem;
+      min-height: 100dvh;
     }
 
     .admin-sidebar-header {
@@ -1839,6 +1835,12 @@
       }
     }
 
+    @media (min-width: 1025px) {
+      .mobile-header {
+        display: none !important;
+      }
+    }
+
     @media (max-width: 1024px) {
       .admin-sidebar {
         width: 100%;
@@ -1860,7 +1862,7 @@
       .admin-main-content {
         margin-left: 0;
         padding: 1.5rem 1rem;
-        padding-bottom: 6rem;
+        padding-bottom: 5.5rem;
         /* Space for bottom nav */
       }
 
@@ -1885,7 +1887,9 @@
       }
 
       .admin-sidebar-header {
-        display: none;
+        display: flex;
+        justify-content: center;
+        padding: 0.5rem;
       }
 
       .admin-sidebar-footer {
@@ -2045,118 +2049,6 @@
       }
     }
 
-    /* Fitness Calendar */
-    .fitness-calendar-wrapper {
-      display: flex;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      gap: 0.75rem;
-      padding: 0.5rem;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
-    .fitness-calendar-wrapper::-webkit-scrollbar { display: none; }
-    .fitness-day-card {
-      flex: 0 0 calc(20% - 0.75rem);
-      min-width: 4rem;
-      scroll-snap-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 0.75rem 0.5rem;
-      border-radius: 1rem;
-      background: var(--bg-main);
-      border: 1px solid var(--border-color);
-      cursor: pointer;
-      transition: all 0.2s ease;
-      position: relative;
-    }
-    .cal-desktop-headers {
-      display: none;
-    }
-    .cal-empty-cell {
-      display: none;
-    }
-    @media (min-width: 768px) {
-      .fitness-calendar-wrapper {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 0.5rem;
-        overflow: visible;
-        padding: 0;
-      }
-      .fitness-day-card {
-        flex: none;
-        min-width: auto;
-        aspect-ratio: 1;
-        border-radius: 0.75rem;
-      }
-      .fitness-day-name {
-        display: none; /* Hide inside card because desktop has headers */
-      }
-      .cal-desktop-headers {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 0.5rem;
-        margin-bottom: 0.5rem;
-      }
-      .cal-desktop-headers > div {
-        text-align: center;
-        font-size: 0.75rem;
-        font-weight: 800;
-        text-transform: uppercase;
-        color: var(--text-muted);
-      }
-      .cal-empty-cell {
-        display: block;
-        background: transparent;
-        border: none;
-        pointer-events: none;
-      }
-    }
-    .fitness-day-card.selected {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: white;
-      box-shadow: 0 4px 12px rgba(15, 118, 110, 0.3);
-    }
-    .fitness-day-card.disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      background: #f8fafc;
-    }
-    .fitness-day-name {
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      margin-bottom: 0.25rem;
-      color: var(--text-muted);
-    }
-    .fitness-day-card.selected .fitness-day-name {
-      color: rgba(255, 255, 255, 0.9);
-    }
-    .fitness-day-date {
-      font-size: 1.25rem;
-      font-weight: 800;
-    }
-    .fitness-day-indicator {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      margin-top: 0.25rem;
-    }
-    .indicator-available { background: #22c55e; }
-    .indicator-full { background: #ef4444; }
-    .indicator-closed { background: #cbd5e1; }
-    
-    .step-disabled {
-      opacity: 0.3;
-      pointer-events: none;
-      filter: grayscale(100%);
-      transition: all 0.3s ease;
-    }
-
     .skeleton-box {
       background: linear-gradient(90deg, var(--border-color) 25%, #f1f5f9 50%, var(--border-color) 75%);
       background-size: 200% 100%;
@@ -2188,559 +2080,395 @@
 <body>
   <div id="print-area"></div>
 
-  <!-- App Header -->
-  <header class="app-header">
-    <div class="brand" onclick="handleSecretKnock()">
-      <div class="brand-icon"><i data-lucide="mic-2"></i></div>
-      <div class="brand-text">
-        <h1>PodReserve</h1>
-        <p>Studio Network</p>
-      </div>
-    </div>
+  <!-- Removed Public Header and Footer -->
 
-    <!-- Top Navigation for PC -->
-    <nav class="pc-nav" id="pc-nav">
-      <button class="pc-nav-btn active" onclick="switchTab('studios', 'pc')">
-        <i data-lucide="layout-grid" style="width:18px;height:18px;"></i> Studios
-      </button>
-      <button class="pc-nav-btn" onclick="switchTab('availability', 'pc')">
-        <i data-lucide="calendar" style="width:18px;height:18px;"></i> Jadwal
-      </button>
-      <button class="pc-nav-btn" onclick="switchTab('reservasi', 'pc')">
-        <i data-lucide="clipboard-list" style="width:18px;height:18px;"></i> Reservasi
-      </button>
-    </nav>
-  </header>
+  <!-- Removed User Modals -->
 
-  <!-- Mobile Floating Action Button for Schedule Scroll -->
-  <button id="fab-scroll-schedule"
-    onclick="document.getElementById('schedule-container').scrollIntoView({ behavior: 'smooth', block: 'start' }); this.style.transform='translateX(-50%) translateY(100px)'; this.style.opacity='0';"
-    style="position:fixed; bottom: calc(var(--nav-height) + 1.5rem + env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%) translateY(100px); background: var(--accent); color: #fff; border: none; border-radius: 999px; padding: 0.75rem 1.5rem; font-weight: 800; font-size: 0.875rem; box-shadow: 0 8px 16px rgba(15, 118, 110, 0.4); z-index: 90; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); opacity: 0; pointer-events: none; display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-family);">
-    Lihat Jadwal <i data-lucide="arrow-down" style="width:16px;height:16px;"></i>
-  </button>
-
-  <!-- Mobile Bottom Navigation (Hidden on PC) -->
-  <nav class="bottom-nav" id="mobile-nav">
-    <button class="nav-item active" onclick="switchTab('studios', 'mobile')">
-      <i data-lucide="layout-grid"></i>
-      <span>Studios</span>
-    </button>
-    <button class="nav-item" onclick="switchTab('availability', 'mobile')">
-      <i data-lucide="calendar"></i>
-      <span>Jadwal</span>
-    </button>
-    <button class="nav-item" onclick="switchTab('reservasi', 'mobile')">
-      <i data-lucide="clipboard-list"></i>
-      <span>Reservasi</span>
-    </button>
-  </nav>
-
-  <main>
-    <!-- Tab: Studios (OTA Layout) -->
-    <div id="tab-studios" class="tab-content active">
-
-      <div class="hero-section">
-        <div class="hero-slider-track" id="hero-slider-track">
-          <!-- Populated by JS -->
+  <!-- STUDIO FORM MODAL (CRUD) -->
+  <div class="custom-modal-overlay" id="studio-form-modal">
+    <div class="custom-modal-card" style="max-width:500px; max-height:90vh; overflow-y:auto; padding: 1.5rem;">
+      <div class="modal-title-row">
+        <div
+          style="width:2.5rem;height:2.5rem;border-radius:0.5rem;background:var(--accent-dim);color:var(--accent);display:flex;align-items:center;justify-content:center;">
+          <i data-lucide="layout-dashboard"></i>
         </div>
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-          <h1 class="hero-title">Eksplorasi & Reservasi Studio Podcast</h1>
-          <p class="hero-subtitle">Fasilitas podcast dan rekaman profesional di lingkungan UIN Siber Syekh Nurjati
-            Cirebon.</p>
-        </div>
-        <div class="hero-slider-dots" id="hero-dots"></div>
+        <h3 id="studio-form-title">Tambah Studio</h3>
       </div>
+      <form id="studio-form" onsubmit="handleSaveStudio(event)">
+        <input type="hidden" id="sf_mode" value="add">
+        <div class="admin-form-group">
+          <label>ID Studio (Unik, cth: F-05)</label>
+          <input type="text" id="sf_id" class="admin-form-input" required>
+        </div>
+        <div class="admin-form-group">
+          <label>Nama Studio</label>
+          <input type="text" id="sf_name" class="admin-form-input" required>
+        </div>
+        <div class="admin-form-group">
+          <label>Kapasitas (Orang)</label>
+          <input type="number" id="sf_cap" class="admin-form-input" required>
+        </div>
+        <div class="admin-form-group">
+          <label>Deskripsi Singkat</label>
+          <textarea id="sf_desc" class="admin-form-input" rows="3" required></textarea>
+        </div>
+        <div class="admin-form-group"
+          style="background: var(--bg-main); padding: 1.25rem; border-radius: 0.75rem; margin-bottom: 1.5rem; border: 1px solid var(--border-color);">
+          <label
+            style="font-size: 1rem; color: var(--text-main); margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; display:block; font-weight:800;">Fasilitas
+            Studio Terstruktur</label>
 
-      <!-- Unified Search Bar -->
-      <div class="search-bar" style="margin-top: -2.5rem; position: relative; z-index: 10;">
-        <!-- Ticket Check -->
-        <div class="search-input" style="flex: 1.2;">
-          <i data-lucide="ticket"></i>
-          <div style="flex-grow: 1; width: 100%;">
-            <label>Cek Status Tiket</label>
-            <div style="display:flex; gap:0.5rem; align-items:center;">
-              <input type="text" id="front-ticket-input" placeholder="Kode (Misal: B-1234)" autocomplete="off"
-                style="width: 100%; border: 1px solid var(--border-color); border-radius: 0.5rem; padding: 0.4rem 0.75rem; outline: none; font-family: var(--font-family); font-size: 0.875rem; background: var(--bg-main); color: var(--text-main); transition: border-color 0.2s;"
-                onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border-color)'"
-                onkeydown="if(event.key === 'Enter') checkFrontTicket()">
-              <button onclick="checkFrontTicket()"
-                style="padding: 0.35rem 0.75rem; font-size: 0.75rem; font-weight:800; border-radius: 0.5rem; border:none; background: var(--accent); color: white; cursor: pointer; white-space:nowrap; transition: background 0.2s;">Cek</button>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+            <div>
+              <label style="font-size: 0.75rem; color:var(--text-muted); font-weight:700;">Jumlah Mic</label>
+              <input type="number" id="sf_fas_mic" class="admin-form-input" placeholder="Cth: 2">
+            </div>
+            <div>
+              <label style="font-size: 0.75rem; color:var(--text-muted); font-weight:700;">Jumlah Lighting</label>
+              <input type="number" id="sf_fas_lighting" class="admin-form-input" placeholder="Cth: 2">
+            </div>
+            <div>
+              <label style="font-size: 0.75rem; color:var(--text-muted); font-weight:700;">Jumlah Kursi</label>
+              <input type="number" id="sf_fas_kursi" class="admin-form-input" placeholder="Cth: 3">
+            </div>
+            <div>
+              <label style="font-size: 0.75rem; color:var(--text-muted); font-weight:700;">Layar TV (Background)</label>
+              <select id="sf_fas_tv" class="admin-form-input">
+                <option value="Tidak Ada">Tidak Ada</option>
+                <option value="Ada">Ada</option>
+              </select>
             </div>
           </div>
-        </div>
 
-        <!-- Schedule & Category -->
-        <div class="search-input">
-          <i data-lucide="calendar-days"></i>
-          <div style="width: 100%;">
-            <label>Check-in Jadwal</label>
-            <input type="date" id="filter-date"
-              style="width:100%; border:none; outline:none; font-family:var(--font-family); font-size:0.875rem; background:transparent;">
-          </div>
-        </div>
-        <div class="search-input">
-          <i data-lucide="users"></i>
-          <div style="width: 100%;">
-            <label>Kategori Pengguna</label>
-            <select id="filter-category"
-              style="width:100%; border:none; outline:none; font-family:var(--font-family); font-size:0.875rem; background:transparent;">
-              <option value="">Semua Kategori</option>
-              <option value="Mahasiswa">Mahasiswa</option>
-              <option value="Dosen">Dosen</option>
-              <option value="Tendik">Tenaga Kependidikan</option>
-              <option value="Mitra">Mitra / Rekanan</option>
-              <option value="Umum">Masyarakat Umum</option>
+          <div style="margin-bottom: 1rem;">
+            <label style="font-size: 0.75rem; color:var(--text-muted); font-weight:700;">Tema / Vibe Studio</label>
+            <select id="sf_fas_tema" class="admin-form-input">
+              <option value="Fleksibel">Fleksibel</option>
+              <option value="Formal">Formal</option>
+              <option value="Santai">Santai</option>
             </select>
           </div>
-        </div>
-        <button class="btn-search" onclick="switchTab('availability')">Cari Jadwal <i data-lucide="arrow-right"
-            style="width:18px;height:18px;"></i></button>
-      </div>
 
-      <div class="content-wrapper">
-        <h2 class="section-title">Pilihan Studio</h2>
-        <p class="section-subtitle">Fasilitas unggulan yang siap menunjang kreativitas Anda.</p>
-        <div class="studios-carousel" id="studios-container"></div>
+          <div>
+            <label style="font-size: 0.75rem; color:var(--text-muted); font-weight:700;">Fasilitas Tambahan
+              (Lainnya)</label>
+            <textarea id="sf_fas_lainnya" class="admin-form-input" rows="2"
+              placeholder="Sofa, AC, Papan Tulis, dll (pisahkan dengan koma)"></textarea>
+          </div>
+        </div>
+        <div class="admin-form-group">
+          <label>URL Gambar atau Upload File Foto</label>
+          <input type="url" id="sf_img" class="admin-form-input" placeholder="URL Foto..."
+            style="margin-bottom:0.5rem;">
+          <input type="file" id="sf_img_file" class="admin-form-input" accept="image/*"
+            onchange="handleStudioImage(this)">
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-modal-outline" onclick="closeStudioFormModal()">Batal</button>
+          <button type="submit" class="btn-modal-fill" id="sf_submit_btn">Simpan Data</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SURAT MASUK FORM MODAL (CRUD) -->
+  <div class="custom-modal-overlay" id="surat-form-modal">
+    <div class="custom-modal-card" style="max-width:500px; max-height:90vh; overflow-y:auto; padding: 1.5rem;">
+      <div class="modal-title-row">
+        <div style="width:2.5rem;height:2.5rem;border-radius:0.5rem;background:var(--accent-dim);color:var(--accent);display:flex;align-items:center;justify-content:center;">
+          <i data-lucide="mail"></i>
+        </div>
+        <h3 id="surat-form-title">Tambah Surat Masuk</h3>
       </div>
+      <form id="surat-form" onsubmit="window.handleSaveSurat(event)">
+        <input type="hidden" id="sm_mode" value="add">
+        <input type="hidden" id="sm_id" value="">
+        <div class="admin-form-group">
+          <label>Judul Surat / Keterangan</label>
+          <input type="text" id="sm_title" class="admin-form-input" required>
+        </div>
+        <div class="admin-form-group">
+          <label>Pengirim (Instansi / Personal)</label>
+          <input type="text" id="sm_sender" class="admin-form-input" required>
+        </div>
+        <div class="admin-form-group">
+          <label>Tanggal Surat</label>
+          <input type="date" id="sm_date" class="admin-form-input" required>
+        </div>
+        <div class="admin-form-group">
+          <label>Link PDF Surat (Google Drive)</label>
+          <input type="url" id="sm_link" class="admin-form-input" placeholder="https://drive.google.com/..." required>
+        </div>
+        <div class="modal-actions" style="margin-top:2rem;">
+          <button type="button" class="btn-modal-outline" onclick="window.closeSuratFormModal()">Batal</button>
+          <button type="submit" class="btn-modal-fill" id="sm_submit_btn">Simpan Data</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- LOGIN VIEW -->
+  <div id="login-view" style="display:flex; flex-direction:column; width:100%; height:100dvh; overflow:hidden; background:#ffffff; align-items:center; justify-content:center; padding:2rem;">
+    
+    <!-- Logo Instagram/FB Style -->
+    <div style="margin-bottom: 2.5rem; text-align: center;">
+       <div style="display:inline-flex; align-items:center; justify-content:center; width:4.5rem; height:4.5rem; border-radius:1rem; background:linear-gradient(45deg, #10b981, #059669); color:white; box-shadow:0 10px 25px rgba(16,185,129,0.3); margin-bottom:1rem;">
+          <i data-lucide="mic-2" style="width:2.5rem; height:2.5rem;"></i>
+       </div>
+       <h1 style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-weight:800; font-size:1.75rem; color:#1c1e21; letter-spacing:-0.5px;">PodReserve</h1>
     </div>
 
-    <!-- Tab: Availability -->
-    <div id="tab-availability" class="tab-content content-wrapper">
-      <div style="text-align: center; margin-bottom: 2rem;">
-        <h2 class="section-title" style="margin-bottom:0;">Pesan Jadwal Studio</h2>
-        <p class="section-subtitle">Ikuti langkah mudah di bawah ini untuk memesan studio podcast kami.</p>
+    <!-- Inputs Group -->
+    <div style="width:100%; max-width:400px;">
+       <div style="border: 1px solid #d1d5db; border-radius:0.5rem; overflow:hidden; background:#fafafa; margin-bottom:1rem;">
+          <input type="email" id="login-email" placeholder="Email admin" autocomplete="off"
+            style="width:100%; border:none; border-bottom:1px solid #d1d5db; padding:1rem; font-size:0.95rem; outline:none; background:transparent;">
+          <input type="password" id="login-password" placeholder="Kata sandi" autocomplete="off"
+            style="width:100%; border:none; padding:1rem; font-size:0.95rem; outline:none; background:transparent;" onkeypress="if(event.key==='Enter') window.submitLogin()">
+       </div>
+       
+       <button id="btn-login-submit" onclick="window.submitLogin()" 
+          style="width:100%; padding:0.875rem; background:#10b981; color:white; font-weight:700; border:none; border-radius:999px; font-size:0.95rem; cursor:pointer; margin-bottom:1.5rem; transition:background 0.2s;">Masuk</button>
+       
+       <div style="text-align:center;">
+         <a href="index.html" style="color:#0f766e; font-size:0.875rem; font-weight:600; text-decoration:none;">Lupa kata sandi?</a>
+       </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="position:absolute; bottom:2rem; width:100%; text-align:center;">
+       <div style="display:flex; align-items:center; justify-content:center; gap:1rem; margin-bottom:1.5rem; padding: 0 3rem;">
+          <div style="flex:1; height:1px; background:#e5e7eb;"></div>
+          <span style="font-size:0.75rem; color:#6b7280; font-weight:600; text-transform:uppercase;">atau</span>
+          <div style="flex:1; height:1px; background:#e5e7eb;"></div>
+       </div>
+       <a href="index.html" style="display:inline-block; padding:0.5rem 1.5rem; border:1px solid #d1d5db; border-radius:999px; font-size:0.875rem; font-weight:700; color:#374151; text-decoration:none; background:transparent;">Kembali ke Beranda</a>
+    </div>
+  </div>
+
+  <!-- ADMIN VIEW (HIDDEN) -->
+  <div id="admin-view" style="display:none; width:100%; background:var(--bg-main); min-height:100dvh; z-index:50; position:relative;">
+    
+    <!-- MOBILE HEADER -->
+    <header class="app-header mobile-header" style="display: flex;">
+      <div class="brand">
+        <div class="brand-icon">
+          <i data-lucide="shield-check" style="width:24px; height:24px;"></i>
+        </div>
+        <div class="brand-text">
+          <h1>PodAdmin</h1>
+          <p>Dashboard Manajemen</p>
+        </div>
       </div>
+    </header>
+    
+    <div class="admin-layout">
+      <!-- Sidebar -->
+      <aside class="admin-sidebar">
+        <div class="admin-sidebar-header">
+          <div style="display:flex; align-items:center; gap:0.5rem;"><i data-lucide="shield-check"
+              style="width:24px; height:24px;"></i> PodAdmin</div>
+        </div>
+        <nav class="admin-sidebar-nav">
+          <button class="admin-sidebar-btn active" id="btn-adm-book" onclick="switchAdminTab('book')">
+            <i data-lucide="book-open"></i>
+            <span style="display:inline-flex; align-items:center; gap:0.25rem;">
+              Kelola Reservasi
+              <span id="pending-badge"
+                style="display:none; background:var(--error); color:white; font-size:10px; font-weight:800; border-radius:999px; padding:2px 6px; box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);"></span>
+            </span>
+          </button>
+          <button class="admin-sidebar-btn" id="btn-adm-std" onclick="switchAdminTab('std')">
+            <i data-lucide="mic"></i> Kelola Studio (Fasilitas)
+          </button>
 
-      <div class="calendar-card"
-        style="margin-top: 0; max-width: 1200px; margin-left: auto; margin-right: auto; background: transparent; border: none; box-shadow: none;">
+          <button class="admin-sidebar-btn" id="btn-adm-hol" onclick="switchAdminTab('hol')">
+            <i data-lucide="calendar"></i> Manajemen Jadwal
+          </button>
+          <button class="admin-sidebar-btn" id="btn-adm-set" onclick="switchAdminTab('set')">
+            <i data-lucide="settings"></i> Pengaturan
+          </button>
+        </nav>
+        <div class="admin-sidebar-footer">
+          <button class="btn-modal-danger btn-modal-fill" style="width:100%; padding:1rem; border-radius:0.75rem;"
+            onclick="exitAdminMode()">
+            <i data-lucide="log-out"></i> Keluar Admin
+          </button>
+        </div>
+      </aside>
 
-        <!-- Langkah 1 -->
+      <!-- Main Content -->
+      <main class="admin-main-content">
         <div
-          style="background:var(--bg-panel); border:1px solid var(--border-color); border-radius:1.5rem; padding-bottom:0.5rem; margin-bottom:1.5rem; overflow:hidden; box-shadow:0 8px 30px rgba(0,0,0,0.04);">
-          <div style="padding: 1.5rem 1.5rem 0 1.5rem; text-align:center;">
-            <span
-              style="display:inline-block; background:var(--accent); color:white; padding:0.25rem 0.75rem; border-radius:999px; font-weight:800; font-size:0.75rem; margin-bottom:0.75rem;">Langkah
-              1</span>
-            <h3 style="font-weight:800; font-size:1.125rem;">Pilih Studio</h3>
-            <p style="color:var(--text-muted); font-size:0.875rem;">Silakan pilih studio yang ingin Anda pesan.</p>
-          </div>
-          <!-- Studio Selector -->
-          <div class="cal-studio-selector" id="cal-studio-selector" style="padding-top: 1rem;">
-            <!-- Populated via JS -->
+          style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 2rem; padding: 0 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+          <h2 class="section-title" style="margin-bottom:0;" id="admin-page-title">Kelola Reservasi</h2>
+          <div style="display:flex; gap: 0.5rem;">
+            <button class="btn-modal-outline"
+              style="padding:0.5rem 1rem; color:var(--accent); font-size:0.75rem; display:flex; align-items:center; gap:0.25rem;"
+              onclick="adminRefreshData()" id="admin-refresh-btn"><i data-lucide="refresh-cw"
+                style="width:14px;height:14px;"></i> Refresh</button>
+            <button class="btn-modal-outline"
+              style="padding:0.5rem 1rem; border-color:var(--error-dim); color:var(--error); font-size:0.75rem;"
+              onclick="exitAdminMode()" id="mobile-admin-exit">Keluar</button>
           </div>
         </div>
 
-        <!-- Langkah 2: Pilih Tanggal -->
-        <div id="step-2-container" class="step-disabled"
-          style="background:var(--bg-panel); border:1px solid var(--border-color); border-radius:1.5rem; overflow:hidden; box-shadow:0 8px 30px rgba(0,0,0,0.04); margin-bottom:1.5rem; transition:all 0.3s ease;">
-          <div style="padding: 1.5rem 1.5rem 0 1.5rem; text-align:center;">
-            <span
-              style="display:inline-block; background:var(--accent); color:white; padding:0.25rem 0.75rem; border-radius:999px; font-weight:800; font-size:0.75rem; margin-bottom:0.75rem;">Langkah
-              2</span>
-            <h3 style="font-weight:800; font-size:1.125rem;">Pilih Tanggal</h3>
-            <p style="color:var(--text-muted); font-size:0.875rem;">Geser untuk melihat jadwal, pilih tanggal yang tersedia.</p>
+        <div id="adm-book" style="display:block;">
+          <div style="margin-bottom: 1rem; display:flex; justify-content:flex-end;">
+            <button class="btn-modal-fill" style="background:var(--accent); color:#fff;" onclick="printAdminReport()">
+              <i data-lucide="printer" style="width:16px;height:16px;margin-right:0.5rem;"></i> Download Laporan (PDF)
+            </button>
           </div>
+          <div class="admin-table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID / Waktu</th>
+                  <th>Pemesan</th>
+                  <th>Kontak & Fasilitas</th>
+                  <th>Surat / Tujuan</th>
+                  <th>Status & Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="admin-bookings-table">
+                <!-- Data here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
 
-          <div class="cal-header" style="border-top:1px solid var(--border-color); margin-top:1.5rem; padding:1rem 1.5rem 0 1.5rem; display:flex; justify-content:space-between; align-items:center;">
-            <h3 id="cal-month-year" style="font-size: 1.125rem; font-weight:800;">...</h3>
-            <div style="display:flex; gap:0.5rem;">
-              <button class="btn-icon" onclick="changeMonth(-1)" style="padding:0.25rem;"><i data-lucide="chevron-left"
-                  style="width:20px;height:20px;"></i></button>
-              <button class="btn-icon" onclick="changeMonth(1)" style="padding:0.25rem;"><i data-lucide="chevron-right"
-                  style="width:20px;height:20px;"></i></button>
-            </div>
+        <div id="adm-std" style="display:none;">
+          <div style="margin-bottom: 1.5rem; display:flex; justify-content:flex-end;">
+            <button class="btn-modal-fill" onclick="openStudioFormModal('add')">
+              <i data-lucide="plus" style="width:16px;height:16px;margin-right:0.5rem;"></i> Tambah Studio
+            </button>
           </div>
-          
-          <div class="cal-desktop-headers" style="padding: 1rem 1.5rem 0 1.5rem;">
-            <div>Min</div><div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div>
+          <div class="admin-table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nama Studio</th>
+                  <th>Kapasitas</th>
+                  <th>Gambar</th>
+                  <th style="padding: 1rem; text-align:right;">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="admin-studios-table"></tbody>
+            </table>
           </div>
-          
-          <div class="fitness-calendar-wrapper" id="cal-grid">
-            <!-- Populated via JS -->
-          </div>
+        </div>
 
-          <!-- Legend -->
+
+        <div id="adm-hol" style="display:none;">
           <div
-            style="display:flex; justify-content:center; gap:1.5rem; padding: 1rem; border-top:1px solid var(--border-color); flex-wrap:wrap; background:#f8fafc;">
-            <div
-              style="display:flex; align-items:center; gap:0.5rem; font-size:0.75rem; font-weight:700; color:var(--text-muted);">
-              <span
-                style="width:10px; height:10px; border-radius:50%; background:#22c55e;"></span>
-              Tersedia
+            style="background: #fff; border-radius: 1rem; border: 1px solid var(--border-color); padding: 1.5rem; margin-bottom: 2rem;">
+            <h3 style="margin-bottom: 1rem; font-weight:800; font-size:1.125rem;">Manajemen Jadwal Buka</h3>
+            <p style="margin-bottom: 1.5rem; color:var(--text-muted); font-size:0.875rem;">Sistem menggunakan mode
+              <strong>Whitelist</strong>. Semua tanggal otomatis tutup. Klik pada kalender di bawah ini untuk
+              <strong>membuka jadwal</strong> atau menutupnya kembali.
+            </p>
+
+            <div class="calendar-card"
+              style="margin:0 auto 2rem auto; box-shadow:none; border:1px solid var(--border-color); max-width:100%; width:100%;">
+              <div class="cal-header">
+                <h3 id="adm-cal-month-year" style="font-size: 1.125rem;">...</h3>
+                <div style="display:flex; gap:0.5rem;">
+                  <button class="btn-icon" onclick="changeAdminMonth(-1)"><i data-lucide="chevron-left"
+                      style="width:20px;height:20px;"></i></button>
+                  <button class="btn-icon" onclick="changeAdminMonth(1)"><i data-lucide="chevron-right"
+                      style="width:20px;height:20px;"></i></button>
+                </div>
+              </div>
+              <div class="adm-dates-grid" id="adm-cal-grid"></div>
             </div>
-            <div
-              style="display:flex; align-items:center; gap:0.5rem; font-size:0.75rem; font-weight:700; color:var(--text-muted);">
-              <span
-                style="width:10px; height:10px; border-radius:50%; background:#ef4444;"></span>
-              Penuh
+
+            <h4
+              style="font-weight:700; margin-bottom:1rem; border-bottom:1px solid var(--border-color); padding-bottom:0.5rem;">
+              Tanggal yang Sedang Dibuka:</h4>
+            <div id="admin-opened-list"></div>
+          </div>
+        </div>
+
+        <div id="adm-set" style="display:none;">
+          <div class="admin-table-container" style="padding: 2.5rem 2rem; max-width: 600px; margin: 0 auto;">
+
+            <div style="text-align:center; margin-bottom: 2rem;">
+              <div
+                style="width: 4rem; height: 4rem; background: var(--accent-dim); color: var(--accent); border-radius: 1.25rem; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                <i data-lucide="image" style="width: 2rem; height: 2rem;"></i>
+              </div>
+              <h3 style="font-weight: 800; font-size: 1.25rem;">Pengaturan Banner</h3>
+              <p style="color: var(--text-muted); font-size: 0.875rem; margin-top:0.25rem;">Kelola gambar
+                <i>slideshow</i>
+                yang tampil pada halaman pencarian Studio.
+              </p>
             </div>
-            <div
-              style="display:flex; align-items:center; gap:0.5rem; font-size:0.75rem; font-weight:700; color:var(--text-muted);">
-              <span
-                style="width:10px; height:10px; border-radius:50%; background:#cbd5e1;"></span>
-              Tutup
+
+            <div class="admin-form-group">
+              <label style="display:flex; justify-content:space-between; align-items:center;">
+                <span>Daftar Banner Saat Ini</span>
+              </label>
+              <div id="adm-banner-list" style="display:flex; flex-direction:column; gap:1rem; margin-bottom: 1.5rem;">
+                <!-- Populated dynamically -->
+              </div>
             </div>
+
+            <div style="height:1px; background:var(--border-color); margin: 2rem 0;"></div>
+            <h4 style="font-weight:800; font-size:1rem; margin-bottom:1rem;">Tambah Banner Baru</h4>
+
+            <div class="admin-form-group">
+              <label>Tautan Langsung / Google Drive URL</label>
+              <input type="text" id="adm-hero-link" class="admin-form-input" placeholder="https://...">
+            </div>
+
+            <div style="display:flex; align-items:center; margin: 1.5rem 0;">
+              <div style="flex-grow:1; height:1px; background:var(--border-color);"></div>
+              <span
+                style="padding: 0 1rem; font-size: 0.75rem; color: var(--text-muted); font-weight:800; letter-spacing:0.05em;">ATAU
+                UPLOAD FOTO</span>
+              <div style="flex-grow:1; height:1px; background:var(--border-color);"></div>
+            </div>
+
+            <div class="admin-form-group">
+              <label>Pilih File dari Perangkat</label>
+              <input type="file" id="adm-hero-file" class="admin-form-input" accept="image/*"
+                onchange="convertFileToBase64(this)" style="background: #fff; padding: 0.5rem 1rem;">
+            </div>
+
+            <button class="btn-modal-fill"
+              style="width: 100%; margin-top: 1rem; padding: 1rem; font-size: 1rem; border-radius: 1rem;"
+              onclick="adminAddHeroImage(this)">
+              Tambah Banner
+            </button>
           </div>
-        </div> <!-- End Langkah 2 -->
-
-        <!-- Langkah 3: Pilih Sesi Waktu -->
-        <div id="step-3-container" class="step-disabled"
-          style="background:var(--bg-panel); border:1px solid var(--border-color); border-radius:1.5rem; overflow:hidden; box-shadow:0 8px 30px rgba(0,0,0,0.04); transition:all 0.3s ease;">
-          <div style="padding: 1.5rem 1.5rem 0 1.5rem; text-align:center;">
-            <span
-              style="display:inline-block; background:var(--accent); color:white; padding:0.25rem 0.75rem; border-radius:999px; font-weight:800; font-size:0.75rem; margin-bottom:0.75rem;">Langkah
-              3</span>
-            <h3 style="font-weight:800; font-size:1.125rem;">Pilih Sesi Waktu</h3>
-            <p style="color:var(--text-muted); font-size:0.875rem;">Pilih slot waktu yang tersedia pada tanggal tersebut.</p>
-          </div>
-          
-          <div id="schedule-container" style="padding: 1.5rem; max-width: 1200px; margin: 0 auto;">
-            <!-- Populated via JS -->
-          </div>
-        </div> <!-- End Langkah 3 -->
-
-      </div> <!-- End Calendar Card Group -->
-    </div>
-
-    <!-- Tab: Reservasi -->
-    <div id="tab-reservasi" class="tab-content content-wrapper">
-      <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom: 1.5rem;">
-        <div>
-          <h2 class="section-title" style="margin-bottom:0;">Riwayat Booking</h2>
-          <p class="section-subtitle" style="margin-bottom:0;">Pantau status persetujuan reservasi Anda.</p>
-        </div>
-        <button class="btn-icon" onclick="fetchSyncData()" title="Sync Data"><i data-lucide="refresh-cw" id="sync-icon"
-            style="width:20px;height:20px;"></i></button>
-      </div>
-      <div id="reservasi-list"></div>
-    </div>
-  </main>
-
-  <footer>
-    <div class="footer-text">
-      <span>&copy; 2026 PodReserve Studio Network.</span>
-      <span>Powered by PIPD UIN Siber Syekh Nurjati Cirebon.</span>
-    </div>
-  </footer>
-
-  <!-- Booking Modal -->
-  <div class="modal-overlay" id="booking-modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <div>
-          <h3 id="modal-studio-name">Book Studio</h3>
-        </div>
-        <button class="btn-icon" onclick="closeModal()" style="border:none; background:transparent;"><i
-            data-lucide="x"></i></button>
-      </div>
-      <div class="modal-body">
-        <form id="booking-form">
-          <div class="form-group">
-            <label class="form-label">Kategori Pengguna</label>
-            <select id="b_category" class="form-select" onchange="onCategoryChange()" required>
-              <option value="" disabled selected>Pilih Kategori</option>
-              <option value="Mahasiswa">Mahasiswa</option>
-              <option value="Dosen">Dosen</option>
-              <option value="Tendik">Tenaga Kependidikan</option>
-              <option value="Mitra">Mitra / Rekanan</option>
-              <option value="Umum">Masyarakat Umum</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Nama Lengkap</label>
-            <input type="text" id="b_name" required class="form-input" placeholder="Sesuai Identitas">
-          </div>
-
-          <!-- DYNAMIC FIELDS -->
-          <div class="form-group">
-            <label class="form-label" id="label_id">NIM / NIP / NIK</label>
-            <input type="text" id="b_id" required class="form-input" placeholder="Nomor Identitas">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" id="label_org">Fakultas / Instansi</label>
-            <input type="text" id="b_org" required class="form-input" placeholder="Asal Instansi">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Email (Untuk Notifikasi)</label>
-            <input type="email" id="b_email" required class="form-input" placeholder="email@contoh.com">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Nomor WhatsApp</label>
-            <input type="number" id="b_wa" required class="form-input" placeholder="628123456789">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Tujuan Kegiatan</label>
-            <input type="text" id="b_purpose" required class="form-input" placeholder="Tugas Kuliah / Podcast Komersil">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Surat Permohonan / Identitas (PDF)</label>
-            <input type="file" id="b_file" accept=".pdf" style="display:none;" onchange="handleFileSelect(this)"
-              required>
-            <label for="b_file" class="file-drop" id="b_file_label">
-              <i data-lucide="upload-cloud" style="width:24px;height:24px;"></i> <span>Upload Surat (Wajib PDF)</span>
-            </label>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Tanggal Pemesanan</label>
-            <input type="date" id="b_date" required class="form-input" onchange="renderModalSlots()">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Pilih Sesi Jam</label>
-            <select id="modal-slots-select" class="form-select" required onchange="selectModalSlot(this.value)">
-              <option value="" disabled selected>Pilih Sesi</option>
-            </select>
-          </div>
-
-          <button type="submit" class="btn-submit" id="btn-submit">Kirim Permohonan Reservasi</button>
-        </form>
-      </div>
+      </main>
     </div>
   </div>
 
-  <div class="modal-overlay" id="edit-booking-modal">
-    <div class="modal-content" style="max-width: 450px;">
-      <div class="modal-header">
-        <h3 style="margin:0; font-size:1.125rem;">Ubah Jadwal / Studio</h3>
-        <button onclick="closeEditBookingModal()"
-          style="background:none; border:none; color:var(--text-muted); cursor:pointer; padding:0; display:flex; align-items:center; justify-content:center;">
-          <i data-lucide="x" style="width:20px;height:20px;"></i>
-        </button>
-      </div>
-
-      <div class="modal-body">
-        <p style="font-size:0.875rem; color:var(--text-muted); margin-top:0; margin-bottom:1.5rem; line-height:1.5;">
-          Pindahkan reservasi ini ke studio atau sesi waktu yang berbeda secara instan.
-        </p>
-
-        <div class="form-group">
-          <label class="form-label">Pilih Studio Baru</label>
-          <select id="edit-b-studio" class="form-select"></select>
+    <!-- CONFIRM MODAL -->
+    <div class="custom-modal-overlay" id="confirm-modal">
+      <div class="custom-modal-card">
+        <div class="modal-title-row">
+          <div
+            style="width:2.5rem;height:2.5rem;border-radius:0.5rem;background:var(--warning-dim);color:var(--warning);display:flex;align-items:center;justify-content:center;">
+            <i data-lucide="alert-triangle"></i>
+          </div>
+          <h3 id="confirm-title">Konfirmasi</h3>
         </div>
-
-        <div class="form-group">
-          <label class="form-label">Tanggal</label>
-          <input type="date" id="edit-b-date" class="form-input">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Pilih Sesi</label>
-          <select id="edit-b-session" class="form-select"></select>
-        </div>
-
-        <div style="display:flex; gap:1rem; margin-top:2.5rem;">
-          <button class="btn-modal-outline" style="flex:1; height: 50px;"
-            onclick="closeEditBookingModal()">Batal</button>
-          <button class="btn-modal-fill" style="flex:1; height: 50px;" onclick="submitEditBooking()">Simpan
-            Perubahan</button>
+        <p class="modal-desc" id="confirm-desc">Apakah Anda yakin?</p>
+        <div class="modal-actions">
+          <button class="btn-modal-outline" onclick="window.closeConfirmModal()">Batal</button>
+          <button class="btn-modal-fill" id="confirm-btn-yes">Ya, Lanjutkan</button>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="toast" id="toast">
-    <i data-lucide="check-circle-2" id="toast-icon"></i>
-    <span id="toast-msg">Success</span>
-  </div>
-
-  <!-- CUSTOM CONFIRM MODAL -->
-  <!-- STUDIO DETAIL MODAL -->
-  <div class="custom-modal-overlay" id="studio-detail-modal">
-    <div class="custom-modal-card" style="max-width:500px; padding:0; overflow:hidden; border-radius:1.5rem;">
-      <div style="position:relative; width:100%; height:220px; background:#e2e8f0;">
-        <img id="detail-modal-img" src="" alt="Studio" style="width:100%; height:100%; object-fit:cover;">
-        <div
-          style="position:absolute; top:0; left:0; width:100%; height:100%; background:linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, transparent 50%, rgba(0,0,0,0.6) 100%);">
-        </div>
-        <button class="btn-icon" onclick="closeStudioDetailModal()"
-          style="position:absolute; top:12px; right:12px; background:rgba(255,255,255,0.2); backdrop-filter:blur(8px); color:#fff; border-radius:50%; width:36px; height:36px; display:flex; align-items:center; justify-content:center;">
-          <i data-lucide="x" style="width:20px;height:20px;"></i>
-        </button>
-        <div
-          style="position:absolute; bottom:16px; left:20px; right:20px; display:flex; justify-content:space-between; align-items:flex-end;">
-          <h3 id="detail-modal-title"
-            style="font-size:1.5rem; font-weight:800; margin:0; color:#fff; text-shadow:0 2px 4px rgba(0,0,0,0.5);">
-          </h3>
-          <span
-            style="display:flex; align-items:center; gap:0.25rem; background:rgba(255,255,255,0.9); padding:0.35rem 0.75rem; border-radius:999px; font-size:0.75rem; font-weight:800; color:var(--text-main); box-shadow:0 2px 8px rgba(0,0,0,0.2);">
-            <i data-lucide="users" style="width:14px;height:14px; color:var(--accent);"></i> <span
-              id="detail-modal-cap"></span>
-          </span>
-        </div>
-      </div>
-      <div style="padding: 1.5rem 1.5rem 2rem 1.5rem;">
-        <p id="detail-modal-desc"
-          style="color:var(--text-muted); font-size:0.95rem; margin-bottom:1.5rem; line-height:1.6;"></p>
-
-        <h4
-          style="font-size:0.95rem; font-weight:800; margin-bottom:1rem; color:var(--text-main); display:flex; align-items:center; gap:0.5rem;">
-          <i data-lucide="check-circle-2" style="width:18px;height:18px; color:var(--accent);"></i> Fasilitas Termasuk:
-        </h4>
-        <div id="detail-modal-fasilitas" style="display:flex; flex-wrap:wrap; margin-bottom:2rem; gap:0.5rem;"></div>
-
-        <button id="detail-modal-book-btn" class="btn-modal-fill" style="width:100%; padding:1rem; font-size:1rem;">
-          <i data-lucide="calendar" style="width:18px;height:18px; margin-right:0.5rem;"></i> Cek Jadwal & Pesan Studio
-          Ini
-        </button>
-      </div>
+    <!-- TOAST NOTIFICATION -->
+    <div class="toast" id="toast">
+      <i data-lucide="check-circle-2" id="toast-icon"></i>
+      <span id="toast-msg">Success</span>
     </div>
-  </div>
-
-  <div class="custom-modal-overlay" id="confirm-modal">
-    <div class="custom-modal-card">
-      <div class="modal-title-row">
-        <div
-          style="width:2.5rem;height:2.5rem;border-radius:0.5rem;background:var(--warning-dim);color:var(--warning);display:flex;align-items:center;justify-content:center;">
-          <i data-lucide="alert-triangle"></i>
-        </div>
-        <h3 id="confirm-title">Konfirmasi</h3>
-      </div>
-      <p class="modal-desc" id="confirm-desc">Apakah Anda yakin?</p>
-      <div class="modal-actions">
-        <button class="btn-modal-outline" onclick="closeConfirmModal()">Batal</button>
-        <button class="btn-modal-fill" id="confirm-btn-yes">Ya, Lanjutkan</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- CUSTOM PROMPT MODAL (LOGIN) -->
-  <div class="custom-modal-overlay" id="prompt-modal">
-    <div class="custom-modal-card">
-      <div class="modal-title-row">
-        <div
-          style="width:2.5rem;height:2.5rem;border-radius:0.5rem;background:var(--accent-dim);color:var(--accent);display:flex;align-items:center;justify-content:center;">
-          <i data-lucide="lock"></i>
-        </div>
-        <h3>Admin Access</h3>
-      </div>
-      <p class="modal-desc">Masukkan password untuk masuk ke Panel Admin.</p>
-      <div class="admin-form-group">
-        <input type="password" id="prompt-input" class="admin-form-input" placeholder="Password..."
-          onkeypress="if(event.key==='Enter') submitPromptModal()">
-      </div>
-      <div class="modal-actions">
-        <button class="btn-modal-outline" onclick="closePromptModal()">Batal</button>
-        <button class="btn-modal-fill" onclick="submitPromptModal()">Masuk</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- WA PROMPT MODAL -->
-  <div class="custom-modal-overlay" id="wa-prompt-modal">
-    <div class="custom-modal-card">
-      <div class="modal-title-row">
-        <div
-          style="width:2.5rem;height:2.5rem;border-radius:0.5rem;background:#25D36622;color:#25D366;display:flex;align-items:center;justify-content:center;">
-          <i data-lucide="message-circle"></i>
-        </div>
-        <h3>Tambah Nomor WA</h3>
-      </div>
-      <p class="modal-desc">Masukkan Nomor WhatsApp pemohon (contoh: 08123456789).</p>
-      <div class="admin-form-group">
-        <input type="number" id="wa-prompt-input" class="admin-form-input" placeholder="0812..."
-          onkeypress="if(event.key==='Enter') submitWAPromptModal()">
-      </div>
-      <div class="modal-actions">
-        <button class="btn-modal-outline" onclick="closeWAPromptModal()">Batal</button>
-        <button class="btn-modal-fill" style="background:#25D366; color:#fff;"
-          onclick="submitWAPromptModal()">Simpan</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- WELCOME MODAL -->
-  <div class="custom-modal-overlay" id="welcome-modal">
-    <div class="custom-modal-card" style="text-align:center; max-width:400px;">
-      <div
-        style="width:4rem; height:4rem; border-radius:1rem; background:var(--accent-dim); color:var(--accent); display:flex; align-items:center; justify-content:center; margin:0 auto 1.5rem auto;">
-        <i data-lucide="mic" style="width:2rem; height:2rem;"></i>
-      </div>
-      <h3 style="font-weight:800; font-size:1.5rem; margin-bottom:0.5rem; color:var(--text-main);">Selamat Datang</h3>
-      <p style="color:var(--text-muted); font-size:0.95rem; margin-bottom:2rem; line-height:1.6;">
-        Platform Reservasi Studio Podcast. Apakah Anda ingin membuat reservasi baru atau mengecek status reservasi?
-      </p>
-      <div style="display:flex; flex-direction:column; gap:0.75rem;">
-        <button class="btn-modal-fill" style="width:100%; padding:1rem; border-radius:1rem; font-size:1rem;"
-          onclick="closeWelcomeModal()">Saya Mau Reservasi Baru</button>
-        <button class="btn-modal-outline"
-          style="width:100%; padding:1rem; border-radius:1rem; font-size:1rem; border-color:var(--accent); color:var(--accent);"
-          onclick="openCheckTicketModal()">Cek Status Tiket Saya</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- CHECK TICKET MODAL -->
-  <div class="custom-modal-overlay" id="check-ticket-modal">
-    <div class="custom-modal-card" style="max-width:400px;">
-      <div class="modal-title-row">
-        <div
-          style="width:2.5rem;height:2.5rem;border-radius:0.5rem;background:var(--accent-dim);color:var(--accent);display:flex;align-items:center;justify-content:center;">
-          <i data-lucide="ticket"></i>
-        </div>
-        <h3>Cek Tiket Reservasi</h3>
-      </div>
-      <p class="modal-desc">Masukkan ID Reservasi / Kode Tiket Anda (contoh: B-1234).</p>
-      <div class="admin-form-group">
-        <input type="text" id="check-ticket-input" class="admin-form-input" placeholder="B-1234..." autocomplete="off"
-          onkeypress="if(event.key==='Enter') submitCheckTicket()">
-      </div>
-      <div id="check-ticket-result"
-        style="margin-top:1rem; display:none; padding:1rem; border-radius:0.75rem; background:var(--bg-main); font-size:0.875rem;">
-      </div>
-      <div class="modal-actions" style="margin-top:1.5rem;">
-        <button class="btn-modal-outline" onclick="closeCheckTicketModal()">Tutup</button>
-        <button class="btn-modal-fill" onclick="submitCheckTicket()">Cari Tiket</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- TICKET INTERCEPT MODAL -->
-  <div class="custom-modal-overlay" id="ticket-intercept-modal">
-    <div class="custom-modal-card" style="text-align:center; max-width:400px;">
-      <div
-        style="width:4rem; height:4rem; border-radius:50%; background:#10b98122; color:#10b981; display:flex; align-items:center; justify-content:center; margin:0 auto 1.5rem auto;">
-        <i data-lucide="check-circle-2" style="width:2rem; height:2rem;"></i>
-      </div>
-      <h3 style="font-weight:800; font-size:1.25rem; margin-bottom:0.5rem; color:var(--text-main);">Reservasi Tercatat!
-      </h3>
-      <p style="color:var(--text-muted); font-size:0.875rem; margin-bottom:1.5rem; line-height:1.5;">
-        Sistem telah menyimpan permohonan Anda. Berikut adalah Kode Tiket Anda. <strong>Harap simpan kode ini</strong>
-        untuk mengecek status reservasi nanti.
-      </p>
-
-      <div
-        style="background:var(--bg-main); border:1px dashed var(--border-color); border-radius:1rem; padding:1.5rem; margin-bottom:1.5rem; display:flex; flex-direction:column; align-items:center; gap:0.5rem;">
-        <span
-          style="font-size:0.75rem; color:var(--text-muted); font-weight:700; text-transform:uppercase; letter-spacing:0.1em;">KODE
-          TIKET ANDA</span>
-        <div style="font-size:2rem; font-weight:800; color:var(--accent); letter-spacing:0.05em;"
-          id="intercept-ticket-code">B-XXXX</div>
-        <button class="btn-modal-outline" style="padding:0.25rem 0.75rem; font-size:0.75rem; margin-top:0.5rem;"
-          onclick="copyInterceptTicket()"><i data-lucide="copy" style="width:14px;height:14px;margin-right:4px;"></i>
-          Salin Kode</button>
-      </div>
-
-      <p style="color:var(--text-muted); font-size:0.875rem; margin-bottom:1.5rem; line-height:1.5;">
-        Langkah terakhir: Kirim format pesan konfirmasi beserta dokumen pendukung ke WhatsApp Kepala Lab Siber.
-      </p>
-
-      <button class="btn-modal-fill"
-        style="width:100%; padding:1rem; border-radius:1rem; font-size:1rem; background:#25D366; display:flex; align-items:center; justify-content:center; gap:0.5rem; transition:transform 0.2s; box-shadow:0 4px 6px rgba(37,211,102,0.3);"
-        onclick="continueToWhatsApp()">
-        <i data-lucide="send" style="width:18px;height:18px;"></i> Lanjut ke WhatsApp
-      </button>
-    </div>
-  </div>
-
-
 
   <script>
     // Config
@@ -2809,29 +2537,23 @@
 
       if (secretKnocks >= 5) {
         secretKnocks = 0;
-        window.location.href = 'admin.html';
+        if (window.openLoginModal) window.openLoginModal();
       }
     }
-    function exitAdminMode() {
-      if (window.signOutAdmin) window.signOutAdmin();
 
-      isAdmin = false;
-      document.body.style.overflow = "auto";
-      document.querySelector("main").style.display = "";
-      document.getElementById("pc-nav").style.display = "";
-      document.getElementById("mobile-nav").style.display = "";
-      document.getElementById("admin-view").style.display = "none";
-
-      if (window.adminAutoRefreshInterval) {
-        clearInterval(window.adminAutoRefreshInterval);
-        window.adminAutoRefreshInterval = null;
+    window.exitAdminMode = async function() {
+      // Hide body to prevent flashing login screen during redirect
+      document.body.style.opacity = '0';
+      if (window.signOutAdmin) {
+        try {
+          await window.signOutAdmin();
+        } catch(e) {}
       }
+      window.location.href = 'index.html';
+    };
 
-      if (window.location.search.includes('admin=true')) {
-        const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-        window.history.replaceState({ path: cleanUrl }, '', cleanUrl);
-      }
-      showToast("Berhasil keluar dari mode Admin");
+    function closeModal() {
+      // Intentionally left blank (no index modals here)
     }
 
     window.continueToWhatsApp = async function () {
@@ -2880,20 +2602,19 @@
 
       try {
         const data = await pendingWaPromise;
-        let finalFileUrl = 'Dilampirkan di sistem (Gagal unggah ke Drive)';
-
+        let finalFileUrl = 'Dilampirkan di sistem';
         if (data && data.result === 'success' && data.fileUrl) {
           finalFileUrl = data.fileUrl;
           const idx = bookings.findIndex(b => b.id === payload.id);
           if (idx !== -1) {
-            bookings[idx].file_url = finalFileUrl;
+            bookings[idx].file_url = data.fileUrl;
             localStorage.setItem('podreserve_v2_bookings', JSON.stringify(bookings));
             if (isAdmin) renderAdminData();
           }
         }
 
         const waText = `Yth. Kepala Pusat Laboratorium Siber,%0A%0ASehubungan dengan keperluan penggunaan fasilitas studio, saya bermaksud untuk mengajukan permohonan reservasi dengan rincian sebagai berikut:%0A%0A*ID Reservasi:* ${payload.id}%0A*Nama:* ${payload.student_name}%0A*Identitas (NIM/NIP):* ${payload.student_id}%0A*Kategori:* ${payload.user_category}%0A*Instansi/Unit:* ${payload.organization}%0A*Kontak WA:* ${payload.phone_number}%0A%0A*Fasilitas Studio:* ${studio.name}%0A*Tanggal:* ${payload.date}%0A*Waktu (Sesi):* ${payload.start_time} - ${payload.end_time}%0A*Tujuan Penggunaan:* ${payload.purpose}%0A%0A*Tautan Dokumen Surat:* ${finalFileUrl}%0A%0ABesar harapan saya agar permohonan ini dapat ditindaklanjuti. Atas perhatian dan kebijaksanaan Bapak/Ibu, saya ucapkan terima kasih.`;
-        const waUrl = `whatsapp://send?phone=6282170735157&text=${waText}`;
+        const waUrl = `https://wa.me/6282170735157?text=${waText}`;
 
         if (waWindow) waWindow.location.href = waUrl;
         else window.location.href = waUrl;
@@ -2901,7 +2622,7 @@
       } catch (e) {
         // Fallback
         const waText = `Yth. Kepala Pusat Laboratorium Siber,%0A%0ASehubungan dengan keperluan penggunaan fasilitas studio, saya bermaksud untuk mengajukan permohonan reservasi dengan rincian sebagai berikut:%0A%0A*ID Reservasi:* ${payload.id}%0A*Nama:* ${payload.student_name}%0A*Identitas (NIM/NIP):* ${payload.student_id}%0A*Kategori:* ${payload.user_category}%0A*Instansi/Unit:* ${payload.organization}%0A*Kontak WA:* ${payload.phone_number}%0A%0A*Fasilitas Studio:* ${studio.name}%0A*Tanggal:* ${payload.date}%0A*Waktu (Sesi):* ${payload.start_time} - ${payload.end_time}%0A*Tujuan Penggunaan:* ${payload.purpose}%0A%0A*Tautan Dokumen Surat:* [Gagal Terlampir Otomatis]%0A%0ABesar harapan saya agar permohonan ini dapat ditindaklanjuti. Atas perhatian dan kebijaksanaan Bapak/Ibu, saya ucapkan terima kasih.`;
-        const waUrl = `whatsapp://send?phone=6282170735157&text=${waText}`;
+        const waUrl = `https://wa.me/6282170735157?text=${waText}`;
         if (waWindow) waWindow.location.href = waUrl;
         else window.location.href = waUrl;
       }
@@ -3116,7 +2837,7 @@
       const savedS = localStorage.getItem('podreserve_v2_studios');
       if (savedS) {
         studios = JSON.parse(savedS);
-        renderStudios();
+        // renderStudios(); // removed
       } else {
         document.getElementById('studios-container').innerHTML = [1, 2, 3].map(() => `
           <div class="studio-card">
@@ -3140,8 +2861,8 @@
         applySettings();
       }
 
-      renderCalendar();
-      renderSchedule();
+      // renderCalendar();
+      // renderSchedule();
 
       if (!savedB || bookings.length === 0) {
         document.getElementById('reservasi-list').innerHTML = [1, 2, 3].map(() => `
@@ -3153,7 +2874,7 @@
           </div>
         `).join('');
       } else {
-        renderReservasi();
+        // renderReservasi();
       }
 
       fetchSyncData();
@@ -3264,7 +2985,7 @@
       }
     }
 
-    async function adminRefreshData() {
+    window.adminRefreshData = async function() {
       const btn = document.getElementById('admin-refresh-btn');
       if (!btn) return;
       btn.disabled = true;
@@ -3463,42 +3184,27 @@
 
     window.selectScheduleStudio = function (studioId) {
       selectedScheduleStudioId = studioId;
-      selectedDate = null; // Reset date to force linear flow
-      
-      const step2 = document.getElementById('step-2-container');
-      const step3 = document.getElementById('step-3-container');
-      if(step2) step2.classList.remove('step-disabled');
-      if(step3) step3.classList.add('step-disabled');
-
       renderStudioSelector();
-      renderCalendar();
-      renderSchedule(); // Will clear schedule since selectedDate is null
+      // renderCalendar();
     };
 
     function renderCalendar() {
       // Ensure studio is selected if none is set
       if (selectedScheduleStudioId === null || selectedScheduleStudioId === undefined) {
         renderStudioSelector();
-        return; // Don't render calendar if no studio is selected yet
       }
 
       document.getElementById('cal-month-year').innerText = currentMonth.toLocaleString('id-ID', { month: 'long', year: 'numeric' });
       const firstDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
       const lastDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0);
 
-      const daysShort = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
       let html = '';
-      
-      // Pad empty cells for PC grid layout
-      for (let i = 0; i < firstDay.getDay(); i++) {
-        html += `<div class="cal-empty-cell"></div>`;
-      }
-      
+      for (let i = 0; i < firstDay.getDay(); i++) { html += `<div class="cal-cell disabled"></div>`; }
       for (let d = 1; d <= lastDay.getDate(); d++) {
         const dateObj = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), d);
+        const isSelected = dateObj.toDateString() === selectedDate.toDateString();
+
         const dateStr = getISODateStr(dateObj);
-        
-        const isSelected = selectedDate && dateObj.toDateString() === selectedDate.toDateString();
         const isOpened = openedDates.some(o => o.date === dateStr);
         const isClosed = !isOpened;
 
@@ -3509,59 +3215,40 @@
           availableSlots = totalSlots - bookedCount;
         }
 
-        let cellClass = 'fitness-day-card';
+        let cellClass = 'cal-cell';
         if (isSelected) cellClass += ' selected';
-        if (isClosed) cellClass += ' disabled';
+        if (isClosed) cellClass += ' weekend-closed';
 
         const clickEvent = isClosed ? '' : `onclick="selectDate(${currentMonth.getFullYear()}, ${currentMonth.getMonth()}, ${d})"`;
-        const dayName = daysShort[dateObj.getDay()];
 
-        let indicatorClass = 'indicator-closed';
-        if (!isClosed) {
-           indicatorClass = availableSlots > 0 ? 'indicator-available' : 'indicator-full';
+        let statusHtml = '';
+        if (isClosed) {
+          statusHtml = `<span class="cal-cell-status status-closed">Tutup</span>`;
+        } else {
+          if (availableSlots > 0) {
+            statusHtml = `<span class="cal-cell-status status-available">${availableSlots} Sesi</span>`;
+          } else {
+            statusHtml = `<span class="cal-cell-status status-full">Penuh</span>`;
+          }
         }
 
         html += `
-          <div class="${cellClass}" ${clickEvent} id="fday-${d}">
-            <span class="fitness-day-name">${dayName}</span>
-            <span class="fitness-day-date">${d}</span>
-            <div class="fitness-day-indicator ${indicatorClass}"></div>
+          <div class="${cellClass}" ${clickEvent}>
+            <span>${d}</span>
+            <div class="cal-cell-content">
+              ${statusHtml}
+            </div>
           </div>`;
       }
-      const grid = document.getElementById('cal-grid');
-      if (grid) {
-        grid.innerHTML = html;
-        
-        // Auto scroll to selected date or today
-        setTimeout(() => {
-           const targetDate = selectedDate ? selectedDate.getDate() : new Date().getDate();
-           const targetEl = document.getElementById('fday-' + targetDate);
-           if(targetEl) {
-              targetEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-           }
-        }, 100);
-      }
+      document.getElementById('cal-grid').innerHTML = html;
     }
 
     function renderSchedule() {
-      const container = document.getElementById('schedule-container');
-      if (!container) return;
-
-      if (!selectedDate) {
-         container.innerHTML = `
-          <div class="empty-state" style="padding:2rem 1rem;">
-            <i data-lucide="mouse-pointer-click" style="width:48px;height:48px;margin-bottom:1rem;color:var(--text-muted);opacity:0.5;"></i>
-            <h3>Silakan Pilih Tanggal</h3>
-            <p>Sesi waktu akan muncul setelah Anda memilih tanggal pada kalender di atas.</p>
-          </div>
-         `;
-         lucide.createIcons();
-         return;
-      }
-
       const dateStr = getISODateStr(selectedDate);
       const activeStudio = studios.find(s => s.id == selectedScheduleStudioId);
-      
+      const container = document.getElementById('schedule-container');
+
+      if (!container) return;
       if (!activeStudio) {
         container.innerHTML = '';
         return;
@@ -3621,17 +3308,13 @@
       lucide.createIcons();
     }
 
-    function changeMonth(offset) { currentMonth.setMonth(currentMonth.getMonth() + offset); renderCalendar(); }
+    function changeMonth(offset) { currentMonth.setMonth(currentMonth.getMonth() + offset); }
 
     function selectDate(y, m, d) {
       selectedDate = new Date(y, m, d);
       document.getElementById('filter-date').value = getISODateStr(selectedDate);
-      
-      const step3 = document.getElementById('step-3-container');
-      if(step3) step3.classList.remove('step-disabled');
-
-      renderCalendar();
-      renderSchedule();
+      // renderCalendar();
+      // renderSchedule();
 
       if (window.innerWidth < 768) {
         const fab = document.getElementById('fab-scroll-schedule');
@@ -3704,10 +3387,8 @@
 
       fileBase64 = null; fileName = null;
       const fileLabel = document.getElementById('b_file_label');
-      if (fileLabel) {
-        fileLabel.innerHTML = `<i data-lucide="upload-cloud" style="width:24px;height:24px;"></i> <span>Upload Surat (Wajib PDF)</span>`;
-        fileLabel.classList.remove('has-file');
-      }
+      fileLabel.innerHTML = `<i data-lucide="upload-cloud" style="width:24px;height:24px;"></i> <span>Upload Surat (Wajib PDF)</span>`;
+      fileLabel.classList.remove('has-file');
 
       selectedSession = start_time ? sessions.find(s => s.start === start_time) : null;
       renderModalSlots();
@@ -3727,6 +3408,10 @@
 
       let html = '<option value="" disabled selected>Pilih Sesi</option>';
       sessions.forEach(slot => {
+        if (isWeekend) {
+          html += `<option value="${slot.id}" disabled>${slot.name}: ${slot.start} - ${slot.end} (Tutup)</option>`;
+          return;
+        }
         const isBooked = bookings.some(b => b.studio_id == selectedStudio.id && b.date == dateStr && b.start_time == slot.start);
         if (isBooked) {
           html += `<option value="${slot.id}" disabled>${slot.name}: ${slot.start} - ${slot.end} (Booked)</option>`;
@@ -3741,12 +3426,6 @@
     window.selectModalSlot = function (id) {
       selectedSession = sessions.find(s => s.id == id);
     };
-
-
-
-    // --- GOOGLE DRIVE UPLOAD SETTINGS ---
-    // GANTI URL DI BAWAH INI DENGAN URL WEB APP GOOGLE APPS SCRIPT ANDA
-    const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby67aX_bag1A5Cb6Imc8eSjd1DrZgbeqcBnKl2NUJ32Epjbebf_H1kirT9qQzmJWfzk/exec";
 
     function handleFileSelect(input) {
       const file = input.files[0];
@@ -3764,86 +3443,6 @@
       reader.readAsDataURL(file);
     }
 
-    document.getElementById('booking-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      if (!selectedSession) { showToast("Pilih sesi waktu!", "error"); return; }
-      if (!fileBase64) { showToast("File PDF wajib diunggah!", "error"); return; }
-
-      const btn = document.getElementById('btn-submit');
-      btn.disabled = true; btn.innerText = `Memproses...`;
-
-      const payload = {
-        id: "B-" + Math.floor(Math.random() * 10000), // Random ID B-xxxx
-        studio_id: selectedStudio.id,
-        user_category: document.getElementById('b_category').value,
-        student_name: document.getElementById('b_name').value,
-        student_id: document.getElementById('b_id').value,
-        organization: document.getElementById('b_org').value,
-        email: document.getElementById('b_email').value,
-        phone_number: document.getElementById('b_wa').value,
-        purpose: document.getElementById('b_purpose').value,
-        date: document.getElementById('b_date').value,
-        start_time: selectedSession.start,
-        end_time: selectedSession.end,
-        fileName: fileName
-      };
-
-      pendingWaPayload = null;
-      pendingWaStudio = null;
-
-      try {
-        // Optimistic UI Update
-        payload.status = 'pending';
-        bookings.push(payload);
-        localStorage.setItem('podreserve_v2_bookings', JSON.stringify(bookings));
-        renderSchedule(); renderReservasi();
-
-        pendingWaPayload = payload;
-        pendingWaStudio = selectedStudio;
-
-        // 1. Save to Firestore (status pending, without fileUrl yet)
-        await window.setDoc(window.doc(window.db, "bookings", payload.id), payload);
-
-        // 2. Upload to Google Drive via Google Apps Script (if configured)
-        if (GOOGLE_APPS_SCRIPT_URL && GOOGLE_APPS_SCRIPT_URL !== "ISI_URL_WEB_APP_GOOGLE_SCRIPT_DI_SINI") {
-          pendingWaPromise = fetch(GOOGLE_APPS_SCRIPT_URL, {
-            method: "POST",
-            body: JSON.stringify({
-              fileName: payload.id + "_" + fileName,
-              fileData: fileBase64
-            })
-          })
-            .then(response => response.json())
-            .then(data => {
-              if (data.status === "success" && data.url) {
-                return window.updateDoc(window.doc(window.db, "bookings", payload.id), { fileUrl: data.url })
-                  .then(() => ({ result: 'success', fileUrl: data.url }));
-              } else {
-                throw new Error("GAS returned error");
-              }
-            })
-            .catch(err => {
-              console.error("Gagal upload ke Google Drive:", err);
-              return { result: 'error' };
-            });
-        } else {
-          // If URL is not set, just resolve to success without a URL so it continues
-          pendingWaPromise = Promise.resolve({ result: 'error' });
-        }
-
-        // Show Ticket Intercept Modal
-        closeModal();
-        document.getElementById('intercept-ticket-code').innerText = payload.id;
-        document.getElementById('ticket-intercept-modal').classList.add('active');
-
-      } catch (err) {
-        console.error("Booking Error:", err);
-        showToast("Error: " + (err.message || err.toString()), "error");
-      } finally {
-        btn.disabled = false; btn.innerText = `Kirim Permohonan Reservasi`;
-      }
-    });
-
     function showToast(msg, type = "success") {
       const toast = document.getElementById('toast');
       document.getElementById('toast-msg').innerText = msg;
@@ -3854,19 +3453,17 @@
     }
 
     // --- ADMIN LOGIC ---
-    function switchAdminTab(tab) {
+    window.switchAdminTab = function(tab) {
       document.getElementById('btn-adm-book').classList.remove('active');
       document.getElementById('btn-adm-std').classList.remove('active');
-      if (document.getElementById('btn-adm-surat')) document.getElementById('btn-adm-surat').classList.remove('active');
       document.getElementById('btn-adm-hol').classList.remove('active');
       document.getElementById('btn-adm-set').classList.remove('active');
-
+      
       const activeBtn = document.getElementById('btn-adm-' + tab);
       if (activeBtn) activeBtn.classList.add('active');
 
       document.getElementById('adm-book').style.display = tab === 'book' ? 'block' : 'none';
       document.getElementById('adm-std').style.display = tab === 'std' ? 'block' : 'none';
-      document.getElementById('adm-surat').style.display = tab === 'surat' ? 'block' : 'none';
       document.getElementById('adm-hol').style.display = tab === 'hol' ? 'block' : 'none';
       document.getElementById('adm-set').style.display = tab === 'set' ? 'block' : 'none';
 
@@ -3969,7 +3566,7 @@
         try {
           showToast("Menyimpan nomor WA...");
           await window.updateDoc(window.doc(window.db, "bookings", bookingId), { phone_number: wa });
-
+          
           const bIndex = bookings.findIndex(b => b.id === bookingId);
           if (bIndex > -1) {
             bookings[bIndex].phone_number = wa;
@@ -4006,10 +3603,10 @@
       }
 
       // Render Admin Calendar (Opened Dates)
-      renderAdminCalendar();
+      window.renderAdminCalendar();
     }
 
-    function adminUpdateBooking(bookingId, status) {
+    window.adminUpdateBooking = function(bookingId, status) {
       const isDanger = status === 'rejected';
       openConfirmModal(
         "Ubah Status",
@@ -4021,7 +3618,7 @@
           if (bIndex !== -1) {
             bookings[bIndex].status = status;
             renderAdminData();
-            renderSchedule(); renderReservasi();
+            // renderSchedule(); renderReservasi();
             localStorage.setItem('podreserve_v2_bookings', JSON.stringify(bookings));
           }
 
@@ -4040,7 +3637,7 @@
     let studioFileBase64 = null;
     let studioFileName = null;
 
-    function handleStudioImage(input) {
+    window.handleStudioImage = function(input) {
       const file = input.files[0];
       if (!file) return;
       studioFileName = file.name;
@@ -4051,7 +3648,7 @@
       reader.readAsDataURL(file);
     }
 
-    function openStudioFormModal(mode, studioId = null) {
+    window.openStudioFormModal = function(mode, studioId = null) {
       const form = document.getElementById('studio-form');
       form.reset();
       document.getElementById('sf_mode').value = mode;
@@ -4095,11 +3692,11 @@
       document.getElementById('studio-form-modal').classList.add('active');
     }
 
-    function closeStudioFormModal() {
+    window.closeStudioFormModal = function() {
       document.getElementById('studio-form-modal').classList.remove('active');
-    }
+    };
 
-    window.formatURLFoto = function (url) {
+    window.formatURLFoto = function(url) {
       if (!url) return '';
       const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
       if (match && match[1]) {
@@ -4108,7 +3705,7 @@
       return url;
     };
 
-    async function handleSaveStudio(e) {
+    window.handleSaveStudio = async function(e) {
       e.preventDefault();
       const btn = document.getElementById('sf_submit_btn');
       btn.disabled = true; btn.innerText = 'Menyimpan...';
@@ -4154,7 +3751,7 @@
       }
 
       localStorage.setItem('podreserve_v2_studios', JSON.stringify(studios));
-      renderAdminData(); renderStudios(); renderCalendar(); renderSchedule();
+      renderAdminData();
       closeStudioFormModal();
       showToast("Data studio sedang diproses...");
 
@@ -4171,9 +3768,9 @@
             payload.studio.img = imgbbData.data.url;
             const idx = studios.findIndex(s => s.id === payload.studio.id);
             if (idx !== -1) {
-              studios[idx].img = imgbbData.data.url;
-              localStorage.setItem('podreserve_v2_studios', JSON.stringify(studios));
-              renderAdminData(); renderStudios();
+               studios[idx].img = imgbbData.data.url;
+               localStorage.setItem('podreserve_v2_studios', JSON.stringify(studios));
+               renderAdminData();
             }
           } else {
             throw new Error("Gagal upload gambar ke ImgBB");
@@ -4190,7 +3787,7 @@
       btn.disabled = false; btn.innerText = 'Simpan Data';
     }
 
-    function adminDeleteStudio(studioId) {
+    window.adminDeleteStudio = function(studioId) {
       openConfirmModal(
         "Hapus Studio",
         "Yakin ingin menghapus studio ini permanen? Data tidak dapat dikembalikan.",
@@ -4200,7 +3797,7 @@
           if (idx !== -1) {
             studios.splice(idx, 1);
             localStorage.setItem('podreserve_v2_studios', JSON.stringify(studios));
-            renderAdminData(); renderStudios(); renderCalendar(); renderSchedule();
+            renderAdminData();
           }
 
           try {
@@ -4214,7 +3811,7 @@
       );
     }
 
-    async function adminMoveStudio(studioId, dir) {
+    window.adminMoveStudio = async function(studioId, dir) {
       const idx = studios.findIndex(s => s.id === studioId);
       if (idx === -1) return;
 
@@ -4232,7 +3829,7 @@
 
       // Optimistic update
       renderAdminData();
-      renderStudios();
+      // renderStudios();
       localStorage.setItem('podreserve_v2_studios', JSON.stringify(studios));
 
       try {
@@ -4303,9 +3900,12 @@
     // --- OPENED DATES (WHITELIST) LOGIC ---
     let currentAdminMonth = new Date();
 
-    function renderAdminCalendar() {
+    window.renderAdminCalendar = function() {
       document.getElementById('adm-cal-month-year').innerText = currentAdminMonth.toLocaleString('id-ID', { month: 'long', year: 'numeric' });
       const lastDay = new Date(currentAdminMonth.getFullYear(), currentAdminMonth.getMonth() + 1, 0);
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
 
       let html = '';
       for (let d = 1; d <= lastDay.getDate(); d++) {
@@ -4313,13 +3913,14 @@
         const dateStr = getISODateStr(dateObj);
         const isOpened = openedDates.some(o => o.date === dateStr);
         const dayName = dateObj.toLocaleDateString('id-ID', { weekday: 'short' });
+        const isPast = dateObj < today;
 
         html += `
-          <div class="adm-date-card">
+          <div class="adm-date-card" ${isPast ? 'style="opacity:0.5; filter:grayscale(100%);"' : ''}>
             <span class="adm-date-day">${dayName}</span>
             <span class="adm-date-num">${d}</span>
             <label class="toggle-switch-sm">
-              <input type="checkbox" id="toggle-${dateStr}" ${isOpened ? 'checked' : ''} onchange="adminToggleDate('${dateStr}')">
+              <input type="checkbox" id="toggle-${dateStr}" ${isOpened ? 'checked' : ''} ${isPast ? 'disabled' : ''} onchange="adminToggleDate('${dateStr}')">
               <span class="toggle-slider"></span>
             </label>
           </div>
@@ -4343,12 +3944,12 @@
       }
     }
 
-    function changeAdminMonth(offset) {
+    window.changeAdminMonth = function(offset) {
       currentAdminMonth.setMonth(currentAdminMonth.getMonth() + offset);
-      renderAdminCalendar();
+      window.renderAdminCalendar();
     }
 
-    async function adminToggleDate(dateStr) {
+    window.adminToggleDate = async function(dateStr) {
       const checkbox = document.getElementById('toggle-' + dateStr);
       const targetState = checkbox.checked; // true if we want to open, false to close
 
@@ -4363,7 +3964,7 @@
           openedDates = openedDates.filter(o => o.date !== dateStr);
         }
         localStorage.setItem('podreserve_v2_opened_dates', JSON.stringify(openedDates));
-        renderAdminCalendar(); // re-render to update the list below
+        window.renderAdminCalendar(); // re-render to update the list below
         showToast(`Jadwal berhasil di${targetState ? 'buka' : 'tutup'}!`, "success");
       } catch (e) {
         showToast("Gagal menghubungi server", "error");
@@ -4371,7 +3972,7 @@
       }
     }
 
-    function convertFileToBase64(input) {
+    window.convertFileToBase64 = function(input) {
       const file = input.files[0];
       if (!file) return;
       heroFileName = file.name;
@@ -4382,7 +3983,7 @@
       reader.readAsDataURL(file);
     }
 
-    async function adminDeleteBanner(idx) {
+    window.adminDeleteBanner = async function(idx) {
       let images = [];
       if (appSettings['hero_images']) {
         try { images = JSON.parse(appSettings['hero_images']); }
@@ -4403,7 +4004,7 @@
       } catch (e) { showToast("Gagal menghapus banner", "error"); }
     }
 
-    async function adminAddHeroImage(btn) {
+    window.adminAddHeroImage = async function(btn) {
       const link = document.getElementById('adm-hero-link').value;
       if (!link && !heroFileBase64) return showToast("Masukkan link atau pilih gambar", "error");
 
@@ -4423,9 +4024,18 @@
         let finalUrl = link;
 
         if (heroFileBase64) {
-          const fileRef = window.storageRef(window.getStorage(), `banners/banner_${Date.now()}.png`);
-          await window.uploadString(fileRef, heroFileBase64, 'base64');
-          finalUrl = await window.getDownloadURL(fileRef);
+          const formData = new FormData();
+          formData.append('image', heroFileBase64);
+          const imgbbRes = await fetch("https://api.imgbb.com/1/upload?key=b58352a6d8d5cd72479b9d0c1e8692d6", {
+            method: "POST",
+            body: formData
+          });
+          const imgbbData = await imgbbRes.json();
+          if (imgbbData.success) {
+            finalUrl = imgbbData.data.url;
+          } else {
+            throw new Error("Gagal upload ke ImgBB");
+          }
         }
 
         images.push(finalUrl);
@@ -4452,7 +4062,7 @@
     }
 
     // SURAT MASUK CRUD
-    window.renderSuratMasuk = function () {
+    window.renderSuratMasuk = function() {
       const table = document.getElementById('admin-surat-table');
       if (!table) return;
 
@@ -4480,7 +4090,7 @@
       }
     };
 
-    window.openSuratFormModal = function (mode, id = null) {
+    window.openSuratFormModal = function(mode, id = null) {
       document.getElementById('sm_mode').value = mode;
       document.getElementById('sm_id').value = id || `SM-${Math.floor(Math.random() * 10000)}`;
 
@@ -4503,11 +4113,11 @@
       document.getElementById('surat-form-modal').classList.add('active');
     };
 
-    window.closeSuratFormModal = function () {
+    window.closeSuratFormModal = function() {
       document.getElementById('surat-form-modal').classList.remove('active');
     };
 
-    window.handleSaveSurat = async function (e) {
+    window.handleSaveSurat = async function(e) {
       e.preventDefault();
       const btn = document.getElementById('sm_submit_btn');
       btn.disabled = true; btn.innerText = 'Menyimpan...';
@@ -4530,7 +4140,7 @@
       btn.disabled = false; btn.innerText = 'Simpan Data';
     };
 
-    window.adminDeleteSurat = function (id) {
+    window.adminDeleteSurat = function(id) {
       openConfirmModal(
         "Hapus Surat Masuk",
         "Yakin ingin menghapus data surat masuk ini permanen?",
@@ -4549,8 +4159,11 @@
 
     init();
 
-    // Show Welcome Modal on every page load
-    document.getElementById('welcome-modal').classList.add('active');
+    // Show Welcome Modal once per session
+    if (!sessionStorage.getItem('podreserve_welcomed')) {
+      sessionStorage.setItem('podreserve_welcomed', 'true');
+      document.getElementById('welcome-modal').classList.add('active');
+    }
 
     // Register PWA Service Worker
     if ('serviceWorker' in navigator) {
@@ -4574,11 +4187,12 @@
       });
     }
   </script>
-
+  
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getFirestore, collection, onSnapshot, doc, setDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
     import { getStorage, ref as storageRef, uploadString, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBjv-yDTnY0abE7Zmfb0cSME4hwnjknw6g",
@@ -4592,17 +4206,63 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const storage = getStorage(app);
+    const auth = getAuth(app);
 
-    // Export to window
+    // Export to window for access from inline onclick handlers and legacy scripts
     window.db = db;
+    window.doc = doc;
+    window.setDoc = setDoc;
+    window.updateDoc = updateDoc;
+    window.deleteDoc = deleteDoc;
+    window.collection = collection;
     window.getStorage = () => storage;
     window.storageRef = storageRef;
     window.uploadString = uploadString;
     window.getDownloadURL = getDownloadURL;
-    window.setDoc = setDoc;
-    window.doc = doc;
-    window.updateDoc = updateDoc;
-    window.deleteDoc = deleteDoc;
+
+    // Firebase Auth Logic
+    window.openLoginModal = function() {
+      document.getElementById('login-email').value = '';
+      document.getElementById('login-password').value = '';
+      document.getElementById('login-modal').classList.add('active');
+      setTimeout(() => document.getElementById('login-email').focus(), 100);
+    };
+
+    window.submitLogin = async function() {
+      const email = document.getElementById('login-email').value.trim();
+      const pass = document.getElementById('login-password').value;
+      const btn = document.getElementById('btn-login-submit');
+      
+      if (!email || !pass) return window.showToast("Email dan Password wajib diisi", "error");
+      
+      btn.disabled = true; btn.innerText = "Login...";
+      try {
+        await signInWithEmailAndPassword(auth, email, pass);
+        window.showToast("Berhasil login!");
+        // State is handled by onAuthStateChanged
+      } catch (err) {
+        window.showToast("Login gagal. Periksa kredensial Anda.", "error");
+      }
+      btn.disabled = false; btn.innerText = "Login ke Dasbor";
+    };
+
+    window.signOutAdmin = async function() {
+      try { await signOut(auth); } catch (e) { console.error(e); }
+    };
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        window.isAdmin = true;
+        document.body.style.overflow = "auto";
+        document.getElementById("login-view").style.display = "none";
+        document.getElementById("admin-view").style.display = "block";
+        if (typeof window.renderAdminData === "function") window.renderAdminData();
+      } else {
+        window.isAdmin = false;
+        document.getElementById("login-view").style.display = "flex";
+        document.getElementById("admin-view").style.display = "none";
+      }
+    });
 
     // Real-time Listeners
     onSnapshot(collection(db, "bookings"), (snapshot) => {
@@ -4610,26 +4270,22 @@
       let newCount = 0;
       const currentBookings = window.bookings || bookings || [];
       const oldIds = new Set(currentBookings.map(b => b.id));
-
+      
       snapshot.forEach(docSnap => {
         const data = docSnap.data();
         newBookings.push(data);
-        if (window.isAdmin && !oldIds.has(data.id)) newCount++;
+        if (window.isAdmin && !oldIds.has(data.id) && (!data.status || data.status === 'pending')) newCount++;
       });
-
+      
       bookings = newBookings;
       window.bookings = newBookings;
       localStorage.setItem('podreserve_v2_bookings', JSON.stringify(newBookings));
-
-      if (typeof window.renderSchedule === "function") {
-        window.renderSchedule();
-        window.renderReservasi();
-        if (window.isAdmin) {
-          window.renderAdminData();
-          if (newCount > 0) {
-            window.playNotificationSound();
-            window.showToast(`Ada ${newCount} permohonan reservasi baru!`);
-          }
+      
+      if (window.isAdmin && typeof window.renderAdminData === "function") {
+        window.renderAdminData();
+        if (newCount > 0) {
+          window.playNotificationSound();
+          window.showToast(`Ada ${newCount} permohonan reservasi baru!`);
         }
       }
     });
@@ -4640,10 +4296,9 @@
       studios = newStudios;
       window.studios = newStudios;
       localStorage.setItem('podreserve_v2_studios', JSON.stringify(newStudios));
-      if (typeof window.renderStudios === "function") {
-        window.renderStudios();
-        window.renderStudioSelector();
-        if (window.isAdmin) window.renderAdminData();
+      
+      if (window.isAdmin && typeof window.renderAdminData === "function") {
+        window.renderAdminData();
       }
     });
 
@@ -4652,8 +4307,9 @@
       snapshot.forEach(docSnap => newSurat.push(docSnap.data()));
       suratMasuk = newSurat;
       window.suratMasuk = newSurat;
+      
       if (typeof window.renderSuratMasuk === "function") {
-        window.renderSuratMasuk();
+         window.renderSuratMasuk();
       }
     });
 
@@ -4667,9 +4323,9 @@
       openedDates = newDates;
       window.openedDates = newDates;
       localStorage.setItem('podreserve_v2_opened_dates', JSON.stringify(newDates));
-      if (typeof window.renderCalendar === "function") {
-        window.renderCalendar();
-        if (window.isAdmin) window.renderAdminCalendar();
+      
+      if (window.isAdmin && typeof window.renderAdminCalendar === "function") {
+        window.renderAdminCalendar();
       }
     });
 
@@ -4681,8 +4337,18 @@
       appSettings = newSettings;
       window.appSettings = newSettings;
       localStorage.setItem('podreserve_v2_settings', JSON.stringify(newSettings));
+      
       if (typeof window.applySettings === "function") {
-        window.applySettings();
+         window.applySettings();
+      }
+    });
+
+    // Initialize Admin UI elements
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+      window.switchAdminTab('book');
+      if (typeof window.renderAdminCalendar === "function") {
+        window.renderAdminCalendar();
       }
     });
 
