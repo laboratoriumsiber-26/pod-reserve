@@ -3552,7 +3552,19 @@
 
         const isSelected = selectedDate && dateObj.toDateString() === selectedDate.toDateString();
         const isOpened = openedDates.some(o => o.date === dateStr);
-        const isPast = dateObj < today;
+        let isPast = dateObj < today;
+
+        if (dateObj.toDateString() === new Date().toDateString()) {
+           const now = new Date();
+           let allPassed = true;
+           sessions.forEach(slot => {
+              const [startHour, startMin] = slot.start.split(':').map(Number);
+              const slotTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), startHour, startMin, 0);
+              if (now <= slotTime) allPassed = false;
+           });
+           if (allPassed) isPast = true;
+        }
+
         const isClosed = !isOpened || isPast;
 
         let availableSlots = 0;
@@ -3633,17 +3645,32 @@
         return;
       }
 
+      const now = new Date();
+      const isToday = selectedDate && selectedDate.toDateString() === now.toDateString();
+
       let slotsHtml = sessions.map(slot => {
+        let isPastSession = false;
+        if (isToday) {
+          const [startHour, startMin] = slot.start.split(':').map(Number);
+          const slotTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), startHour, startMin, 0);
+          if (now > slotTime) isPastSession = true;
+        }
+
         const booking = bookings.find(b => b.studio_id == activeStudio.id && b.date == dateStr && b.start_time == slot.start);
-        if (booking) {
-          const isConfirmed = booking.status === 'approved';
+        
+        if (booking || isPastSession) {
+          const isConfirmed = booking ? booking.status === 'approved' : false;
+          const statusText = isPastSession && !booking ? 'Closed' : (isConfirmed ? 'Sudah Dipesan' : 'Menunggu');
+          const statusClass = isPastSession && !booking ? 'closed' : (isConfirmed ? 'confirmed' : 'pending');
+          const slotOpacity = isPastSession && !booking ? '0.4' : '0.6';
+
           return `
-          <div class="slot-item ${isConfirmed ? 'confirmed' : 'pending'}" style="opacity:0.6; cursor:not-allowed;">
+          <div class="slot-item ${statusClass}" style="opacity:${slotOpacity}; cursor:not-allowed;">
             <div style="display:flex; flex-direction:column; gap:0.25rem;">
               <span style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--text-muted);">${slot.name}</span>
               <span style="display:flex;align-items:center;gap:0.5rem; font-size:1rem;"><i data-lucide="clock" style="width:16px;height:16px;"></i> ${slot.start} - ${slot.end}</span>
             </div>
-            <span style="font-size:0.75rem; background:var(--bg-main); padding:0.25rem 0.75rem; border-radius:999px; font-weight:800;">${isConfirmed ? 'Sudah Dipesan' : 'Menunggu'}</span>
+            <span style="font-size:0.75rem; background:var(--bg-main); padding:0.25rem 0.75rem; border-radius:999px; font-weight:800;">${statusText}</span>
           </div>`;
         }
         return `
