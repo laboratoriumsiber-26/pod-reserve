@@ -2045,6 +2045,118 @@
       }
     }
 
+    /* Fitness Calendar */
+    .fitness-calendar-wrapper {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      gap: 0.75rem;
+      padding: 0.5rem;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .fitness-calendar-wrapper::-webkit-scrollbar { display: none; }
+    .fitness-day-card {
+      flex: 0 0 calc(20% - 0.75rem);
+      min-width: 4rem;
+      scroll-snap-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 0.5rem;
+      border-radius: 1rem;
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .cal-desktop-headers {
+      display: none;
+    }
+    .cal-empty-cell {
+      display: none;
+    }
+    @media (min-width: 768px) {
+      .fitness-calendar-wrapper {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 0.5rem;
+        overflow: visible;
+        padding: 0;
+      }
+      .fitness-day-card {
+        flex: none;
+        min-width: auto;
+        aspect-ratio: 1;
+        border-radius: 0.75rem;
+      }
+      .fitness-day-name {
+        display: none; /* Hide inside card because desktop has headers */
+      }
+      .cal-desktop-headers {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+      .cal-desktop-headers > div {
+        text-align: center;
+        font-size: 0.75rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        color: var(--text-muted);
+      }
+      .cal-empty-cell {
+        display: block;
+        background: transparent;
+        border: none;
+        pointer-events: none;
+      }
+    }
+    .fitness-day-card.selected {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+      box-shadow: 0 4px 12px rgba(15, 118, 110, 0.3);
+    }
+    .fitness-day-card.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background: #f8fafc;
+    }
+    .fitness-day-name {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+      color: var(--text-muted);
+    }
+    .fitness-day-card.selected .fitness-day-name {
+      color: rgba(255, 255, 255, 0.9);
+    }
+    .fitness-day-date {
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+    .fitness-day-indicator {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      margin-top: 0.25rem;
+    }
+    .indicator-available { background: #22c55e; }
+    .indicator-full { background: #ef4444; }
+    .indicator-closed { background: #cbd5e1; }
+    
+    .step-disabled {
+      opacity: 0.3;
+      pointer-events: none;
+      filter: grayscale(100%);
+      transition: all 0.3s ease;
+    }
+
     .skeleton-box {
       background: linear-gradient(90deg, var(--border-color) 25%, #f1f5f9 50%, var(--border-color) 75%);
       background-size: 200% 100%;
@@ -2219,37 +2331,34 @@
           </div>
         </div>
 
-        <!-- Langkah 2 -->
-        <div
-          style="background:var(--bg-panel); border:1px solid var(--border-color); border-radius:1.5rem; overflow:hidden; box-shadow:0 8px 30px rgba(0,0,0,0.04);">
+        <!-- Langkah 2: Pilih Tanggal -->
+        <div id="step-2-container" class="step-disabled"
+          style="background:var(--bg-panel); border:1px solid var(--border-color); border-radius:1.5rem; overflow:hidden; box-shadow:0 8px 30px rgba(0,0,0,0.04); margin-bottom:1.5rem; transition:all 0.3s ease;">
           <div style="padding: 1.5rem 1.5rem 0 1.5rem; text-align:center;">
             <span
               style="display:inline-block; background:var(--accent); color:white; padding:0.25rem 0.75rem; border-radius:999px; font-weight:800; font-size:0.75rem; margin-bottom:0.75rem;">Langkah
               2</span>
             <h3 style="font-weight:800; font-size:1.125rem;">Pilih Tanggal</h3>
-            <p style="color:var(--text-muted); font-size:0.875rem;">Pilih tanggal dengan indikator <span
-                style="color:#22c55e; font-weight:bold;">hijau (Tersedia)</span>.</p>
+            <p style="color:var(--text-muted); font-size:0.875rem;">Geser untuk melihat jadwal, pilih tanggal yang tersedia.</p>
           </div>
 
-          <div class="cal-header" style="border-top:1px solid var(--border-color); margin-top:1.5rem;">
-            <h3 id="cal-month-year" style="font-size: 1.25rem;">...</h3>
+          <div class="cal-header" style="border-top:1px solid var(--border-color); margin-top:1.5rem; padding:1rem 1.5rem 0 1.5rem; display:flex; justify-content:space-between; align-items:center;">
+            <h3 id="cal-month-year" style="font-size: 1.125rem; font-weight:800;">...</h3>
             <div style="display:flex; gap:0.5rem;">
-              <button class="btn-icon" onclick="changeMonth(-1)"><i data-lucide="chevron-left"
+              <button class="btn-icon" onclick="changeMonth(-1)" style="padding:0.25rem;"><i data-lucide="chevron-left"
                   style="width:20px;height:20px;"></i></button>
-              <button class="btn-icon" onclick="changeMonth(1)"><i data-lucide="chevron-right"
+              <button class="btn-icon" onclick="changeMonth(1)" style="padding:0.25rem;"><i data-lucide="chevron-right"
                   style="width:20px;height:20px;"></i></button>
             </div>
           </div>
-          <div class="cal-days">
-            <div class="cal-day-name">Min</div>
-            <div class="cal-day-name">Sen</div>
-            <div class="cal-day-name">Sel</div>
-            <div class="cal-day-name">Rab</div>
-            <div class="cal-day-name">Kam</div>
-            <div class="cal-day-name">Jum</div>
-            <div class="cal-day-name">Sab</div>
+          
+          <div class="cal-desktop-headers" style="padding: 1rem 1.5rem 0 1.5rem;">
+            <div>Min</div><div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div>
           </div>
-          <div class="cal-grid" id="cal-grid"></div>
+          
+          <div class="fitness-calendar-wrapper" id="cal-grid">
+            <!-- Populated via JS -->
+          </div>
 
           <!-- Legend -->
           <div
@@ -2257,29 +2366,41 @@
             <div
               style="display:flex; align-items:center; gap:0.5rem; font-size:0.75rem; font-weight:700; color:var(--text-muted);">
               <span
-                style="width:12px; height:12px; border-radius:3px; background:#dcfce7; border:1px solid #22c55e;"></span>
+                style="width:10px; height:10px; border-radius:50%; background:#22c55e;"></span>
               Tersedia
             </div>
             <div
               style="display:flex; align-items:center; gap:0.5rem; font-size:0.75rem; font-weight:700; color:var(--text-muted);">
               <span
-                style="width:12px; height:12px; border-radius:3px; background:#fee2e2; border:1px solid #ef4444;"></span>
+                style="width:10px; height:10px; border-radius:50%; background:#ef4444;"></span>
               Penuh
             </div>
             <div
               style="display:flex; align-items:center; gap:0.5rem; font-size:0.75rem; font-weight:700; color:var(--text-muted);">
               <span
-                style="width:12px; height:12px; border-radius:3px; background:repeating-linear-gradient(45deg, #f1f5f9, #f1f5f9 10px, #e2e8f0 10px, #e2e8f0 20px); border:1px solid #cbd5e1;"></span>
+                style="width:10px; height:10px; border-radius:50%; background:#cbd5e1;"></span>
               Tutup
             </div>
           </div>
         </div> <!-- End Langkah 2 -->
-      </div> <!-- End Calendar Card Group -->
 
-      <!-- Schedule Container (Below Calendar) -->
-      <div id="schedule-container" style="max-width: 1200px; margin: 0 auto;">
-        <!-- Populated via JS -->
-      </div>
+        <!-- Langkah 3: Pilih Sesi Waktu -->
+        <div id="step-3-container" class="step-disabled"
+          style="background:var(--bg-panel); border:1px solid var(--border-color); border-radius:1.5rem; overflow:hidden; box-shadow:0 8px 30px rgba(0,0,0,0.04); transition:all 0.3s ease;">
+          <div style="padding: 1.5rem 1.5rem 0 1.5rem; text-align:center;">
+            <span
+              style="display:inline-block; background:var(--accent); color:white; padding:0.25rem 0.75rem; border-radius:999px; font-weight:800; font-size:0.75rem; margin-bottom:0.75rem;">Langkah
+              3</span>
+            <h3 style="font-weight:800; font-size:1.125rem;">Pilih Sesi Waktu</h3>
+            <p style="color:var(--text-muted); font-size:0.875rem;">Pilih slot waktu yang tersedia pada tanggal tersebut.</p>
+          </div>
+          
+          <div id="schedule-container" style="padding: 1.5rem; max-width: 1200px; margin: 0 auto;">
+            <!-- Populated via JS -->
+          </div>
+        </div> <!-- End Langkah 3 -->
+
+      </div> <!-- End Calendar Card Group -->
     </div>
 
     <!-- Tab: Reservasi -->
@@ -3342,27 +3463,42 @@
 
     window.selectScheduleStudio = function (studioId) {
       selectedScheduleStudioId = studioId;
+      selectedDate = null; // Reset date to force linear flow
+      
+      const step2 = document.getElementById('step-2-container');
+      const step3 = document.getElementById('step-3-container');
+      if(step2) step2.classList.remove('step-disabled');
+      if(step3) step3.classList.add('step-disabled');
+
       renderStudioSelector();
       renderCalendar();
+      renderSchedule(); // Will clear schedule since selectedDate is null
     };
 
     function renderCalendar() {
       // Ensure studio is selected if none is set
       if (selectedScheduleStudioId === null || selectedScheduleStudioId === undefined) {
         renderStudioSelector();
+        return; // Don't render calendar if no studio is selected yet
       }
 
       document.getElementById('cal-month-year').innerText = currentMonth.toLocaleString('id-ID', { month: 'long', year: 'numeric' });
       const firstDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
       const lastDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0);
 
+      const daysShort = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
       let html = '';
-      for (let i = 0; i < firstDay.getDay(); i++) { html += `<div class="cal-cell disabled"></div>`; }
+      
+      // Pad empty cells for PC grid layout
+      for (let i = 0; i < firstDay.getDay(); i++) {
+        html += `<div class="cal-empty-cell"></div>`;
+      }
+      
       for (let d = 1; d <= lastDay.getDate(); d++) {
         const dateObj = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), d);
-        const isSelected = dateObj.toDateString() === selectedDate.toDateString();
-
         const dateStr = getISODateStr(dateObj);
+        
+        const isSelected = selectedDate && dateObj.toDateString() === selectedDate.toDateString();
         const isOpened = openedDates.some(o => o.date === dateStr);
         const isClosed = !isOpened;
 
@@ -3373,40 +3509,59 @@
           availableSlots = totalSlots - bookedCount;
         }
 
-        let cellClass = 'cal-cell';
+        let cellClass = 'fitness-day-card';
         if (isSelected) cellClass += ' selected';
-        if (isClosed) cellClass += ' weekend-closed';
+        if (isClosed) cellClass += ' disabled';
 
         const clickEvent = isClosed ? '' : `onclick="selectDate(${currentMonth.getFullYear()}, ${currentMonth.getMonth()}, ${d})"`;
+        const dayName = daysShort[dateObj.getDay()];
 
-        let statusHtml = '';
-        if (isClosed) {
-          statusHtml = `<span class="cal-cell-status status-closed">Tutup</span>`;
-        } else {
-          if (availableSlots > 0) {
-            statusHtml = `<span class="cal-cell-status status-available">${availableSlots} Sesi</span>`;
-          } else {
-            statusHtml = `<span class="cal-cell-status status-full">Penuh</span>`;
-          }
+        let indicatorClass = 'indicator-closed';
+        if (!isClosed) {
+           indicatorClass = availableSlots > 0 ? 'indicator-available' : 'indicator-full';
         }
 
         html += `
-          <div class="${cellClass}" ${clickEvent}>
-            <span>${d}</span>
-            <div class="cal-cell-content">
-              ${statusHtml}
-            </div>
+          <div class="${cellClass}" ${clickEvent} id="fday-${d}">
+            <span class="fitness-day-name">${dayName}</span>
+            <span class="fitness-day-date">${d}</span>
+            <div class="fitness-day-indicator ${indicatorClass}"></div>
           </div>`;
       }
-      document.getElementById('cal-grid').innerHTML = html;
+      const grid = document.getElementById('cal-grid');
+      if (grid) {
+        grid.innerHTML = html;
+        
+        // Auto scroll to selected date or today
+        setTimeout(() => {
+           const targetDate = selectedDate ? selectedDate.getDate() : new Date().getDate();
+           const targetEl = document.getElementById('fday-' + targetDate);
+           if(targetEl) {
+              targetEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+           }
+        }, 100);
+      }
     }
 
     function renderSchedule() {
+      const container = document.getElementById('schedule-container');
+      if (!container) return;
+
+      if (!selectedDate) {
+         container.innerHTML = `
+          <div class="empty-state" style="padding:2rem 1rem;">
+            <i data-lucide="mouse-pointer-click" style="width:48px;height:48px;margin-bottom:1rem;color:var(--text-muted);opacity:0.5;"></i>
+            <h3>Silakan Pilih Tanggal</h3>
+            <p>Sesi waktu akan muncul setelah Anda memilih tanggal pada kalender di atas.</p>
+          </div>
+         `;
+         lucide.createIcons();
+         return;
+      }
+
       const dateStr = getISODateStr(selectedDate);
       const activeStudio = studios.find(s => s.id == selectedScheduleStudioId);
-      const container = document.getElementById('schedule-container');
-
-      if (!container) return;
+      
       if (!activeStudio) {
         container.innerHTML = '';
         return;
@@ -3471,6 +3626,10 @@
     function selectDate(y, m, d) {
       selectedDate = new Date(y, m, d);
       document.getElementById('filter-date').value = getISODateStr(selectedDate);
+      
+      const step3 = document.getElementById('step-3-container');
+      if(step3) step3.classList.remove('step-disabled');
+
       renderCalendar();
       renderSchedule();
 
