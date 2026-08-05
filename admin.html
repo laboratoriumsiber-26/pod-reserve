@@ -3913,7 +3913,18 @@
         const dateStr = getISODateStr(dateObj);
         const isOpened = openedDates.some(o => o.date === dateStr);
         const dayName = dateObj.toLocaleDateString('id-ID', { weekday: 'short' });
-        const isPast = dateObj < today;
+        let isPast = dateObj < today;
+
+        if (dateObj.toDateString() === new Date().toDateString()) {
+           const now = new Date();
+           let allPassed = true;
+           sessions.forEach(slot => {
+              const [startHour, startMin] = slot.start.split(':').map(Number);
+              const slotTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), startHour, startMin, 0);
+              if (now <= slotTime) allPassed = false;
+           });
+           if (allPassed) isPast = true;
+        }
 
         html += `
           <div class="adm-date-card" ${isPast ? 'style="opacity:0.5; filter:grayscale(100%);"' : ''}>
