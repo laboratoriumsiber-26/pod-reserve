@@ -3555,14 +3555,14 @@
         let isPast = dateObj < today;
 
         if (dateObj.toDateString() === new Date().toDateString()) {
-           const now = new Date();
-           let allPassed = true;
-           sessions.forEach(slot => {
-              const [startHour, startMin] = slot.start.split(':').map(Number);
-              const slotTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), startHour, startMin, 0);
-              if (now <= slotTime) allPassed = false;
-           });
-           if (allPassed) isPast = true;
+          const now = new Date();
+          let allPassed = true;
+          sessions.forEach(slot => {
+            const [startHour, startMin] = slot.start.split(':').map(Number);
+            const slotTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), startHour, startMin, 0);
+            if (now <= slotTime) allPassed = false;
+          });
+          if (allPassed) isPast = true;
         }
 
         const isClosed = !isOpened || isPast;
@@ -3570,7 +3570,7 @@
         let availableSlots = 0;
         let totalSlots = sessions.length;
         if (!isClosed && selectedScheduleStudioId != null) {
-          let bookedCount = bookings.filter(b => b.studio_id == selectedScheduleStudioId && b.date == dateStr).length;
+          let bookedCount = bookings.filter(b => b.studio_id == selectedScheduleStudioId && b.date == dateStr && b.status !== 'rejected').length;
           availableSlots = totalSlots - bookedCount;
         }
 
@@ -3656,8 +3656,8 @@
           if (now > slotTime) isPastSession = true;
         }
 
-        const booking = bookings.find(b => b.studio_id == activeStudio.id && b.date == dateStr && b.start_time == slot.start);
-        
+        const booking = bookings.find(b => b.studio_id == activeStudio.id && b.date == dateStr && b.start_time == slot.start && b.status !== 'rejected');
+
         if (booking || isPastSession) {
           const isConfirmed = booking ? booking.status === 'approved' : false;
           const statusText = isPastSession && !booking ? 'Closed' : (isConfirmed ? 'Sudah Dipesan' : 'Menunggu');
